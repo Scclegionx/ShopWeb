@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "bfCfDXC57r4iO9mdRTUFFAzIsMHsaWYVDzJI2M98bEozt3ZrkS056Cqtz3cpPzem0RBxhRE8zLYE1MbmyihIjQ==",
+  "dgSpecHash": "XTX+olYzc2TTSwLaV4BkgZbJwqfrJvEBlyDdD2N8vDjL3E3eGlS5I+VqJH0V216KtZSLjxV88vMYbelT9Gu/Sg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Admin\\Desktop\\Workspace\\ShopWeb\\ShopWeb.csproj",
+  "projectFilePath": "C:\\Users\\Admin\\Desktop\\Thực Tập CS\\ShopWeb\\ShopWeb.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",

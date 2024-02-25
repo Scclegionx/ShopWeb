@@ -1,0 +1,26 @@
+﻿@model ShopWeb.Models.ViewModels.AddCategoryRequest;
+@{
+}
+
+<div class="bg-secondary bg-opacity-10 py-2" >
+    <div class="container">
+        <h1>Add New Category - Admin Functionality</h1>
+    </div>
+</div>
+
+<div class="container py-5" >
+    @using (Html.BeginForm("Add", "AdminCategory", FormMethod.Post))
+    {
+        <div class="col-md-8 mb-3">
+            @Html.LabelFor(m => m.Name, new {@class = "col-md-4 control-label"})
+            @Html.TextBoxFor(m => m.Name, new {@class = "form-control"})
+        </div>
+        <div class="col-md-8 mb-3">
+            @Html.LabelFor(m => m.Description, new { @class = "col-md-4 control-label" })
+            @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
+        </div>
+        <div class="col-md-8 mb-3">
+            <button type="submit" class="btn btn-dark" >Submit</button>
+        </div>
+    }
+</div>

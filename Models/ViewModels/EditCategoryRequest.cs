@@ -1,13 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ShopWeb.Models.Domain
+namespace ShopWeb.Models.ViewModels
 {
-    public class Category
+    public class EditCategoryRequest
     {
         [Display(Name = "ID")]
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public ICollection<Product> Products { get; set; }
     }
 }

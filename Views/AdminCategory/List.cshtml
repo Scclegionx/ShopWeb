@@ -1,0 +1,42 @@
+﻿@model List<ShopWeb.Models.Domain.Category>;
+@{
+}
+<div class="bg-secondary bg-opacity-10 py-2">
+    <div class="container">
+        <h1>Show All Categories - Admin Functionality</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+    @if (Model != null && Model.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tên</th>
+                    <th>Mô tả</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var cate in Model)
+                {
+                    <tr>
+                        <td>@cate.Id</td>
+                        <td>@cate.Name</td>
+                        <td>@cate.Description</td>
+                        <td><a asp-area=""
+                            asp-action="Edit"
+                            asp-controller="AdminCategory"
+                            asp-route-id="{@cate.Id}"
+                        >Sửa</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    } else
+    {
+        <p>No Categories Found!</p>
+    }
+</div>
