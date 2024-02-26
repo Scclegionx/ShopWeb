@@ -48,5 +48,46 @@ namespace ShopWeb.Controllers
             
             return View(model);
         }
+        [HttpPost]
+        public IActionResult Edit(EditCategoryRequest editCategoryRequest)
+        {
+            var exist = shopWebDbContext.Categories.Find(editCategoryRequest.Id);
+            if (exist != null)
+            {
+                var model = new Category
+                {
+                    Id = exist.Id,
+                    Name = exist.Name,
+                    Description = exist.Description
+                };
+                shopWebDbContext.SaveChanges();
+                return RedirectToAction("List");   
+            }
+            return RedirectToAction("List");
+        }
+        [HttpGet]
+        public IActionResult Delete(Guid id)
+        {
+            var exist = shopWebDbContext.Categories.FirstOrDefault(x => x.Id == id);
+            var model = new EditCategoryRequest
+            {
+                Id = exist.Id,
+                Name = exist.Name,
+                Description = exist.Description
+            };
+            return View(model);
+        }
+        [HttpPost]
+        public IActionResult Delete(EditCategoryRequest editCategoryRequest)
+        {
+            var exist = shopWebDbContext.Categories.Find(editCategoryRequest.Id);
+            if (exist != null)
+            {
+                shopWebDbContext.Remove(exist.Id);
+                shopWebDbContext.SaveChanges();
+                return RedirectToAction("List");
+            }
+            return RedirectToAction("List");
+        }
     }
 }
