@@ -17,6 +17,7 @@
                     <th>Tên</th>
                     <th>Mô tả</th>
                     <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -31,6 +32,12 @@
                             asp-controller="AdminCategory"
                             asp-route-id="{@cate.Id}"
                         >Sửa</a></td>
+                        <td>
+                            <a asp-area=""
+                               asp-action="Delete"
+                               asp-controller="AdminCategory"
+                               asp-route-id="{@cate.Id}">Xóa</a>
+                        </td>
                     </tr>
                 }
             </tbody>
