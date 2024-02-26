@@ -1,4 +1,5 @@
 # Ignore DLL files
+bin/Debug/net8.0/*.dll
 *.dll
 
 # Ignore cache files
