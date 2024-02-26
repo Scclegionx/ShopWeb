@@ -51,15 +51,17 @@ namespace ShopWeb.Controllers
         [HttpPost]
         public IActionResult Edit(EditCategoryRequest editCategoryRequest)
         {
-            var exist = shopWebDbContext.Categories.Find(editCategoryRequest.Id);
+            var model = new Category
+            {
+                Id = editCategoryRequest.Id,
+                Name = editCategoryRequest.Name,
+                Description = editCategoryRequest.Description
+            };
+            var exist = shopWebDbContext.Categories.Find(model.Id);
             if (exist != null)
             {
-                var model = new Category
-                {
-                    Id = exist.Id,
-                    Name = exist.Name,
-                    Description = exist.Description
-                };
+                exist.Name = model.Name;
+                exist.Description = model.Description;
                 shopWebDbContext.SaveChanges();
                 return RedirectToAction("List");   
             }
@@ -83,7 +85,7 @@ namespace ShopWeb.Controllers
             var exist = shopWebDbContext.Categories.Find(editCategoryRequest.Id);
             if (exist != null)
             {
-                shopWebDbContext.Remove(exist.Id);
+                shopWebDbContext.Categories.Remove(exist);
                 shopWebDbContext.SaveChanges();
                 return RedirectToAction("List");
             }
