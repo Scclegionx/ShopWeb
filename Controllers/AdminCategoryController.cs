@@ -1,16 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ShopWeb.Data;
 using ShopWeb.Models.Domain;
 using ShopWeb.Models.ViewModels;
+using ShopWeb.Repositories;
 
 namespace ShopWeb.Controllers
 {
     public class AdminCategoryController : Controller
     {
-        private readonly ShopWebDbContext shopWebDbContext;
-        public AdminCategoryController(ShopWebDbContext shopWebDbContext) 
+        private readonly ICateRepository cateRepository;
+        public AdminCategoryController(ICateRepository cateRepository) 
         {
-            this.shopWebDbContext = shopWebDbContext;
+            this.cateRepository = cateRepository;
         }
         [HttpGet]
         public IActionResult Add()
@@ -18,27 +20,28 @@ namespace ShopWeb.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Add(AddCategoryRequest addCategoryRequest)
+        public async Task<IActionResult> Add(AddCategoryRequest addCategoryRequest)
         {
             var model = new Category
             {
                 Name = addCategoryRequest.Name,
                 Description = addCategoryRequest.Description
             };
-            shopWebDbContext.Categories.Add(model);
-            shopWebDbContext.SaveChanges();
+
+            await cateRepository.AddAsync(model);
+            
             return RedirectToAction("List");
         }
         [HttpGet]
-        public IActionResult List() 
+        public async Task<IActionResult> List() 
         {
-            var models = shopWebDbContext.Categories.ToList();
+            var models = await cateRepository.GetAllAsync();
             return View(models);
         }
         [HttpGet]
-        public IActionResult Edit(Guid id)
+        public async Task<IActionResult> Edit(Guid id)
         {
-            var exist = shopWebDbContext.Categories.FirstOrDefault(x => x.Id == id);
+            var exist = await cateRepository.GetAsync(id);
             var model = new EditCategoryRequest
             {
                 Id = exist.Id,
@@ -49,7 +52,7 @@ namespace ShopWeb.Controllers
             return View(model);
         }
         [HttpPost]
-        public IActionResult Edit(EditCategoryRequest editCategoryRequest)
+        public async Task<IActionResult> Edit(EditCategoryRequest editCategoryRequest)
         {
             var model = new Category
             {
@@ -57,20 +60,19 @@ namespace ShopWeb.Controllers
                 Name = editCategoryRequest.Name,
                 Description = editCategoryRequest.Description
             };
-            var exist = shopWebDbContext.Categories.Find(model.Id);
-            if (exist != null)
+            var updatedCate =  await cateRepository.UpdateAsync(model);
+            if (updatedCate != null)
             {
-                exist.Name = model.Name;
-                exist.Description = model.Description;
-                shopWebDbContext.SaveChanges();
-                return RedirectToAction("List");   
+                return RedirectToAction("List");
+            } else
+            {
+                return RedirectToAction("List");
             }
-            return RedirectToAction("List");
         }
         [HttpGet]
-        public IActionResult Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
-            var exist = shopWebDbContext.Categories.FirstOrDefault(x => x.Id == id);
+            var exist = await cateRepository.GetAsync(id);
             var model = new EditCategoryRequest
             {
                 Id = exist.Id,
@@ -80,16 +82,16 @@ namespace ShopWeb.Controllers
             return View(model);
         }
         [HttpPost]
-        public IActionResult Delete(EditCategoryRequest editCategoryRequest)
+        public async Task<IActionResult> Delete(EditCategoryRequest editCategoryRequest)
         {
-            var exist = shopWebDbContext.Categories.Find(editCategoryRequest.Id);
-            if (exist != null)
+            var deletedCate = await cateRepository.DeleteAsync(editCategoryRequest.Id);
+            if (deletedCate != null)
             {
-                shopWebDbContext.Categories.Remove(exist);
-                shopWebDbContext.SaveChanges();
+                return RedirectToAction("List");
+            } else
+            {
                 return RedirectToAction("List");
             }
-            return RedirectToAction("List");
         }
     }
 }
