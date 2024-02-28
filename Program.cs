@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ShopWeb.Data;
+using ShopWeb.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ShopWebDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("ShopWebDbConnectionString")));
+
+builder.Services.AddScoped<ICateRepository, CateRepository>();
 
 var app = builder.Build();
 
