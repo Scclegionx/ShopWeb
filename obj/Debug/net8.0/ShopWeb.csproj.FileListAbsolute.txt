@@ -266,9 +266,9 @@ C:\Users\Admin\Desktop\Thực Tập CS\ShopWeb\obj\Debug\net8.0\staticwebassets.
 C:\Users\Admin\Desktop\Thực Tập CS\ShopWeb\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 C:\Users\Admin\Desktop\Thực Tập CS\ShopWeb\obj\Debug\net8.0\scopedcss\bundle\ShopWeb.styles.css
 C:\Users\Admin\Desktop\Thực Tập CS\ShopWeb\obj\Debug\net8.0\scopedcss\projectbundle\ShopWeb.bundle.scp.css
-C:\Users\Admin\Desktop\Thực Tập CS\ShopWeb\obj\Debug\net8.0\ShopWeb.csproj.CopyComplete
 C:\Users\Admin\Desktop\Thực Tập CS\ShopWeb\obj\Debug\net8.0\ShopWeb.dll
 C:\Users\Admin\Desktop\Thực Tập CS\ShopWeb\obj\Debug\net8.0\refint\ShopWeb.dll
 C:\Users\Admin\Desktop\Thực Tập CS\ShopWeb\obj\Debug\net8.0\ShopWeb.pdb
 C:\Users\Admin\Desktop\Thực Tập CS\ShopWeb\obj\Debug\net8.0\ShopWeb.genruntimeconfig.cache
 C:\Users\Admin\Desktop\Thực Tập CS\ShopWeb\obj\Debug\net8.0\ref\ShopWeb.dll
+C:\Users\Admin\Desktop\Thực Tập CS\ShopWeb\obj\Debug\net8.0\ShopWeb.csproj.Up2Date

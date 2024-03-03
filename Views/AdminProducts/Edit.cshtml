@@ -1,0 +1,47 @@
+﻿@model ShopWeb.Models.ViewModels.EditProductRequest;
+@{
+}
+
+<div class="bg-secondary bg-opacity-10 py-2">
+    <div class="container">
+        <h1>Add New Product - Admin Functionality</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+    @using (Html.BeginForm("Edit", "AdminProducts", FormMethod.Post))
+    {
+        <div class="col-md-8 mb-3">
+            @Html.LabelFor(m => m.Id, new { @class = "col-md-4 control-label" })
+            @Html.TextBoxFor(m => m.Id, new { @class = "form-control", @readonly = true })
+        </div>
+        <div class="col-md-8 mb-3">
+            @Html.LabelFor(m => m.Name, new { @class = "col-md-4 control-label" })
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        </div>
+        <div class="col-md-8 mb-3">
+            @Html.LabelFor(m => m.Description, new { @class = "col-md-4 control-label" })
+            @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
+        </div>
+        <div class="col-md-8 mb-3">
+            @Html.LabelFor(m => m.FeaturedImageUrl, new { @class = "col-md-4 control-label" })
+            @Html.TextBoxFor(m => m.FeaturedImageUrl, new { @class = "form-control" })
+        </div>
+        <div class="col-md-8 mb-3">
+            @Html.LabelFor(m => m.Price, new { @class = "col-md-4 control-label" })
+            @Html.TextBoxFor(m => m.Price, new { @class = "form-control" })
+        </div>
+        <div class="col-md-8 mb-3">
+            @Html.LabelFor(m => m.Quantity, new { @class = "col-md-4 control-label" })
+            @Html.TextBoxFor(m => m.Quantity, new { @class = "form-control" })
+        </div>
+        <div class="col-md-8 mb-3">
+            @Html.LabelFor(m => m.Categories, new { @class = "col-md-4 control-label" })
+            <select class="form-select" asp-items="@Model.Categories" asp-for="SelectedCategory">
+            </select>
+        </div>
+        <div class="col-md-8 mb-3">
+            <button type="submit" class="btn btn-dark">Lưu</button>
+        </div>
+    }
+</div>
