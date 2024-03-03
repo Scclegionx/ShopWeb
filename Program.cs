@@ -10,6 +10,7 @@ builder.Services.AddDbContext<ShopWebDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("ShopWebDbConnectionString")));
 
 builder.Services.AddScoped<ICateRepository, CateRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 var app = builder.Build();
 

@@ -1,0 +1,66 @@
+﻿@model List<ShopWeb.Models.Domain.Product>;
+@{
+}
+<div class="bg-secondary bg-opacity-10 py-2">
+    <div class="container">
+        <h1>Show All Products - Admin Functionality</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+    @if (Model != null && Model.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tên</th>
+                    <th>Mô tả</th>
+                    <th>Ảnh</th>
+                    <th>Giá</th>
+                    <th>Số lượng</th>
+                    <th>Danh mục</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var product in Model)
+                {
+                    <tr>
+                        <td>@product.Id</td>
+                        <td>@product.Name</td>
+                        <td>@product.Description</td>
+                        <td>@product.FeaturedImageUrl</td>
+                        <td>@product.Price</td>
+                        <td>@product.Quantity</td>
+                        <td>
+                            <div class="d-flex">
+                                @foreach (var tag in product.Categories)
+                                {
+                                    <span class="badge bg-secondary">@tag.Name</span>
+                                }
+                            </div>
+                        </td>
+                        <td>
+                            <a asp-area=""
+                               asp-action="Edit"
+                               asp-controller="AdminProducts"
+                               asp-route-id="{@product.Id}">Sửa</a>
+                        </td>
+                        <td>
+                            <a asp-area=""
+                               asp-action="Delete"
+                               asp-controller="AdminProducts"
+                               asp-route-id="{@product.Id}">Xóa</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No Products Found!</p>
+    }
+</div>
