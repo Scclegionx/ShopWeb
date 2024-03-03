@@ -20,27 +20,27 @@
         </div>
         <div class="col-md-8 mb-3">
             @Html.LabelFor(m => m.Name, new { @class = "col-md-4 control-label" })
-            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @readonly = true })
         </div>
         <div class="col-md-8 mb-3">
             @Html.LabelFor(m => m.Description, new { @class = "col-md-4 control-label" })
-            @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.Description, new { @class = "form-control", @readonly = true })
         </div>
         <div class="col-md-8 mb-3">
             @Html.LabelFor(m => m.FeaturedImageUrl, new { @class = "col-md-4 control-label" })
-            @Html.TextBoxFor(m => m.FeaturedImageUrl, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.FeaturedImageUrl, new { @class = "form-control", @readonly = true })
         </div>
         <div class="col-md-8 mb-3">
             @Html.LabelFor(m => m.Price, new { @class = "col-md-4 control-label" })
-            @Html.TextBoxFor(m => m.Price, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.Price, new { @class = "form-control", @readonly = true })
         </div>
         <div class="col-md-8 mb-3">
             @Html.LabelFor(m => m.Quantity, new { @class = "col-md-4 control-label" })
-            @Html.TextBoxFor(m => m.Quantity, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.Quantity, new { @class = "form-control", @readonly = true })
         </div>
         <div class="col-md-8 mb-3">
             @Html.LabelFor(m => m.Categories, new { @class = "col-md-4 control-label" })
-            <select class="form-select" asp-items="@Model.Categories" asp-for="SelectedCategory">
+            <select class="form-select" asp-items="@Model.Categories" asp-for="SelectedCategory" disabled >
             </select>
         </div>
         <button type="submit" class="btn btn-dark">Delete</button>
