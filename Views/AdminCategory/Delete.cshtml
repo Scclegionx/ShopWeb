@@ -20,11 +20,11 @@
         </div>
         <div class="col-md-8 mb-3">
             @Html.LabelFor(m => m.Name, new { @class = "col-md-4 control-label" })
-            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @readonly = true })
         </div>
         <div class="col-md-8 mb-3">
             @Html.LabelFor(m => m.Description, new { @class = "col-md-4 control-label" })
-            @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.Description, new { @class = "form-control", @readonly = true })
         </div>
         <button type="submit" class="btn btn-dark">Delete</button>
     }
