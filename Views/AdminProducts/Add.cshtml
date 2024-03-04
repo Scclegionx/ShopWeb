@@ -17,7 +17,7 @@
         </div>
         <div class="col-md-8 mb-3">
             @Html.LabelFor(m => m.Description, new { @class = "col-md-4 control-label" })
-            @Html.TextBoxFor(m => m.Description, new { @class = "form-control", id = "Description" })
+            <textarea class="form-control" id="Description" asp-for="Description"></textarea>
         </div>
         <div class="col-md-8 mb-3">
             <label class="form-label">Featured Image Upload</label>
@@ -74,10 +74,10 @@
                 body: data
             }).then(response => response.json())
                 .then(result => {
+                    console.log(result)
                     featuredImageUrlElement.value = result.link;
                     featuredImageDisplayElement.src = result.link;
                     featuredImageDisplayElement.style.display = 'block';
-
                 });
 
         }

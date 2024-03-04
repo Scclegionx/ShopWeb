@@ -11,7 +11,7 @@ namespace ShopWeb.Repositories
         {
             this.configuration = configuration;
             account = new Account(
-                configuration.GetSection("Cloudinary")["CloundName"],
+                configuration.GetSection("Cloudinary")["CloudName"],
                 configuration.GetSection("Cloudinary")["ApiKey"],
                 configuration.GetSection("Cloudinary")["ApiSecret"]
                 );

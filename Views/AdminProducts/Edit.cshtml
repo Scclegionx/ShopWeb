@@ -4,7 +4,7 @@
 
 <div class="bg-secondary bg-opacity-10 py-2">
     <div class="container">
-        <h1>Add New Product - Admin Functionality</h1>
+        <h1>Edit Product - Admin Functionality</h1>
     </div>
 </div>
 
@@ -21,16 +21,23 @@
         </div>
         <div class="col-md-8 mb-3">
             @Html.LabelFor(m => m.Description, new { @class = "col-md-4 control-label" })
-            @Html.TextBoxFor(m => m.Description, new { @class = "form-control", id = "Description" })
+            <textarea class="form-control" id="Description" asp-for="Description"></textarea>
         </div>
         <div class="col-md-8 mb-3">
             <label class="form-label">Featured Image Upload</label>
             <input type="file" id="featuredImageUpload" class="form-control" />
-            <img src="" id="featuredImageDisplay" style="display:none;width: 300px" />
+
+            @if (Model.FeaturedImageUrl != null)
+            {
+                <img src="@Model.FeaturedImageUrl" id="featuredImageDisplay" style="display:block;width: 300px" />
+            } else
+            {
+                <img src="" id="featuredImageDisplay" style="display:none;width: 300px" />
+            }
         </div>
         <div class="col-md-8 mb-3">
             @Html.LabelFor(m => m.FeaturedImageUrl, new { @class = "col-md-4 control-label" })
-            @Html.TextBoxFor(m => m.FeaturedImageUrl, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.FeaturedImageUrl, new { @class = "form-control", id = "featuredImageUrl" })
         </div>
         <div class="col-md-8 mb-3">
             @Html.LabelFor(m => m.Price, new { @class = "col-md-4 control-label" })
@@ -58,6 +65,7 @@
             imageUploadUrl: '/api/images'
         });
 
+
         const featuredUploadElement = document.getElementById("featuredImageUpload");
         const featuredImageUrlElement = document.getElementById("featuredImageUrl");
         const featuredImageDisplayElement = document.getElementById("featuredImageDisplay");
@@ -76,14 +84,15 @@
                 body: data
             }).then(response => response.json())
                 .then(result => {
+                    console.log(result)
                     featuredImageUrlElement.value = result.link;
                     featuredImageDisplayElement.src = result.link;
                     featuredImageDisplayElement.style.display = 'block';
-
                 });
 
         }
 
         featuredUploadElement.addEventListener('change', uploadFeaturedImage);
+
     </script>
 }
