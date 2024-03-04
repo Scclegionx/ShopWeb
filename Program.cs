@@ -11,6 +11,7 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("ShopWebDbConnect
 
 builder.Services.AddScoped<ICateRepository, CateRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IImageRepository, CloudinaryImageRepository>();
 
 var app = builder.Build();
 
