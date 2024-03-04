@@ -272,3 +272,9 @@ C:\Users\Admin\Desktop\Thực Tập CS\ShopWeb\obj\Debug\net8.0\ShopWeb.pdb
 C:\Users\Admin\Desktop\Thực Tập CS\ShopWeb\obj\Debug\net8.0\ShopWeb.genruntimeconfig.cache
 C:\Users\Admin\Desktop\Thực Tập CS\ShopWeb\obj\Debug\net8.0\ref\ShopWeb.dll
 C:\Users\Admin\Desktop\Thực Tập CS\ShopWeb\obj\Debug\net8.0\ShopWeb.csproj.Up2Date
+C:\Users\Admin\Desktop\Workspace\ShopWeb\bin\Debug\net8.0\Antlr3.Runtime.dll
+C:\Users\Admin\Desktop\Workspace\ShopWeb\bin\Debug\net8.0\System.Web.Optimization.dll
+C:\Users\Admin\Desktop\Workspace\ShopWeb\bin\Debug\net8.0\Microsoft.Web.Infrastructure.dll
+C:\Users\Admin\Desktop\Workspace\ShopWeb\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\Admin\Desktop\Workspace\ShopWeb\bin\Debug\net8.0\WebGrease.dll
+C:\Users\Admin\Desktop\Workspace\ShopWeb\bin\Debug\net8.0\CloudinaryDotNet.dll
