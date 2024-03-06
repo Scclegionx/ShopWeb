@@ -1,8 +1,76 @@
-﻿@{
+﻿@model ShopWeb.Models.ViewModels.HomeViewModel;
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container col-xxl-8 px-4 py-5">
+    <div class="row align-items-center g-5 py-5">
+        <div class="col-12 col-lg-6">
+            <h1 class="display-5 fw-bold lh-1 mb-3">
+                ShopWeb - Scc
+            </h1>
+            <p class="lead">
+                Description ....
+            </p>
+        </div>
+        <div class="col-12 col-lg-6">
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-6 d-flex">
+            @if (Model != null && Model.Categories.Any())
+            {
+                foreach (var cate in Model.Categories)
+                {
+                    <span class="badge bg-dark me-1">
+                        @cate.Name
+                    </span>
+                }
+            } else
+            {
+                <p>No Categories Found!</p>
+            }
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-6">
+            @if (Model != null && Model.Products.Any())
+            {
+                foreach (var product in Model.Products)
+                {
+                    <div class="mb-5 bg-light box-shadow p-5">
+                        <img src="@product.FeaturedImageUrl" alt="@product.Name" class="mb-2 d-block img-fluid" />
+                    
+                        <h2 class="mb-4">@product.Name</h2>
+                        <p class="mb-4">
+                            @product.Price
+                            <br />
+                            @product.Quantity
+                        </p>
+                        <p class="mb-4">
+                            @foreach (var tag in product.Categories)
+                            {
+                                <span class="badge bg-secondary">@tag.Name</span>
+                            }
+                        </p>
+
+                        <a class="btn btn-dark"
+                        asp-area=""
+                        asp-controller="Products"
+                        asp-action="Index"
+                        asp-route-id="{@product.Id}"
+                        >Chi Tiết</a>
+                    </div>
+                }
+            }
+
+        </div>
+    </div>
 </div>
