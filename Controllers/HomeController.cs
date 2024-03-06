@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ShopWeb.Models;
+using ShopWeb.Models.ViewModels;
+using ShopWeb.Repositories;
 using System.Diagnostics;
 
 namespace ShopWeb.Controllers
@@ -7,15 +9,28 @@ namespace ShopWeb.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IProductRepository productRepository;
+        private readonly ICateRepository cateRepository;
+        public HomeController(ILogger<HomeController> logger, IProductRepository productRepository, ICateRepository cateRepository)
         {
             _logger = logger;
+            this.productRepository = productRepository;   
+            this.cateRepository = cateRepository;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var products = await productRepository.GetAllAsync();
+
+            var cates = await cateRepository.GetAllAsync();
+
+            var model = new HomeViewModel
+            {
+                Products = products,
+                Categories = cates
+            };
+
+            return View(model);
         }
 
         public IActionResult Privacy()

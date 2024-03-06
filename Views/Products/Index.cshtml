@@ -1,0 +1,40 @@
+﻿@model ShopWeb.Models.Domain.Product
+@{
+    ViewData["Title"] = "Product Details";
+}
+
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-6">
+
+            @if (Model != null)
+            {
+                <h1 class="mb-3">@Model.Description</h1>
+
+                <div class="d-flex justify-content-between mb-3">
+                    <span class="text-secondary">@Model.Price</span>
+                    <span class="text-secondary">@Model.Quantity</span>
+                </div>
+
+                <div class="mb-3 d-flex">
+                    @foreach (var tag in Model.Categories)
+                    {
+                        <span class="badge bg-secondary">@tag.Name</span>
+                    }
+                </div>
+
+                <img src="@Model.FeaturedImageUrl" class="d-block img-fluid mb-3" />
+
+                <div class="mb-3 product-details-content"> 
+                    @Html.Raw(Model.Description)
+                </div>
+
+            } else
+            {
+                <p>No Products Found!</p>
+            }
+
+        </div>
+    </div>
+</div>
