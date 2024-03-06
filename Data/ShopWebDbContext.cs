@@ -4,7 +4,7 @@ namespace ShopWeb.Data
 {
     public class ShopWebDbContext : DbContext
     {
-        public ShopWebDbContext(DbContextOptions options) : base(options) 
+        public ShopWebDbContext(DbContextOptions<ShopWebDbContext> options) : base(options) 
         {
 
         }

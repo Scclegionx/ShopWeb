@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<IdentityUser> signInManager;
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -25,25 +28,59 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Danh mục
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" asp-area="" asp-action="Add" asp-controller="AdminCategory">Thêm mới danh mục</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-action="List" asp-controller="AdminCategory">Tất cả danh mục</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Mặt hàng
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" asp-area="" asp-action="Add" asp-controller="AdminProducts">Thêm mới mặt hàng</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-action="List" asp-controller="AdminProducts">Tất cả mặt hàng</a></li>
-                            </ul>
-                        </li>
+
+                        @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Danh mục
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" asp-area="" asp-action="Add" asp-controller="AdminCategory">Thêm mới danh mục</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-action="List" asp-controller="AdminCategory">Tất cả danh mục</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Mặt hàng
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" asp-area="" asp-action="Add" asp-controller="AdminProducts">Thêm mới mặt hàng</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-action="List" asp-controller="AdminProducts">Tất cả mặt hàng</a></li>
+                                </ul>
+                            </li>
+                        }
+
+
                     </ul>
+                    <div class="d-flex align-items-center">
+
+                        @if (signInManager.IsSignedIn(User))
+                        {
+                            <div class="me-3 text-light"> 
+                                @User?.Identity?.Name
+                            </div>
+
+                            <a class="btn me-3 bg-light text-dark "
+                               asp-area=""
+                               asp-controller="Account"
+                            asp-action="Logout">Đăng xuất</a>
+
+                        } else
+                        {
+                            <a class="btn me-3 bg-light text-dark "
+                               asp-area=""
+                               asp-controller="Account"
+                               asp-action="Login">Đăng nhập</a>
+                            <a class="btn me-3 bg-light text-dark "
+                               asp-area=""
+                               asp-controller="Account"
+                               asp-action="Register">Đăng ký</a>
+                        }
+
+                        
+                    </div>
+
                 </div>
             </div>
         </nav>

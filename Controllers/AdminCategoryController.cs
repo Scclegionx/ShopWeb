@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShopWeb.Data;
 using ShopWeb.Models.Domain;
@@ -8,6 +9,7 @@ using ShopWeb.Repositories;
 
 namespace ShopWeb.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminCategoryController : Controller
     {
         private readonly ICateRepository cateRepository;
@@ -15,6 +17,7 @@ namespace ShopWeb.Controllers
         {
             this.cateRepository = cateRepository;
         }
+        
         [HttpGet]
         public IActionResult Add()
         {
