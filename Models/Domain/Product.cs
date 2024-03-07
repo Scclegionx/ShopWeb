@@ -9,5 +9,6 @@
         public int Price { get; set; }
         public int Quantity { get; set; }
         public ICollection<Category> Categories { get; set; }
+        public ICollection<ProductLike> ProductLike { get; set; }
     }
 }

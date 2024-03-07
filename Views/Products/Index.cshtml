@@ -1,6 +1,11 @@
-﻿@model ShopWeb.Models.Domain.Product
+﻿@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<IdentityUser> signInManager;
+@inject UserManager<IdentityUser> userManager;
+
+@model ShopWeb.Models.Domain.Product
 @{
     ViewData["Title"] = "Product Details";
+    ViewData["Check"] = true;
 }
 
 
@@ -16,6 +21,19 @@
                     <span class="text-secondary">@Model.Price</span>
                     <span class="text-secondary">@Model.Quantity</span>
                 </div>
+
+                @if (signInManager.IsSignedIn(User))
+                {
+                    @if (object.Equals(ViewData["Liked"], ViewData["Check"]))
+                    {
+                        <a style="cursor: pointer"><i class="bi bi-hand-thumbs-up-fill"></i></a>
+                    } else
+                    {
+                        <a id="btnLike" style="cursor: pointer"><i class="bi bi-hand-thumbs-up"></i></a>
+                    }
+                }
+
+                <span id="totalLikes" class="mb-3">@ViewData["TotalLikes"]</span><span>Likes</span>
 
                 <div class="mb-3 d-flex">
                     @foreach (var tag in Model.Categories)
@@ -38,3 +56,41 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        const btnLikeElement = document.getElementById("btnLike");
+        const totalLikesElement = document.getElementById("totalLikes");
+
+        async function getTotalLikes() {
+            fetch('/api/productlike/@Model.Id/totalLikes', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': '*/*'
+                },
+            }).then(data => data.json()).then(result => totalLikesElement.innerHTML = result);
+        }
+
+        async function addLiketoProduct() {
+            fetch('/api/ProductLike/Add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': '*/*'
+                },
+                body: JSON.stringify({
+                    productId: "@Model.Id",
+                    userId: '@userManager.GetUserId(User)'
+                })
+            }).then(() => {
+                btnLikeElement.innerHTML = '<i class="bi bi-hand-thumbs-up-fill"></i>';
+                btnLikeElement.removeEventListener('click', addLiketoProduct);
+                getTotalLikes();
+            });
+        }
+
+
+        btnLikeElement.addEventListener('click', addLiketoProduct);
+    </script>
+}
