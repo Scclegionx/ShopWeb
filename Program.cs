@@ -29,6 +29,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 builder.Services.AddScoped<ICateRepository, CateRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IImageRepository, CloudinaryImageRepository>();
+builder.Services.AddScoped<IProductLikeRepository, ProductLikeRepository>();
 
 var app = builder.Build();
 
