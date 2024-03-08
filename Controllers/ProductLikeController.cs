@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ShopWeb.Migrations;
 using ShopWeb.Models.Domain;
-using ShopWeb.Models.ViewModels;
+using ShopWeb.Models.ViewModels.LikeVM;
 using ShopWeb.Repositories;
 
 namespace ShopWeb.Controllers

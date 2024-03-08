@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ShopWeb.Models.Domain;
-using ShopWeb.Models.ViewModels;
+using ShopWeb.Models.ViewModels.ProductVM;
 using ShopWeb.Repositories;
 
 namespace ShopWeb.Controllers

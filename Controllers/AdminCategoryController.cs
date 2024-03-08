@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShopWeb.Data;
 using ShopWeb.Models.Domain;
-using ShopWeb.Models.ViewModels;
+using ShopWeb.Models.ViewModels.CategoryVM;
 using ShopWeb.Repositories;
 
 

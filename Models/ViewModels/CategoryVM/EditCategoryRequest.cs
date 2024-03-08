@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ShopWeb.Models.ViewModels
+namespace ShopWeb.Models.ViewModels.CategoryVM
 {
     public class EditCategoryRequest
     {
