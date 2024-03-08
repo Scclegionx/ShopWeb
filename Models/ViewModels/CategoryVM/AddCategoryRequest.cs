@@ -1,7 +1,7 @@
 ﻿using ShopWeb.Models.Domain;
 using System.ComponentModel.DataAnnotations;
 
-namespace ShopWeb.Models.ViewModels
+namespace ShopWeb.Models.ViewModels.CategoryVM
 {
     public class AddCategoryRequest
     {

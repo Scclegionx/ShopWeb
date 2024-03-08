@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ShopWeb.Models.ViewModels;
 using ShopWeb.Repositories;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ShopWeb.Models.Domain;
+using ShopWeb.Models.ViewModels.CategoryVM;
+using ShopWeb.Models.ViewModels.ProductVM;
 
 namespace ShopWeb.Controllers
 {

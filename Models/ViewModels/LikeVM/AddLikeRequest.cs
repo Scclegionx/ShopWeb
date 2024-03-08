@@ -1,4 +1,4 @@
-﻿namespace ShopWeb.Models.ViewModels
+﻿namespace ShopWeb.Models.ViewModels.LikeVM
 {
     public class AddLikeRequest
     {

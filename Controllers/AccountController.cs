@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using ShopWeb.Models.ViewModels;
+using ShopWeb.Models.ViewModels.LoginVM;
+using ShopWeb.Models.ViewModels.RegisterVM;
 
 namespace ShopWeb.Controllers
 {
