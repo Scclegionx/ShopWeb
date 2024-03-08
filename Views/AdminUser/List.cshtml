@@ -9,7 +9,14 @@
 </div>
 
 <div>
-    <div class="container">
+    <div class="container py-5">
+
+        <div class="mb-3 d-flex justify-content-end">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCreateUser">
+                Create User
+            </button>
+        </div>
+
         @if (Model.Users is not null || Model.Users.Any())
         { 
             <table class="table">
@@ -18,6 +25,7 @@
                         <th>Id</th>
                         <th>Username</th>
                         <th>Email</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -27,6 +35,11 @@
                             <td>@user.Id</td>
                             <td>@user.Username</td>
                             <td>@user.Email</td>
+                            <td>
+                                <form method="post">
+                                    <button type="submit" class="btn btn-danger" asp-area="" asp-controller="AdminUser" asp-action="Delete" asp-route-id="{@user.Id}">Delete</button>
+                                </form>
+                            </td>
                         </tr>
                     }
                 </tbody>
@@ -37,3 +50,52 @@
         }
     </div>
 </div>
+
+
+@using (Html.BeginForm("List", "AdminUser", FormMethod.Post))
+{
+    <div class="modal fade" id="modalCreateUser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Create New User</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        @Html.LabelFor(m => m.Username, new { @class = "col-md-4 control-label" })
+                        @Html.TextBoxFor(m => m.Username , new { @class = "form-control" })
+                    </div>
+                    <div class="mb-3">
+                        @Html.LabelFor(m => m.Email, new { @class = "col-md-4 control-label" })
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                    </div>
+                    <div class="mb-3">
+                        @Html.LabelFor(m => m.Password, new { @class = "col-md-4 control-label" })
+                        @Html.TextBoxFor(m => m.Password, new { @class = "form-control", @type = "password" })
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input type="checkbox" id="checkUserRole" class="form-check-input" value="User" checked disabled />
+                            <label class="form-check-label" for="checkUserRole">User Role</label>
+                        </div>
+
+                        @if (User.IsInRole("SuperAdmin"))
+                        {
+                            <div class="form-check">
+                                <input type="checkbox" id="checkAdminRole" class="form-check-input" asp-for="AdminRoleCheckBox" />
+                                <label class="form-check-label" for="checkAdminRole">Admin Role</label>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
