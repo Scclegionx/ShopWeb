@@ -14,10 +14,12 @@
         <div class="col-md-8 mb-3">
             @Html.LabelFor(m => m.Name, new {@class = "col-md-4 control-label"})
             @Html.TextBoxFor(m => m.Name, new {@class = "form-control"})
+            <span class="text-danger" asp-validation-for="Name"></span>
         </div>
         <div class="col-md-8 mb-3">
             @Html.LabelFor(m => m.Description, new { @class = "col-md-4 control-label" })
             @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
+            <span class="text-danger" asp-validation-for="Description"></span>
         </div>
         <div class="col-md-8 mb-3">
             <button type="submit" class="btn btn-dark" >Submit</button>
