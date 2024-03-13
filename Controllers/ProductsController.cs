@@ -51,12 +51,24 @@ namespace ShopWeb.Controllers
                 var productCommentForView = new List<ProductCommentViewModel>();
                 foreach (var productComment in productInDomain)
                 {
-                    productCommentForView.Add(new ProductCommentViewModel
+                    var check = await userManager.FindByIdAsync(productComment.UserId.ToString());
+                    if (check != null)
                     {
-                        Description = productComment.Description,
-                        TimeAdd = productComment.TimeAdd,
-                        Username = (await userManager.FindByIdAsync(productComment.UserId.ToString())).UserName
-                    });
+                        productCommentForView.Add(new ProductCommentViewModel
+                        {
+                            Description = productComment.Description,
+                            TimeAdd = productComment.TimeAdd,
+                            Username = check.UserName
+                        });
+                    } else
+                    {
+                        productCommentForView.Add(new ProductCommentViewModel
+                        {
+                            Description = productComment.Description,
+                            TimeAdd = productComment.TimeAdd,
+                            Username = "User Deleted"
+                        });
+                    }
                 }
 
                 var model = new ProductDetailViewModel
