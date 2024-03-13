@@ -15,10 +15,12 @@
                 <div class="mb-3">
                     @Html.LabelFor(m => m.Username, new { @class = "col-md-4 control-label" })
                     @Html.TextBoxFor(m => m.Username, new { @class = "form-control" })
+                    <span class="text-danger" asp-validation-for="Username"></span>
                 </div>
                 <div class="mb-3">
                     @Html.LabelFor(m => m.Password, new { @class = "col-md-4 control-label" })
                     @Html.TextBoxFor(m => m.Password, new { @class = "form-control", @type = "password" })
+                    <span class="text-danger" asp-validation-for="Password"></span>
                 </div>
                 <div class="mb-3">
                     <button type="submit" class="btn btn-dark">Login</button>

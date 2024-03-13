@@ -26,6 +26,12 @@ namespace ShopWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(AddCategoryRequest addCategoryRequest)
         {
+            ValidateCategory(addCategoryRequest);
+            if (ModelState.IsValid == false)
+            {
+                return View();
+            }
+
             var model = new Category
             {
                 Name = addCategoryRequest.Name,
@@ -97,5 +103,16 @@ namespace ShopWeb.Controllers
                 return RedirectToAction("List");
             }
         }
+
+        private void ValidateCategory(AddCategoryRequest addCategoryRequest)
+        {
+            if (addCategoryRequest.Name is not null && addCategoryRequest.Description is not null)
+            {
+                if (addCategoryRequest.Name == addCategoryRequest.Description)
+                {
+                    ModelState.AddModelError("Description", "Tên và mô tả không được trùng nhau!");
+                }
+            }
+        }   
     }
 }
