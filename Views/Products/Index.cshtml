@@ -19,8 +19,8 @@
                 <h1 class="mb-3">@Model.Name</h1>
 
                 <div class="d-flex justify-content-between mb-3">
-                    <span class="text-secondary">@Model.Price</span>
-                    <span class="text-secondary">@Model.Quantity</span>
+                    <span class="text-secondary">Giá: @Model.Price</span>
+                    <span class="text-secondary">Số lượng: @Model.Quantity</span>
                 </div>
 
                 @if (signInManager.IsSignedIn(User))
@@ -56,7 +56,7 @@
                         {
                             @using (Html.BeginForm("Index", "Products", FormMethod.Post))
                             {
-                                @Html.LabelFor(m => m.CommentDescription, new { @class = "col-md-4 control-label mb-3" })
+                                //@Html.LabelFor(m => m.CommentDescription, new { @class = "col-md-4 control-label mb-3" })
                                 @Html.TextBoxFor(m => m.CommentDescription , new { @class = "form-control mb-3" })
 
                                 <button type ="submit" class="btn btn-dark">Gửi</button>

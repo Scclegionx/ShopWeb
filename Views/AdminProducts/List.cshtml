@@ -1,6 +1,7 @@
 ﻿@model List<ShopWeb.Models.Domain.Product>;
 @{
 }
+
 <div class="bg-secondary bg-opacity-10 py-2">
     <div class="container">
         <h1>Show All Products - Admin Functionality</h1>
@@ -13,10 +14,9 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Tên</th>
-                    <th>Mô tả</th>
                     <th>Ảnh</th>
+                    <th>Mô tả</th>
                     <th>Giá</th>
                     <th>Số lượng</th>
                     <th>Danh mục</th>
@@ -28,10 +28,9 @@
                 @foreach (var product in Model)
                 {
                     <tr>
-                        <td>@product.Id</td>
                         <td>@product.Name</td>
-                        <td>@product.Description</td>
-                        <td>@product.FeaturedImageUrl</td>
+                        <td><img src="@product.FeaturedImageUrl" class="d-block img-fluid mb-3" style="width: 200px; height: 100px" /></td>
+                        <td><a asp-area="" asp-action="Edit" asp-controller="AdminProducts" asp-route-id="{@product.Id}">Chi Tiết</a></td>
                         <td>@product.Price</td>
                         <td>@product.Quantity</td>
                         <td>
