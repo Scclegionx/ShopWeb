@@ -24,3 +24,11 @@ body {
 .product-details-content img {
     max-width: 100%;
 }
+
+.myclass table {
+    table-layout: auto !important;
+}
+
+.myclass th, .myclass td, .myclass thead th, .myclass tbody td, .myclass tfoot td, .myclass tfoot th {
+    width: auto !important;
+}
