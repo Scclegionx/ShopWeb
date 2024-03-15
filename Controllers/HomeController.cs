@@ -4,6 +4,7 @@ using ShopWeb.Models.Domain;
 using ShopWeb.Models.ViewModels;
 using ShopWeb.Repositories;
 using System.Diagnostics;
+using PagedList;
 
 namespace ShopWeb.Controllers
 {
@@ -20,8 +21,16 @@ namespace ShopWeb.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(string productName)
+        public async Task<IActionResult> Index(string productName, int page = 1)
         {
+
+            const int pageSize = 3; // Number of products per page
+
+
+            // Total number of products (for pagination)
+            var totalProductsCount = await productRepository.GetTotalProductsCount();
+            var pageCount = (int)Math.Ceiling((double)totalProductsCount / pageSize);
+
             if (productName != null)
             {
                 var productSearch = await productRepository.FindByNameAsync(productName);
@@ -29,24 +38,29 @@ namespace ShopWeb.Controllers
                 var model = new HomeViewModel
                 {
                     Products = productSearch,
-                    Categories = cates
+                    Categories = cates,
+                    PageNumber = page,
+                    PageCount = pageCount
                 };
                 return View(model);
 
             } else
             {
-                var products = await productRepository.GetAllAsync();
+                var products = await productRepository.GetAllAsync(page, pageSize);
 
                 var cates = await cateRepository.GetAllAsync();
 
                 var model = new HomeViewModel
                 {
                     Products = products,
-                    Categories = cates
+                    Categories = cates,
+                    PageNumber = page,
+                    PageCount = pageCount
                 };
 
                 return View(model);
             }
+            
         }
 
         public IActionResult Privacy()

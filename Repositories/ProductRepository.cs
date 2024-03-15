@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShopWeb.Data;
 using ShopWeb.Models.Domain;
+using PagedList;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ShopWeb.Repositories
 {
@@ -36,9 +38,16 @@ namespace ShopWeb.Repositories
             return existProducts;
         }
 
-        public async Task<IEnumerable<Product>> GetAllAsync()
+        public async Task<IEnumerable<Product>> GetAllAsync(int? page, int? pageSize)
         {
+            // Calculate the number of items to skip
+            if (page.HasValue && pageSize.HasValue)
+            {
+                int skip = (page.Value - 1) * pageSize.Value;
+                return await shopWebDbContext.Products.Include(x => x.Categories).Skip(skip).Take(pageSize.Value).ToListAsync();
+            }
             return await shopWebDbContext.Products.Include(x => x.Categories).ToListAsync();
+
         }
 
         public async Task<Product?> GetAsync(Guid id)
@@ -63,6 +72,11 @@ namespace ShopWeb.Repositories
                 return existingProd;
             }
             return null;
+        }
+
+        public async Task<int> GetTotalProductsCount()
+        {
+            return await shopWebDbContext.Products.CountAsync();
         }
 
     }

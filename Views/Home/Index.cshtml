@@ -1,6 +1,8 @@
 ﻿@model ShopWeb.Models.ViewModels.HomeViewModel;
+
 @{
     ViewData["Title"] = "Home Page";
+    
 }
 
 <div id="home-page-container">
@@ -79,6 +81,22 @@
             }
 
         </div>
+    </div>
+
+    <div id="paging-bar">
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                @if (Model != null && Model.PageCount > 1)
+                {
+                    for (int i = 1; i <= Model.PageCount; i++)
+                    {
+                        <li class="page-item @(Model.PageNumber == i ? "active" : "")">
+                            <a class="page-link" href="?page=@i">@i</a>
+                        </li>
+                    }
+                }
+            </ul>
+        </nav>
     </div>
 
     
