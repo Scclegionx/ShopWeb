@@ -30,6 +30,12 @@ namespace ShopWeb.Repositories
             return null;
         }
 
+        public async Task<IEnumerable<Product?>> FindByNameAsync(string productName)
+        {
+            var existProducts = await shopWebDbContext.Products.Where(x => x.Name.Contains(productName)).ToListAsync();
+            return existProducts;
+        }
+
         public async Task<IEnumerable<Product>> GetAllAsync()
         {
             return await shopWebDbContext.Products.Include(x => x.Categories).ToListAsync();
@@ -58,5 +64,6 @@ namespace ShopWeb.Repositories
             }
             return null;
         }
+
     }
 }

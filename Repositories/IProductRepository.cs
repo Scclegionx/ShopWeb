@@ -9,5 +9,6 @@ namespace ShopWeb.Repositories
         Task<Product> AddAsync(Product product);
         Task<Product?> UpdateAsync(Product product);
         Task<Product?> DeleteAsync(Guid id);
+        Task<IEnumerable<Product?>> FindByNameAsync(string productName);
     }
 }
