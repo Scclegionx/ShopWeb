@@ -32,3 +32,50 @@ body {
 .myclass th, .myclass td, .myclass thead th, .myclass tbody td, .myclass tfoot td, .myclass tfoot th {
     width: auto !important;
 }
+
+
+/*home product css*/
+#home-page-container {
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    margin: 50px;
+}
+
+#product-container {
+    display: block;
+    position: relative;
+}
+#price-container {s
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+}
+#quantity-container {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+}
+#category-container {
+    border: 2px solid black;
+}
+#product-p2-container {
+    
+}
+#bestSeller-container {
+    border: 2px solid black;
+}
+#index-container {
+    display: block;
+}
+#index-bestSeller-container {
+    display: grid;
+    grid-template-columns: 5fr 2fr;
+}
+#home-image-container {
+    float: right;
+    margin-left: 6px;
+}
+#all-product-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}

@@ -3,74 +3,83 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="container col-xxl-8 px-4 py-5">
-    <div class="row align-items-center g-5 py-5">
-        <div class="col-12 col-lg-6">
-            <h1 class="display-5 fw-bold lh-1 mb-3">
-                ShopWeb - Scc
-            </h1>
-            <p class="lead">
-                Description ....
-            </p>
-        </div>
-        <div class="col-12 col-lg-6">
+<div id="home-page-container">
+    <div class="container" id="category-container">
+        <div class="row justify-content-center">
+            <div class="col-6 ">
+                @if (Model != null && Model.Categories.Any())
+                {
+                    foreach (var cate in Model.Categories)
+                    {
+                        <div style="display: block;">
+                            <span class="badge bg-dark me-1">
+                                @cate.Name
+                            </span>
+                        </div>
+                        <hr />
+                    }
+                } else
+                {
+                    <p>No Categories Found!</p>
+                }
+            </div>
         </div>
     </div>
-</div>
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-6 d-flex">
-            @if (Model != null && Model.Categories.Any())
+
+    <div id="index-container">
+        <div class="row justify-content-center" id="index-bestSeller-container">
+            <div id="home-image-container">
+                <img src="https://res.cloudinary.com/diblfklia/image/upload/v1709648001/b5kwreuh6yr42yxjnlyw.jpg" class="mb-2 d-block img-fluid" />
+            </div>
+            <div class="container" id="bestSeller-container">
+                <h1>Best Seller</h1>
+            </div>
+        </div>
+        <div id="search-container">
+            @using (Html.BeginForm("Index", "Home", FormMethod.Get))
             {
-                foreach (var cate in Model.Categories)
-                {
-                    <span class="badge bg-dark me-1">
-                        @cate.Name
-                    </span>
-                }
-            } else
-            {
-                <p>No Categories Found!</p>
+                <label>Search:</label>
+                <input type="text" placeholder="Type something..." name="productName" />
+                <button class="btn-dark" type="submit">Tìm</button>
             }
         </div>
-    </div>
-</div>
-
-
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-6">
+        <div id="all-product-container">
             @if (Model != null && Model.Products.Any())
             {
                 foreach (var product in Model.Products)
                 {
-                    <div class="mb-5 bg-light box-shadow p-5">
-                        <img src="@product.FeaturedImageUrl" alt="@product.Name" class="mb-2 d-block img-fluid" />
-                    
-                        <h2 class="mb-4">@product.Name</h2>
-                        <p class="mb-4">
-                            @product.Price
-                            <br />
-                            @product.Quantity
-                        </p>
-                        <p class="mb-4">
-                            @foreach (var tag in product.Categories)
-                            {
-                                <span class="badge bg-secondary">@tag.Name</span>
-                            }
-                        </p>
+                    <div class="mb-5 bg-light box-shadow p-5" id="product-container">
+                        <div>
+                            <img src="@product.FeaturedImageUrl" alt="@product.Name" class="mb-2 d-block img-fluid" />
 
-                        <a class="btn btn-dark"
-                        asp-area=""
-                        asp-controller="Products"
-                        asp-action="Index"
-                        asp-route-id="{@product.Id}"
-                        >Chi Tiết</a>
+                            <h2 class="mb-4" style="text-align: center;">@product.Name</h2>
+                        </div>
+                        <div id="product-p2-container">
+                            <div id="price-container">
+                                <span class="mark">@product.Price</span>
+                            </div>
+                            <div id="quantity-container">
+                                <span>@product.Quantity</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <a class="btn btn-dark"
+                               asp-area=""
+                               asp-controller="Products"
+                               asp-action="Index"
+                               asp-route-id="{@product.Id}">Chi Tiết</a>
+                        </div>
                     </div>
                 }
+            } else
+            {
+                <p>No Products Found!</p>
             }
 
         </div>
     </div>
+
+    
 </div>

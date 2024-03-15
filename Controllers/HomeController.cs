@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ShopWeb.Models;
+using ShopWeb.Models.Domain;
 using ShopWeb.Models.ViewModels;
 using ShopWeb.Repositories;
 using System.Diagnostics;
@@ -18,19 +19,34 @@ namespace ShopWeb.Controllers
             this.cateRepository = cateRepository;
         }
 
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public async Task<IActionResult> Index(string productName)
         {
-            var products = await productRepository.GetAllAsync();
-
-            var cates = await cateRepository.GetAllAsync();
-
-            var model = new HomeViewModel
+            if (productName != null)
             {
-                Products = products,
-                Categories = cates
-            };
+                var productSearch = await productRepository.FindByNameAsync(productName);
+                var cates = await cateRepository.GetAllAsync();
+                var model = new HomeViewModel
+                {
+                    Products = productSearch,
+                    Categories = cates
+                };
+                return View(model);
 
-            return View(model);
+            } else
+            {
+                var products = await productRepository.GetAllAsync();
+
+                var cates = await cateRepository.GetAllAsync();
+
+                var model = new HomeViewModel
+                {
+                    Products = products,
+                    Categories = cates
+                };
+
+                return View(model);
+            }
         }
 
         public IActionResult Privacy()
