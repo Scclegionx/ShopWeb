@@ -6,5 +6,7 @@ namespace ShopWeb.Models.ViewModels
     {
         public IEnumerable<Product> Products { get; set; }
         public IEnumerable<Category> Categories { get; set;}
+        public int PageNumber { get; set; }
+        public int PageCount { get; set; }
     }
 }

@@ -56,7 +56,9 @@ namespace ShopWeb.Controllers
         [HttpGet]
         public async Task<IActionResult> List()
         {
-            var products = await productRepository.GetAllAsync();
+            const int page = 1;
+            const int pageSize = 3;
+            var products = await productRepository.GetAllAsync(page,pageSize);
             return View(products);
         }
         [HttpGet]

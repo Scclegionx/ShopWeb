@@ -38,7 +38,8 @@ namespace ShopWeb.Controllers
 
                     if (roleIdentityResult.Succeeded)
                     {
-                        return RedirectToAction("Register");
+                        return RedirectToAction("Login");
+                        //them thong bao
                     }
                 }
             }
