@@ -57,6 +57,7 @@ body {
 }
 #category-container {
     border: 2px solid black;
+    height: 100vh;
 }
 #product-p2-container {
     
