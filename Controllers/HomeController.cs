@@ -24,10 +24,7 @@ namespace ShopWeb.Controllers
         public async Task<IActionResult> Index(string productName, int page = 1)
         {
 
-            const int pageSize = 3; // Number of products per page
-
-
-            // Total number of products (for pagination)
+            const int pageSize = 10; 
             var totalProductsCount = await productRepository.GetTotalProductsCount();
             var pageCount = (int)Math.Ceiling((double)totalProductsCount / pageSize);
 

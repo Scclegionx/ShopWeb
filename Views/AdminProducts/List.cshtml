@@ -8,7 +8,7 @@
     </div>
 </div>
 
-<div class="container py-5">
+<div class="container py-5" id="productAdmin-container">
     @if (Model != null && Model.Any())
     {
         <table class="table">
@@ -62,4 +62,22 @@
     {
         <p>No Products Found!</p>
     }
+</div>
+
+<div class="container">
+    <div id="paging-bar">
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                @if (Model != null && ViewBag.pageCount > 1)
+                {
+                    for (int i = 1; i <= ViewBag.pageCount; i++)
+                    {
+                        <li class="page-item @(ViewBag.page == i ? "active" : "")">
+                            <a class="page-link" href="?page=@i">@i</a>
+                        </li>
+                    }
+                }
+            </ul>
+        </nav>
+    </div>
 </div>

@@ -57,8 +57,14 @@ namespace ShopWeb.Controllers
         public async Task<IActionResult> List()
         {
             const int page = 1;
-            const int pageSize = 3;
+            const int pageSize = 10;
+            var totalProductsCount = await productRepository.GetTotalProductsCount();
+            var pageCount = (int)Math.Ceiling((double)totalProductsCount / pageSize);
             var products = await productRepository.GetAllAsync(page,pageSize);
+
+            ViewBag.page = page;
+            ViewBag.pageCount = pageCount;
+
             return View(products);
         }
         [HttpGet]

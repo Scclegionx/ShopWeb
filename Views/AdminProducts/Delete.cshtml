@@ -7,11 +7,10 @@
     </div>
 </div>
 
-<div class="container py-5">
-    <h2>Bạn có chắc muốn xóa "@Model.Name"?</h2>
-</div>
 
-<div class="container py-5">
+
+<div class="container py-5" id="productAdmin-container">
+    <h2>Bạn có chắc muốn xóa "@Model.Name"?</h2>
     @using (Html.BeginForm("Delete", "AdminProducts", FormMethod.Post))
     {
         <div class="col-md-8 mb-3">

@@ -8,7 +8,7 @@
 <div id="home-page-container">
     <div class="container" id="category-container">
         <div class="row justify-content-center">
-            <div class="col-6 ">
+            <div class="col-6 " >
                 @if (Model != null && Model.Categories.Any())
                 {
                     foreach (var cate in Model.Categories)
@@ -38,48 +38,50 @@
                 <h1>Best Seller</h1>
             </div>
         </div>
-        <div id="search-container">
-            @using (Html.BeginForm("Index", "Home", FormMethod.Get))
-            {
-                <label>Search:</label>
-                <input type="text" placeholder="Type something..." name="productName" />
-                <button class="btn-dark" type="submit">Tìm</button>
-            }
-        </div>
-        <div id="all-product-container">
-            @if (Model != null && Model.Products.Any())
-            {
-                foreach (var product in Model.Products)
+        <div id="search-allProducts-container">
+            <div id="search-container">
+                @using (Html.BeginForm("Index", "Home", FormMethod.Get))
                 {
-                    <div class="mb-5 bg-light box-shadow p-5" id="product-container">
-                        <div>
-                            <img src="@product.FeaturedImageUrl" alt="@product.Name" class="mb-2 d-block img-fluid" />
-
-                            <h2 class="mb-4" style="text-align: center;">@product.Name</h2>
-                        </div>
-                        <div id="product-p2-container">
-                            <div id="price-container">
-                                <span class="mark">@product.Price</span>
-                            </div>
-                            <div id="quantity-container">
-                                <span>@product.Quantity</span>
-                            </div>
-                        </div>
-
-                        <div>
-                            <a class="btn btn-dark"
-                               asp-area=""
-                               asp-controller="Products"
-                               asp-action="Index"
-                               asp-route-id="{@product.Id}">Chi Tiết</a>
-                        </div>
-                    </div>
+                    <label>Search:</label>
+                    <input type="text" placeholder="Type something..." name="productName" />
+                    <button class="btn-dark" type="submit">Tìm</button>
                 }
-            } else
-            {
-                <p>No Products Found!</p>
-            }
+            </div>
+            <div id="all-product-container">
+                @if (Model != null && Model.Products.Any())
+                {
+                    foreach (var product in Model.Products)
+                    {
+                        <div class="mb-5 bg-light box-shadow p-5" id="product-container">
+                            <div>
+                                <img src="@product.FeaturedImageUrl" alt="@product.Name" class="mb-2 d-block img-fluid" />
 
+                                <h2 class="mb-4" style="text-align: center;">@product.Name</h2>
+                            </div>
+                            <div id="product-p2-container">
+                                <div id="price-container">
+                                    <span class="mark">@product.Price</span>
+                                </div>
+                                <div id="quantity-container">
+                                    <span>@product.Quantity</span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <a class="btn btn-dark"
+                                   asp-area=""
+                                   asp-controller="Products"
+                                   asp-action="Index"
+                                   asp-route-id="{@product.Id}">Chi Tiết</a>
+                            </div>
+                        </div>
+                    }
+                } else
+                {
+                    <p>No Products Found!</p>
+                }
+
+            </div>
         </div>
     </div>
 
