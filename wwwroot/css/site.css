@@ -1,5 +1,6 @@
-html {
-  font-size: 14px;
+﻿html {
+    font-size: 14px;
+    
 }
 
 @media (min-width: 768px) {
@@ -18,7 +19,11 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background-image: url("../Assets/12804670_5086946.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .product-details-content img {
@@ -44,6 +49,12 @@ body {
 #product-container {
     display: block;
     position: relative;
+    border-radius: 15px; /* Adjust the value for the roundness of corners */
+    border: 5px solid #ADD8E6; /* Light blue border */
+    background-color: #F0F8FF; /* Light background color */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
+    padding: 20px; /* Adjust as needed */
+    margin: 10px 5px 10px 5px; /* Spacing between cards, adjust as needed */
 }
 #price-container {s
     position: absolute;
@@ -56,16 +67,35 @@ body {
     bottom: 20px;
 }
 #category-container {
-    border: 2px solid black;
+    /*border: 10px solid blue;
+    height: 100vh;
+    background-color: floralwhite;
+    border-radius: 10px;
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+    margin: -30px;*/
+    border-radius: 15px; /* Adjust the value for the roundness of corners */
+    border: 5px solid #ADD8E6; /* Light blue border */
+    background-color: #F0F8FF; /* Light background color */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
+    padding: 20px; /* Adjust as needed */
+    margin: 10px 10px 10px -40px; /* Spacing between cards, adjust as needed */
 }
 #product-p2-container {
     
 }
 #bestSeller-container {
-    border: 2px solid black;
+    border-radius: 15px; /* Adjust the value for the roundness of corners */
+    border: 5px solid #ADD8E6; /* Light blue border */
+    background-color: #F0F8FF; /* Light background color */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
+    padding: 20px; /* Adjust as needed */
+    margin: 0px 10px 20px 37px; /* Spacing between cards, adjust as needed */
 }
 #index-container {
     display: block;
+    margin: 10px 5px 10px 5px;
 }
 #index-bestSeller-container {
     display: grid;
@@ -74,8 +104,43 @@ body {
 #home-image-container {
     float: right;
     margin-left: 6px;
+    border-radius: 15px; /* Adjust the value for the roundness of corners */
+    border: 5px solid #ADD8E6; /* Light blue border */
+    background-color: #F0F8FF; /* Light background color */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
+    padding: 20px; /* Adjust as needed */
+    margin-bottom: 20px; /* Spacing between cards, adjust as needed */
 }
 #all-product-container {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
+}
+#search-allProducts-container {
+    border-radius: 15px; /* Adjust the value for the roundness of corners */
+    border: 5px solid #ADD8E6; /* Light blue border */
+    background-color: #F0F8FF; /* Light background color */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
+    padding: 20px; /* Adjust as needed */
+    margin: 0 -50px 0 -6px;
+}
+#search-container {
+    margin: 0 0 20px 1200px;
+}
+/*login, register, cateAdmin, productAdmin */
+#login-container, #register-container, #cateAdmin-container, #productAdmin-container {
+    border-radius: 15px; /* Adjust the value for the roundness of corners */
+    border: 5px solid #ADD8E6; /* Light blue border */
+    background-color: #F0F8FF; /* Light background color */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
+    padding: 20px; /* Adjust as needed */
+    margin-bottom: 20px; /* Spacing between cards, adjust as needed */
+}
+/*UserAdmin*/
+#userAdmin-container {
+    border-radius: 15px; /* Adjust the value for the roundness of corners */
+    border: 5px solid #ADD8E6; /* Light blue border */
+    background-color: #F0F8FF; /* Light background color */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
+    padding: 20px; /* Adjust as needed */
+    margin-bottom: 20px; /* Spacing between cards, adjust as needed */
 }
