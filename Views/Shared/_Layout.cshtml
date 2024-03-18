@@ -17,52 +17,31 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
+        @if (ViewBag.RenderDefaultNavbar == null || ViewBag.RenderDefaultNavbar)
+        {
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
             <div class="container-fluid">
+                    @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                    {
+                        <i class="bi bi-sliders" id="toggleButton"></i>
+                    }
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ShopWeb</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-
-                        @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-controller="AdminUser" asp-action="List">Danh sách người dùng</a>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Danh mục
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" asp-area="" asp-action="Add" asp-controller="AdminCategory">Thêm mới danh mục</a></li>
-                                    <li><a class="dropdown-item" asp-area="" asp-action="List" asp-controller="AdminCategory">Tất cả danh mục</a></li>
-                                </ul>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Mặt hàng
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" asp-area="" asp-action="Add" asp-controller="AdminProducts">Thêm mới mặt hàng</a></li>
-                                    <li><a class="dropdown-item" asp-area="" asp-action="List" asp-controller="AdminProducts">Tất cả mặt hàng</a></li>
-                                </ul>
-                            </li>
-                        }
-
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-controller="" asp-action="">Giỏ hàng</a>
+                        </li>
 
                     </ul>
                     <div class="d-flex align-items-center">
 
                         @if (signInManager.IsSignedIn(User))
                         {
-                            <div class="me-3 text-light"> 
-                                @User?.Identity?.Name
+                            <div class="me-3 text-light">
+                                <a style="text-decoration: none; color: white" asp-area="" asp-controller="Account" asp-action="UserDetail">@User?.Identity?.Name</a>
                             </div>
 
                             <a class="btn me-3 bg-light text-dark "
@@ -88,6 +67,41 @@
                 </div>
             </div>
         </nav>
+        }
+        @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+        {
+            <nav id="admin-sidebar">
+                <ul>
+                    <li class="nav-item">
+                        <i class="bi bi-backspace-fill" id="hideButton"></i>
+                    </li>
+                    <hr style="color:white" />
+                    <li class="nav-item">
+                        <a class="nav-link text-light" asp-area="" asp-controller="AdminUser" asp-action="List">Danh sách người dùng</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Danh mục
+                        </a>
+                        <ul class="dropdown-menu" style="background-color: #334" >
+                            <li><a class="dropdown-item " asp-area="" asp-action="Add" asp-controller="AdminCategory">Thêm mới danh mục</a></li>
+                            <li><a class="dropdown-item " asp-area="" asp-action="List" asp-controller="AdminCategory">Tất cả danh mục</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Mặt hàng
+                        </a>
+                        <ul class="dropdown-menu" style="background-color: #334">
+                            <li><a class="dropdown-item" asp-area="" asp-action="Add" asp-controller="AdminProducts">Thêm mới mặt hàng</a></li>
+                            <li><a class="dropdown-item" asp-area="" asp-action="List" asp-controller="AdminProducts">Tất cả mặt hàng</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link text-light">Quản lý đơn hàng</a></li>
+                    <li class="nav-item"><a class="nav-link text-light">Phản hồi</a></li>
+                </ul>
+            </nav>
+        }
     </header>
     <div  >
         <main role="main" class="pb-3" >
@@ -100,6 +114,7 @@
             &copy; 2024 - ShopWeb - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+    <script src="/js/toggleNavbar.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.RenderDefaultNavbar = false;
+}
+
+<nav id="user-navbar-container">
+    <ul>
+        <li><a asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+        <li><a href="#">Chi Tiết</a></li>
+        <li><a href="#">Cập nhật thông tin</a></li>
+        <li><a href="#">Đổi mật khẩu</a></li>
+        <li><a href="#">Lịch sử mua hàng</a></li>
+        <li><a href="#">Tracking</a></li>
+        <li><a href="#">Trợ giúp</a></li>
+    </ul>
+</nav>
+
+<div class="bg-secondary bg-opacity-10 py-2">
+    <div class="container">
+        <h1>User Detail - User Functionality</h1>
+    </div>
+</div>
+
+
+<div class="container py-5" id="user-detail-container">
+    <h2>Avatar</h2>
+    <h2>Tên</h2>
+    <h2>Email</h2>
+    <h2>Địa chỉ</h2>
+</div>

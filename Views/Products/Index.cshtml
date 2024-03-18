@@ -12,7 +12,7 @@
 
 <div class="container my-5">
     <div class="row justify-content-center">
-        <div class="col-12 col-lg-6">
+        <div class="col-12 col-lg-6" id="product-detail-container">
 
             @if (Model != null)
             {
@@ -47,6 +47,19 @@
 
                 <div class="mb-3 product-details-content"> 
                     @Html.Raw(Model.Description)
+                </div>
+
+
+                <div class="container py-5">
+                    <a class="btn btn-dark">Thêm vào giỏ hàng</a>
+                </div>
+
+                <div class="container py-5" id="rating-container">
+                    @using (Html.BeginForm("", "", FormMethod.Post))
+                    {
+                        <h5>Bạn đánh giá sản phẩm này chất lượng như nào?</h5>
+                        <button type="submit" class=" btn btn-dark" >Đánh giá</button>
+                    }
                 </div>
 
                 <div class="card">
