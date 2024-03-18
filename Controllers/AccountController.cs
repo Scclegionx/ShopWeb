@@ -88,5 +88,10 @@ namespace ShopWeb.Controllers
         {
             return View();
         }
+        [HttpGet]
+        public IActionResult UserDetail()
+        {
+            return View();
+        }
     }
 }
