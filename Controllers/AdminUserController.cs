@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using ShopWeb.Models.Domain;
 using ShopWeb.Models.ViewModels.UserVM;
 using ShopWeb.Repositories;
 
@@ -10,10 +11,10 @@ namespace ShopWeb.Controllers
     public class AdminUserController : Controller
     {
         private readonly IUserRepository userRepository;
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly UserManager<ApplicationUser> userManager;
 
         public AdminUserController(IUserRepository userRepository,
-            UserManager<IdentityUser> userManager)
+            UserManager<ApplicationUser> userManager)
         {
             this.userRepository = userRepository;
             this.userManager = userManager;
@@ -31,7 +32,9 @@ namespace ShopWeb.Controllers
                 {
                     Id = Guid.Parse(user.Id),
                     Email = user.Email,
-                    Username = user.UserName
+                    Username = user.UserName,
+                    Avatar = user.Avatar,
+                    Address = user.Address,
                 });
             }
             return View(usersViewModel);
@@ -39,10 +42,12 @@ namespace ShopWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> List(UserViewModel userViewModel)
         {
-            var identityUser = new IdentityUser
+            var identityUser = new ApplicationUser
             {
                 UserName = userViewModel.Username,
                 Email = userViewModel.Email,
+                Avatar = userViewModel.Avatar,
+                Address = userViewModel.Address
             };
 
             var identityResult = await userManager.CreateAsync(identityUser, userViewModel.Password);

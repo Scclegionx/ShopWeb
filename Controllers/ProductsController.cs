@@ -10,13 +10,13 @@ namespace ShopWeb.Controllers
     {
         private readonly IProductRepository productRepository;
         private readonly IProductLikeRepository productLikeRepository;
-        private readonly SignInManager<IdentityUser> signInManager;
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly UserManager<ApplicationUser> userManager;
         private readonly IProductCommentRepository productCommentRepository;
 
         public ProductsController(IProductRepository productRepository, IProductLikeRepository productLikeRepository,
-            SignInManager<IdentityUser> signInManager,
-            UserManager<IdentityUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            UserManager<ApplicationUser> userManager,
             IProductCommentRepository productCommentRepository)
         {
             this.productRepository = productRepository;

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ShopWeb.Data;
 using ShopWeb.Repositories;
+using ShopWeb.Models.Domain;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +14,7 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("ShopWebDbConnect
 builder.Services.AddDbContext<AuthDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("ShopWebAuthDbConnectionString")));
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<AuthDbContext>();
 
 builder.Services.Configure<IdentityOptions>(options =>

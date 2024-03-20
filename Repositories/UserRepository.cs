@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ShopWeb.Data;
+using ShopWeb.Models.Domain;
 
 namespace ShopWeb.Repositories
 {
@@ -12,7 +13,7 @@ namespace ShopWeb.Repositories
         {
             this.authDbContext = authDbContext;
         }
-        public async Task<IEnumerable<IdentityUser>> GetAllUser()
+        public async Task<IEnumerable<ApplicationUser>> GetAllUser()
         {
             var users = await authDbContext.Users.ToListAsync();
 

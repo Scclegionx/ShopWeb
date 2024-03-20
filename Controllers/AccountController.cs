@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using ShopWeb.Models.Domain;
 using ShopWeb.Models.ViewModels.LoginVM;
 using ShopWeb.Models.ViewModels.RegisterVM;
 
@@ -7,10 +8,10 @@ namespace ShopWeb.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<IdentityUser> userManager;
-        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
 
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -25,7 +26,7 @@ namespace ShopWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                var identityUser = new IdentityUser
+                var identityUser = new ApplicationUser
                 {
                     UserName = registerViewModel.Username,
                     Email = registerViewModel.Email,
@@ -89,9 +90,10 @@ namespace ShopWeb.Controllers
             return View();
         }
         [HttpGet]
-        public IActionResult UserDetail()
+        public async Task<IActionResult> UserDetail()
         {
-            return View();
+            var user = await userManager.GetUserAsync(User);
+            return View(user);
         }
     }
 }

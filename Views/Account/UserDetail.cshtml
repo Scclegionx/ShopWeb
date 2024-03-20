@@ -1,11 +1,13 @@
-﻿@{
+﻿@model ShopWeb.Models.Domain.ApplicationUser;
+
+@{
     ViewBag.RenderDefaultNavbar = false;
 }
 
 <nav id="user-navbar-container">
     <ul>
         <li><a asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a></li>
-        <li><a href="#">Chi Tiết</a></li>
+        <li><a asp-area="" asp-controller="Account" asp-action="UserDetail">Chi Tiết</a></li>
         <li><a href="#">Cập nhật thông tin</a></li>
         <li><a href="#">Đổi mật khẩu</a></li>
         <li><a href="#">Lịch sử mua hàng</a></li>
@@ -22,8 +24,20 @@
 
 
 <div class="container py-5" id="user-detail-container">
-    <h2>Avatar</h2>
-    <h2>Tên</h2>
-    <h2>Email</h2>
-    <h2>Địa chỉ</h2>
+    <div class="col-md-8 mb-3">
+        @Html.LabelFor(m => m.Avatar, new { @class = "col-md-4 control-label" })
+        @Html.TextBoxFor(m => m.Avatar, new { @class = "form-control", @readonly = true })
+    </div>
+    <div class="col-md-8 mb-3">
+        @Html.LabelFor(m => m.UserName, new { @class = "col-md-4 control-label" })
+        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @readonly = true })
+    </div>
+    <div class="col-md-8 mb-3">
+        @Html.LabelFor(m => m.Email, new { @class = "col-md-4 control-label" })
+        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @readonly = true })
+    </div>
+    <div class="col-md-8 mb-3">
+        @Html.LabelFor(m => m.Address, new { @class = "col-md-4 control-label" })
+        @Html.TextBoxFor(m => m.Address, new { @class = "form-control", @readonly = true })
+    </div>
 </div>

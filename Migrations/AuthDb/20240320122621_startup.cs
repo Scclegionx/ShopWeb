@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ShopWeb.Migrations.AuthDb
 {
     /// <inheritdoc />
-    public partial class CreatingAuthDb : Migration
+    public partial class startup : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,6 +32,8 @@ namespace ShopWeb.Migrations.AuthDb
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Avatar = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -170,8 +172,8 @@ namespace ShopWeb.Migrations.AuthDb
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "b1932f74-fcf6-4c60-83a0-236c9cd76e13", 0, "2fb4c457-4c44-4990-aa7a-0135c7ffa646", "superadmin@gmail.com", false, false, null, "SUPERADMIN@GMAIL.COM", "SUPERADMIN", "AQAAAAIAAYagAAAAEIunE5QrBEizau8v1DSx4w7z0+FrXSrcreGC+9rk3hK651JkhG8BJbkZzrrMRn6GzA==", null, false, "e074dcac-6a1e-44cb-907e-a6fc617e1584", false, "superadmin" });
+                columns: new[] { "Id", "AccessFailedCount", "Address", "Avatar", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { "b1932f74-fcf6-4c60-83a0-236c9cd76e13", 0, "123 Main Street", "test", "93957b84-2fb6-4b07-beec-5c9d7deea66f", "superadmin@gmail.com", false, false, null, "SUPERADMIN@GMAIL.COM", "SUPERADMIN", "AQAAAAIAAYagAAAAEEq8x8Y+YOeENbklbb1RURaj7XaZ7tGN3p8/gzvYgOOVwy2dXl++RHHN6PjeiYcxqQ==", null, false, "4b56b0c2-a575-435e-93f3-10e79d91addb", false, "superadmin" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
