@@ -23,8 +23,10 @@
                 <thead>
                     <tr>
                         <th>Id</th>
+                        <th>Avatar</th>
                         <th>Username</th>
                         <th>Email</th>
+                        <th>Address</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -33,8 +35,10 @@
                     {
                         <tr>
                             <td>@user.Id</td>
+                            <td>@user.Avatar</td>
                             <td>@user.Username</td>
                             <td>@user.Email</td>
+                            <td>@user.Address</td>
                             <td>
                                 <form method="post">
                                     <button type="submit" class="btn btn-danger" asp-area="" asp-controller="AdminUser" asp-action="Delete" asp-route-id="{@user.Id}">Delete</button>
@@ -67,12 +71,20 @@
                         @Html.TextBoxFor(m => m.Username , new { @class = "form-control" })
                     </div>
                     <div class="mb-3">
+                        @Html.LabelFor(m => m.Avatar, new { @class = "col-md-4 control-label" })
+                        @Html.TextBoxFor(m => m.Avatar, new { @class = "form-control" })
+                    </div>
+                    <div class="mb-3">
                         @Html.LabelFor(m => m.Email, new { @class = "col-md-4 control-label" })
                         @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
                     </div>
                     <div class="mb-3">
                         @Html.LabelFor(m => m.Password, new { @class = "col-md-4 control-label" })
                         @Html.TextBoxFor(m => m.Password, new { @class = "form-control", @type = "password" })
+                    </div>
+                    <div class="mb-3">
+                        @Html.LabelFor(m => m.Address, new { @class = "col-md-4 control-label" })
+                        @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
                     </div>
                     <div class="mb-3">
                         <div class="form-check">

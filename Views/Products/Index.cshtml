@@ -1,7 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Identity;
+@using ShopWeb.Models.Domain;
 
-@inject SignInManager<IdentityUser> signInManager;
-@inject UserManager<IdentityUser> userManager;
+@inject SignInManager<ApplicationUser> signInManager;
+@inject UserManager<ApplicationUser> userManager;
 
 @model ShopWeb.Models.ViewModels.ProductVM.ProductDetailViewModel
 @{

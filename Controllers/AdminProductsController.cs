@@ -54,9 +54,8 @@ namespace ShopWeb.Controllers
             return RedirectToAction("List", "AdminProducts");
         }
         [HttpGet]
-        public async Task<IActionResult> List()
+        public async Task<IActionResult> List(int page = 1)
         {
-            const int page = 1;
             const int pageSize = 10;
             var totalProductsCount = await productRepository.GetTotalProductsCount();
             var pageCount = (int)Math.Ceiling((double)totalProductsCount / pageSize);
