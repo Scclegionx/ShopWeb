@@ -1,0 +1,46 @@
+﻿@model ShopWeb.Models.ViewModels.UserVM.EditAccountRequest;
+
+@{
+    ViewBag.RenderDefaultNavbar = false;
+}
+
+<nav id="user-navbar-container">
+    <ul>
+        <li><a asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+        <li><a asp-area="" asp-controller="Account" asp-action="UserDetail">Chi Tiết</a></li>
+        <li><a asp-area="" asp-controller="Account" asp-action="Edit">Cập nhật thông tin</a></li>
+        <li><a href="#">Đổi mật khẩu</a></li>
+        <li><a href="#">Lịch sử mua hàng</a></li>
+        <li><a href="#">Tracking</a></li>
+        <li><a href="#">Trợ giúp</a></li>
+    </ul>
+</nav>
+
+<div class="bg-secondary bg-opacity-10 py-2">
+    <div class="container">
+        <h1>User Edit - User Functionality</h1>
+    </div>
+</div>
+
+@using (Html.BeginForm("Edit", "Account", FormMethod.Post))
+{
+    
+    <div class="container py-5" id="user-detail-container">
+        <div class="col-md-8 mb-3">
+            @Html.LabelFor(m => m.Avatar, new { @class = "col-md-4 control-label" })
+            @Html.TextBoxFor(m => m.Avatar, new { @class = "form-control" })
+            <span class="text-danger" asp-validation-for="Avatar"></span>
+        </div>
+        <div class="col-md-8 mb-3">
+            @Html.LabelFor(m => m.Email, new { @class = "col-md-4 control-label" })
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+            <span class="text-danger" asp-validation-for="Email"></span>
+        </div>
+        <div class="col-md-8 mb-3">
+            @Html.LabelFor(m => m.Address, new { @class = "col-md-4 control-label" })
+            @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
+            <span class="text-danger" asp-validation-for="Address"></span>
+        </div>
+        <button class="btn btn-dark justify-content-center">Lưu</button>
+    </div>
+}
