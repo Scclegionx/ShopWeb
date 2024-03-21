@@ -6,6 +6,7 @@ namespace ShopWeb.Models.ViewModels.UserVM
     {
         public List<User> Users { get; set; }
         public string Username { get; set; }
+        [Required]
         public string Email { get; set; }
         public string Password { get; set; }
         public bool AdminRoleCheckBox { get; set; }

@@ -131,7 +131,7 @@ body {
     margin: 0 0 20px 1200px;
 }
 /*login, register, cateAdmin, productAdmin */
-#login-container, #register-container, #cateAdmin-container, #productAdmin-container, #rating-container, #user-detail-container {
+#login-container, #register-container, #cateAdmin-container, #productAdmin-container, #rating-container {
     border-radius: 15px; /* Adjust the value for the roundness of corners */
     border: 5px solid #ADD8E6; /* Light blue border */
     background-color: #F0F8FF; /* Light background color */
@@ -215,4 +215,15 @@ body {
 #hideButton {
     color: white;
     font-size: 24px;
+}
+
+/*user detailcontainer*/
+#user-detail-container {
+    border-radius: 15px; /* Adjust the value for the roundness of corners */
+    border: 5px solid #ADD8E6; /* Light blue border */
+    background-color: #F0F8FF; /* Light background color */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
+    padding: 20px; /* Adjust as needed */
+    margin-bottom: 20px; /* Spacing between cards, adjust as needed */
+    margin-left: 300px;
 }
