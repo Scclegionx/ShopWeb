@@ -33,6 +33,7 @@ builder.Services.AddScoped<IImageRepository, CloudinaryImageRepository>();
 builder.Services.AddScoped<IProductLikeRepository, ProductLikeRepository>();
 builder.Services.AddScoped<IProductCommentRepository, ProductCommentRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ICartRepository, CartRepository>();
 
 var app = builder.Build();
 

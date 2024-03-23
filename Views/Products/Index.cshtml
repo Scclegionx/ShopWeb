@@ -50,10 +50,14 @@
                     @Html.Raw(Model.Description)
                 </div>
 
-
-                <div class="container py-5">
-                    <a class="btn btn-dark">Thêm vào giỏ hàng</a>
-                </div>
+                @using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
+                {
+                    <div class="container py-5">
+                        <input type="hidden" name="productId" value="@Model.Id" />
+                        <input type="number" name="quantity" value="1" min="1" class="form-control mb-3" />
+                        <button type="submit" class="btn btn-dark">Thêm vào giỏ hàng</button>
+                    </div>
+                }
 
                 <div class="container py-5" id="rating-container">
                     @using (Html.BeginForm("", "", FormMethod.Post))
