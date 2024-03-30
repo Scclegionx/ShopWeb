@@ -38,6 +38,17 @@
     </tfoot>
 </table>
 
+@using (Html.BeginForm("ApplyCoupon", "Purchase", FormMethod.Post))
+{
+    <h2>Apply Coupon</h2>
+    <div class="form-group">
+        @Html.HiddenFor(m => m.TotalPrice)
+        @Html.LabelFor(model => model.CouponCode, htmlAttributes: new { @class = "control-label" })
+        @Html.TextBoxFor(model => model.CouponCode, new { @class = "form-control", id = "couponCode" })
+        @Html.ValidationMessageFor(model => model.CouponCode, "", new { @class = "text-danger" }) 
+    </div>
+    <button type="submit" class="btn btn-primary">Apply Coupon</button>
+}
 
 
 @using (Html.BeginForm("Confirm", "Purchase", FormMethod.Post))
