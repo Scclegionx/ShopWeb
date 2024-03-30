@@ -1,0 +1,46 @@
+﻿@model ShopWeb.Models.ViewModels.PurchaseVM.PurchaseViewModel
+@{
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<h1>Purchase</h1>
+
+@if (Model.PurchaseItems != null && Model.PurchaseItems.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.PurchaseItems)
+            {
+                <tr>
+                    <td>@item.ProductName</td>
+                    <td>@item.Price</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.Subtotal</td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3">Total:</td>
+                <td>@Model.TotalPrice</td>
+            </tr>
+        </tfoot>
+    </table>
+}
+else
+{
+    <p>Your purchase is empty.</p>
+}

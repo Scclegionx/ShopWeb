@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShopWeb.Data;
 
@@ -11,9 +12,11 @@ using ShopWeb.Data;
 namespace ShopWeb.Migrations
 {
     [DbContext(typeof(ShopWebDbContext))]
-    partial class ShopWebDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240330105602_add coupon and purchase")]
+    partial class addcouponandpurchase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -209,30 +212,6 @@ namespace ShopWeb.Migrations
                     b.ToTable("Purchase");
                 });
 
-            modelBuilder.Entity("ShopWeb.Models.Domain.PurchaseItem", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("PurchaseId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("PurchaseId");
-
-                    b.ToTable("PurchaseItems");
-                });
-
             modelBuilder.Entity("CategoryProduct", b =>
                 {
                     b.HasOne("ShopWeb.Models.Domain.Category", null)
@@ -283,23 +262,6 @@ namespace ShopWeb.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ShopWeb.Models.Domain.PurchaseItem", b =>
-                {
-                    b.HasOne("ShopWeb.Models.Domain.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ShopWeb.Models.Domain.Purchase", null)
-                        .WithMany("Items")
-                        .HasForeignKey("PurchaseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("ShopWeb.Models.Domain.Cart", b =>
                 {
                     b.Navigation("Items");
@@ -310,11 +272,6 @@ namespace ShopWeb.Migrations
                     b.Navigation("ProductComment");
 
                     b.Navigation("ProductLike");
-                });
-
-            modelBuilder.Entity("ShopWeb.Models.Domain.Purchase", b =>
-                {
-                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }

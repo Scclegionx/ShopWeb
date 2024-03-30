@@ -14,5 +14,8 @@ namespace ShopWeb.Data
         public DbSet<ProductComment> ProductComment { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
+        public DbSet<Purchase> Purchase { get; set; }
+        public DbSet<PurchaseItem> PurchaseItems { get; set; } 
+        public DbSet<Coupon> Coupon { get; set; }
     }
 }

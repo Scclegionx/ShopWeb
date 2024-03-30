@@ -14,7 +14,7 @@ namespace ShopWeb.Repositories
             this.shopWebDbContext = shopWebDbContext;
         }
 
-        public async Task<Cart> GetCurrentUserCartAsync(Guid userId) // Change the type to Guid
+        public async Task<Cart> GetCurrentUserCartAsync(Guid userId) 
         {
             return await shopWebDbContext.Carts.FirstOrDefaultAsync(c => c.UserId == userId);
         }
@@ -30,7 +30,7 @@ namespace ShopWeb.Repositories
 
             if (cart == null)
             {
-                cart = new Cart { UserId = userId }; // Initialize a new cart for the user
+                cart = new Cart { UserId = userId }; 
                 shopWebDbContext.Carts.Add(cart);
             }
 
