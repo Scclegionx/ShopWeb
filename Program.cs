@@ -34,6 +34,7 @@ builder.Services.AddScoped<IProductLikeRepository, ProductLikeRepository>();
 builder.Services.AddScoped<IProductCommentRepository, ProductCommentRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICartRepository, CartRepository>();
+builder.Services.AddScoped<IPurchaseRepository, PurchaseRepository>();
 
 var app = builder.Build();
 
