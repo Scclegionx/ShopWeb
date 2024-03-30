@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ShopWeb.Data;
 using ShopWeb.Models.Domain;
+using ShopWeb.Models.ViewModels.UserVM;
 
 namespace ShopWeb.Repositories
 {
@@ -24,6 +25,17 @@ namespace ShopWeb.Repositories
             return purchaseItem;
         }
 
+        public async Task<Purchase?> DeletePurchaseAsync(Guid id)
+        {
+            var purchase = await shopWebDbContext.Purchase.FindAsync(id);
+            if (purchase != null)
+            {
+                shopWebDbContext.Purchase.Remove(purchase);
+                await shopWebDbContext.SaveChangesAsync();
+            }
+            return null;
+        }
+
         public async Task<IEnumerable<PurchaseItem>> GetAllPurchaseItems(Guid PurchaseId)
         {
             return await shopWebDbContext.PurchaseItems.Where(x => x.PurchaseId == PurchaseId).ToListAsync();
@@ -37,6 +49,11 @@ namespace ShopWeb.Repositories
         public async Task<Purchase> GetCurrentUserPurchaseAsync(Guid userId)
         {
             return await shopWebDbContext.Purchase.FirstOrDefaultAsync(c => c.UserId == userId);
+        }
+
+        public async Task<IEnumerable<Purchase>> GetOwnPurchases(Guid userId)
+        {
+            return await shopWebDbContext.Purchase.Where(x => x.UserId == userId).ToListAsync();
         }
 
         public async Task<Purchase?> GetPurchaseById(Guid id)

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.Ajax.Utilities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ShopWeb.Data;
 using ShopWeb.Models.Domain;
@@ -36,7 +37,7 @@ namespace ShopWeb.Repositories
 
             cart.Items ??= new List<CartItem>();
 
-            var existingItem = await shopWebDbContext.CartItems.FirstOrDefaultAsync(c => c.ProductId == productId);
+            var existingItem = await shopWebDbContext.CartItems.Where(x => x.CartId == cart.Id).FirstOrDefaultAsync(c => c.ProductId == productId);
 
             if (existingItem != null)
             {
@@ -53,6 +54,32 @@ namespace ShopWeb.Repositories
         public async Task<IEnumerable<CartItem>> GetAllCartItems(Guid CartId)
         {
             return await shopWebDbContext.CartItems.Where(x => x.CartId == CartId).ToListAsync();
+        }
+
+        public async Task<CartItem> ClearCartItemsAsync(Guid cartId)
+        {
+            var cartItems = await shopWebDbContext.CartItems.Where(ci => ci.CartId == cartId).ToListAsync();
+            shopWebDbContext.CartItems.RemoveRange(cartItems);
+            await shopWebDbContext.SaveChangesAsync();
+            return null;
+        }
+
+        public async Task<Cart> ClearCartAsync(Cart cart)
+        {
+            shopWebDbContext.Carts.Remove(cart);
+            await shopWebDbContext.SaveChangesAsync();
+            return null;
+        }
+
+        public async Task<Cart?> DeleteCartItemAsync(Guid cartItemId)
+        {
+            var cartItem = await shopWebDbContext.CartItems.FindAsync(cartItemId);
+            if (cartItem != null)
+            {
+                shopWebDbContext.CartItems.Remove(cartItem);
+                await shopWebDbContext.SaveChangesAsync();
+            }
+            return null;
         }
     }
 }
