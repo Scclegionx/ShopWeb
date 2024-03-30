@@ -30,7 +30,8 @@ namespace ShopWeb.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var purchases = await purchaseRepository.GetAllPurchases();
+            var userId = Guid.Parse(userManager.GetUserId(User));
+            var purchases = await purchaseRepository.GetOwnPurchases(userId);
             return View(purchases);
         }
 
@@ -69,6 +70,12 @@ namespace ShopWeb.Controllers
             {
                 return View(null);
             }
+        }
+        [HttpPost]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            await purchaseRepository.DeletePurchaseAsync(id);
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
@@ -138,8 +145,8 @@ namespace ShopWeb.Controllers
             }
 
             // Clear the cart and cart items associated with the current user
-            //_cartItemRepository.ClearCartItems(currentUserCart.Id);
-            //_cartRepository.ClearCart(currentUserCart);
+            await cartRepository.ClearCartItemsAsync(currentUserCart.Id);
+            await cartRepository.ClearCartAsync(currentUserCart);
 
             // Redirect the user to the "Thank You" page
             return RedirectToAction("Index");

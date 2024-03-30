@@ -29,12 +29,17 @@ namespace ShopWeb.Controllers
             if (currentUserCart != null)
             {
                 var CartIteminDomain = await _cartRepository.GetAllCartItems(currentUserCart.Id);
+                if (CartIteminDomain.Count() == 0)
+                {
+                    return View(null);
+                }
                 var CartItemForView = new List<CartItemViewModel>();
                 foreach (var item in CartIteminDomain)
                 {
                     var productInCart = await productRepository.GetAsync(item.ProductId);
                     CartItemForView.Add(new CartItemViewModel
                     {
+                        Id = item.Id,
                         ProductName = productInCart.Name,
                         Price = productInCart.Price,
                         Quantity = item.Quantity
@@ -42,6 +47,7 @@ namespace ShopWeb.Controllers
                 }
 
                 // Map the cart data to CartViewModel
+
                 var cartViewModel = new CartViewModel
                 {
                     Items = CartItemForView,
@@ -64,6 +70,13 @@ namespace ShopWeb.Controllers
             await _cartRepository.AddProductToCartAsync(currentUserCart, productId, quantity, userId);
 
             TempData["SuccessMessage"] = "Product successfully added to cart!";
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteCartItem(Guid id)
+        {
+            await _cartRepository.DeleteCartItemAsync(id);
             return RedirectToAction("Index");
         }
     }
