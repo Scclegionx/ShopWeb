@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ShopWeb.Models.Domain;
 using ShopWeb.Models.ViewModels.CartVM;
 using ShopWeb.Models.ViewModels.PurchaseVM;
+using ShopWeb.Models.ViewModels.UserVM;
 using ShopWeb.Repositories;
 
 namespace ShopWeb.Controllers
@@ -36,39 +37,72 @@ namespace ShopWeb.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Detail()
+        public async Task<IActionResult> Detail(Guid Id)
         {
-            var userId = Guid.Parse(userManager.GetUserId(User));
-            var currentUserPurchase = await purchaseRepository.GetCurrentUserPurchaseAsync(userId);
-
-            // Map the cart data to CartViewModel
-            if (currentUserPurchase != null)
+            if (User.IsInRole("SuperAdmin"))
             {
-                var PurchaseIteminDomain = await purchaseRepository.GetAllPurchaseItems(currentUserPurchase.Id);
-                var PurchaseItemForView = new List<PurchaseItemViewModel>();
-                foreach (var item in PurchaseIteminDomain)
+                var currentUserPurchase = await purchaseRepository.GetPurchaseById(Id);
+
+                if (currentUserPurchase != null)
                 {
-                    var productInCart = await productRepository.GetAsync(item.ProductId);
-                    PurchaseItemForView.Add(new PurchaseItemViewModel
+                    var PurchaseIteminDomain = await purchaseRepository.GetAllPurchaseItems(currentUserPurchase.Id);
+                    var PurchaseItemForView = new List<PurchaseItemViewModel>();
+                    foreach (var item in PurchaseIteminDomain)
                     {
-                        ProductName = productInCart.Name,
-                        Price = productInCart.Price,
-                        Quantity = item.Quantity
-                    });
+                        var productInCart = await productRepository.GetAsync(item.ProductId);
+                        PurchaseItemForView.Add(new PurchaseItemViewModel
+                        {
+                            ProductName = productInCart.Name,
+                            Price = productInCart.Price,
+                            Quantity = item.Quantity
+                        });
+                    }
+
+                    // Map the cart data to PurchaseViewModel
+                    var purchaseViewModel = new PurchaseViewModel
+                    {
+                        PurchaseItems = PurchaseItemForView,
+                        TotalPrice = currentUserPurchase.TotalPrice,
+                    };
+
+                    return View(purchaseViewModel);
                 }
-
-                // Map the cart data to PurchaseViewModel
-                var purchaseViewModel = new PurchaseViewModel
+                else
                 {
-                    PurchaseItems = PurchaseItemForView,
-                    TotalPrice = currentUserPurchase.TotalPrice,
-                };
-
-                return View(purchaseViewModel);
-            }
-            else
+                    return View(null);
+                }
+            } else
             {
-                return View(null);
+                var currentUserPurchase = await purchaseRepository.GetPurchaseById(Id);
+
+                if (currentUserPurchase != null)
+                {
+                    var PurchaseIteminDomain = await purchaseRepository.GetAllPurchaseItems(currentUserPurchase.Id);
+                    var PurchaseItemForView = new List<PurchaseItemViewModel>();
+                    foreach (var item in PurchaseIteminDomain)
+                    {
+                        var productInCart = await productRepository.GetAsync(item.ProductId);
+                        PurchaseItemForView.Add(new PurchaseItemViewModel
+                        {
+                            ProductName = productInCart.Name,
+                            Price = productInCart.Price,
+                            Quantity = item.Quantity
+                        });
+                    }
+
+                    // Map the cart data to PurchaseViewModel
+                    var purchaseViewModel = new PurchaseViewModel
+                    {
+                        PurchaseItems = PurchaseItemForView,
+                        TotalPrice = currentUserPurchase.TotalPrice,
+                    };
+
+                    return View(purchaseViewModel);
+                }
+                else
+                {
+                    return View(null);
+                }
             }
         }
         [HttpPost]
@@ -187,6 +221,12 @@ namespace ShopWeb.Controllers
 
             // Return the view with the updated model
             return View("BuyNow", model);
+        }
+        [HttpGet]
+        public async Task<IActionResult> PurchaseManage()
+        {
+            var purchases = await purchaseRepository.GetAllPurchases();
+            return View(purchases);
         }
     }
 }
