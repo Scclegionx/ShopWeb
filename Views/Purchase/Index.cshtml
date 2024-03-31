@@ -6,36 +6,40 @@
     <div class="alert alert-success">
         @TempData["SuccessMessage"]
     </div>
+
 }
+@await Html.PartialAsync("SideNavBar")
 
-<h1>Your Order</h1>
+<div id="purchase-container">
+    <h1>Your Order</h1>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>User Id</th>
-            <th>Purchase Date</th>
-            <th>Total Price</th>
-            <th></th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var purchase in Model)
-        {
+    <table class="table">
+        <thead>
             <tr>
-                <td>@purchase.Id</td>
-                <td>@purchase.UserId</td>
-                <td>@purchase.PurchaseDate</td>
-                <td>@purchase.TotalPrice</td>
-                <td><a asp-area="" asp-controller="Purchase" asp-action="Detail" asp-route-id="{@purchase.Id}" >Chi Tiết</a></td>
-                <td>
-                    <form asp-action="Delete" asp-route-id="@purchase.Id" method="post">
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
-                </td>
+                <th>Id</th>
+                <th>User Id</th>
+                <th>Purchase Date</th>
+                <th>Total Price</th>
+                <th></th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var purchase in Model)
+            {
+                <tr>
+                    <td>@purchase.Id</td>
+                    <td>@purchase.UserId</td>
+                    <td>@purchase.PurchaseDate</td>
+                    <td>@purchase.TotalPrice</td>
+                    <td><a asp-area="" asp-controller="Purchase" asp-action="Detail" asp-route-id="{@purchase.Id}">Chi Tiết</a></td>
+                    <td>
+                        <form asp-action="Delete" asp-route-id="@purchase.Id" method="post">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
