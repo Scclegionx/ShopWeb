@@ -96,5 +96,6 @@ namespace ShopWeb.Controllers
             return PartialView("_ProductList", model);
         }
 
+
     }
 }

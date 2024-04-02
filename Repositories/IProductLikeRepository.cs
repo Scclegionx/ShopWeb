@@ -7,5 +7,6 @@ namespace ShopWeb.Repositories
         Task<int> GetTotalLikes(Guid productId);
         Task<ProductLike> AddLiketoProduct(ProductLike productLike);
         Task<IEnumerable<ProductLike>> GetAllLikes(Guid productId);
+        Task RemoveLikeFromProduct(Guid userId, Guid productId);
     }
 }
