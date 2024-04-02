@@ -28,8 +28,9 @@
                 {
                     @if (object.Equals(ViewData["Liked"], ViewData["Check"]))
                     {
-                        <a style="cursor: pointer"><i class="bi bi-hand-thumbs-up-fill"></i></a>
-                    } else
+                        <a id="btnLike" style="cursor: pointer"><i class="bi bi-hand-thumbs-up-fill"></i></a>
+                    }
+                    else
                     {
                         <a id="btnLike" style="cursor: pointer"><i class="bi bi-hand-thumbs-up"></i></a>
                     }
@@ -119,15 +120,31 @@
     <script>
         const btnLikeElement = document.getElementById("btnLike");
         const totalLikesElement = document.getElementById("totalLikes");
+        const productId = "@Model.Id";
 
         async function getTotalLikes() {
-            fetch('/api/productlike/@Model.Id/totalLikes', {
+            fetch(`/api/productlike/${productId}/totalLikes`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': '*/*'
                 },
-            }).then(data => data.json()).then(result => totalLikesElement.innerHTML = result);
+            }).then(data => data.json()).then(result => {
+                totalLikesElement.innerHTML = result;
+            });
+        }
+
+        async function checkLikeStatus() {
+            const hasLiked = localStorage.getItem(`liked_${productId}`);
+            if (hasLiked === 'true') {
+                btnLikeElement.innerHTML = '<i class="bi bi-hand-thumbs-up-fill"></i>';
+                btnLikeElement.removeEventListener('click', addLiketoProduct);
+                btnLikeElement.addEventListener('click', removeLikeFromProduct);
+            } else {
+                btnLikeElement.innerHTML = '<i class="bi bi-hand-thumbs-up"></i>';
+                btnLikeElement.removeEventListener('click', removeLikeFromProduct);
+                btnLikeElement.addEventListener('click', addLiketoProduct);
+            }
         }
 
         async function addLiketoProduct() {
@@ -138,17 +155,40 @@
                     'Accept': '*/*'
                 },
                 body: JSON.stringify({
-                    productId: "@Model.Id",
+                    productId: productId,
                     userId: '@userManager.GetUserId(User)'
                 })
             }).then(() => {
+                localStorage.setItem(`liked_${productId}`, 'true');
                 btnLikeElement.innerHTML = '<i class="bi bi-hand-thumbs-up-fill"></i>';
                 btnLikeElement.removeEventListener('click', addLiketoProduct);
+                btnLikeElement.addEventListener('click', removeLikeFromProduct);
                 getTotalLikes();
             });
         }
 
+        async function removeLikeFromProduct() {
+            fetch('/api/ProductLike/Remove', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': '*/*'
+                },
+                body: JSON.stringify({
+                    productId: productId,
+                    userId: '@userManager.GetUserId(User)'
+                })
+            }).then(() => {
+                localStorage.removeItem(`liked_${productId}`);
+                btnLikeElement.innerHTML = '<i class="bi bi-hand-thumbs-up"></i>';
+                btnLikeElement.removeEventListener('click', removeLikeFromProduct);
+                btnLikeElement.addEventListener('click', addLiketoProduct);
+                getTotalLikes();
+            });
+        }
 
         btnLikeElement.addEventListener('click', addLiketoProduct);
+        checkLikeStatus();
+        getTotalLikes();
     </script>
 }

@@ -37,5 +37,13 @@ namespace ShopWeb.Controllers
             var totalLikes = await productLikeRepository.GetTotalLikes(productId);
             return Ok(totalLikes);
         }
+        [HttpDelete]
+        [Route("Remove")]
+        public async Task<IActionResult> RemoveLike([FromBody] RemoveLikeRequest removeLikeRequest)
+        {
+            await productLikeRepository.RemoveLikeFromProduct(removeLikeRequest.UserId, removeLikeRequest.ProductId);
+            return Ok();
+        }
+
     }
 }

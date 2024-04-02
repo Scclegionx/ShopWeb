@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.Ajax.Utilities;
 using Microsoft.EntityFrameworkCore;
 using ShopWeb.Data;
 using ShopWeb.Models.Domain;
@@ -29,6 +30,16 @@ namespace ShopWeb.Repositories
         public async Task<int> GetTotalLikes(Guid productId)
         {
             return await shopWebDbContext.ProductLike.CountAsync(x => x.ProductId == productId);
+        }
+
+        public async Task RemoveLikeFromProduct(Guid userId, Guid productId)
+        {
+            var likeToRemove = await shopWebDbContext.ProductLike.FirstOrDefaultAsync(pl => pl.UserId == userId && pl.ProductId == productId);
+            if (likeToRemove != null)
+            {
+                shopWebDbContext.ProductLike.Remove(likeToRemove);
+                await shopWebDbContext.SaveChangesAsync();
+            }
         }
     }
 }
