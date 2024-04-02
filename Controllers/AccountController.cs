@@ -27,28 +27,86 @@ namespace ShopWeb.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Check if the username already exists
+                var existingUsername = await userManager.FindByNameAsync(registerViewModel.Username);
+                if (existingUsername != null)
+                {
+                    ModelState.AddModelError("Username", "Tên đăng nhập đã tồn tại!");
+                    return View(registerViewModel);
+                }
+
+                // Check if the email already exists
+                var existingEmail = await userManager.FindByEmailAsync(registerViewModel.Email);
+                if (existingEmail != null)
+                {
+                    ModelState.AddModelError("Email", "Email đã tồn tại!");
+                    return View(registerViewModel);
+                }
+
+                // Check if the password meets the configured requirements
+                var passwordValidator = new PasswordValidator<ApplicationUser>();
+                var result = await passwordValidator.ValidateAsync(userManager, null, registerViewModel.Password);
+                if (!result.Succeeded)
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        switch (error.Code)
+                        {
+                            case "PasswordRequiresDigit":
+                                ModelState.AddModelError("Password", "Mật khẩu phải chứa ít nhất 1 số!");
+                                break;
+                            case "PasswordRequiresLower":
+                                ModelState.AddModelError("Password", "Mật khẩu phải chứa ít nhất 1 ký tự in thường!");
+                                break;
+                            case "PasswordRequiresUpper":
+                                ModelState.AddModelError("Password", "Mật khẩu phải chứa ít nhất 1 ký tự in hoa!");
+                                break;
+                            case "PasswordRequiresNonAlphanumeric":
+                                ModelState.AddModelError("Password", "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt!");
+                                break;
+                            case "PasswordRequiresUniqueChars":
+                                ModelState.AddModelError("Password", "Password must contain at least one unique character.");
+                                break;
+                            case "PasswordTooShort":
+                                ModelState.AddModelError("Password", "Độ dài tối thiểu của mật khẩu là 6 ký tự");
+                                break;
+                            default:
+                                ModelState.AddModelError("Password", "Mật khẩu không hợp lệ!");
+                                break;
+                        }
+                    }
+                    return View(registerViewModel);
+                }
+
+                // Create new ApplicationUser
                 var identityUser = new ApplicationUser
                 {
                     UserName = registerViewModel.Username,
                     Email = registerViewModel.Email,
+                    Avatar = "empty",
+                    Address = "empty"
                 };
+
+                // Create the user
                 var identityResult = await userManager.CreateAsync(identityUser, registerViewModel.Password);
-
-                if (identityResult.Succeeded) 
+                if (identityResult.Succeeded)
                 {
+                    // Add user to role
                     var roleIdentityResult = await userManager.AddToRoleAsync(identityUser, "User");
-
                     if (roleIdentityResult.Succeeded)
                     {
                         return RedirectToAction("Login");
-                        //them thong bao
                     }
                 }
+
+                // If user creation or adding to role fails
+                ModelState.AddModelError(string.Empty, "Failed to register user.");
             }
 
-
-            return View();
+            // If ModelState is not valid, return to the view with errors
+            return View(registerViewModel);
         }
+
 
         [HttpGet]
         public IActionResult Login(string ReturnUrl)
@@ -72,6 +130,10 @@ namespace ShopWeb.Controllers
                     }
 
                     return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid username or password.");
                 }
             }
 
