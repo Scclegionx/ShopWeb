@@ -3,6 +3,7 @@ using ShopWeb.Data;
 using ShopWeb.Models.Domain;
 using PagedList;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using Microsoft.Ajax.Utilities;
 
 namespace ShopWeb.Repositories
 {
@@ -79,5 +80,21 @@ namespace ShopWeb.Repositories
             return await shopWebDbContext.Products.CountAsync();
         }
 
+        public async Task<List<Product>> GetProductsByCategoryAsync(string category)
+        {
+            var products = await shopWebDbContext.Products
+                .Where(p => p.Categories.Any(c => c.Name == category))
+                .ToListAsync();
+
+            return products;
+        }
+
+        public async Task<IEnumerable<Product>> FindByNameAndCategoryAsync(string productName, string category)
+        {
+            return await shopWebDbContext.Products
+                .Include(p => p.Categories)
+                .Where(p => p.Name.Contains(productName) && p.Categories.Any(c => c.Name == category))
+                .ToListAsync();
+        }
     }
 }
