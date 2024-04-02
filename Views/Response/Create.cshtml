@@ -1,13 +1,12 @@
-﻿@model ShopWeb.Models.ViewModels.ResponseVM.ResponseViewModel
+﻿@using Microsoft.AspNetCore.Identity;
+@using ShopWeb.Models.Domain;
+@inject UserManager<ApplicationUser> userManager
+@model ShopWeb.Models.ViewModels.ResponseVM.ResponseViewModel
 
 <h1>Create New Response</h1>
 
 <form asp-action="Create">
-    <div class="form-group">
-        <label asp-for="UserId"></label>
-        <input asp-for="UserId" class="form-control" />
-        <span asp-validation-for="UserId" class="text-danger"></span>
-    </div>
+    <input type="hidden" asp-for="UserId" value="@userManager.GetUserId(User)" />
     <div class="form-group">
         <label asp-for="Heading"></label>
         <input asp-for="Heading" class="form-control" />
