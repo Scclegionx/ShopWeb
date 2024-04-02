@@ -16,6 +16,9 @@
                 </div>
             }
 
+            <!-- Display validation errors -->
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
             @using (Html.BeginForm("Login", "Account", FormMethod.Post))
             {
                 <div class="mb-3">
@@ -32,12 +35,11 @@
                     <button type="submit" class="btn btn-dark">Login</button>
                 </div>
 
-                <input type="hidden" asp-for="ReturnUrl"/>
+                <input type="hidden" asp-for="ReturnUrl" />
             }
 
-                <a href="#">Quên mật khẩu?</a>
+            <a href="#">Quên mật khẩu?</a>
 
         </div>
     </div>
 </div>
-

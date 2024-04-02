@@ -42,6 +42,30 @@ namespace ShopWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> List(UserViewModel userViewModel)
         {
+            var existingUser = await userManager.FindByNameAsync(userViewModel.Username);
+            if (existingUser != null)
+            {
+                ModelState.AddModelError("Username", "Username is already taken.");
+            }
+
+            // Check if email is already registered
+            existingUser = await userManager.FindByEmailAsync(userViewModel.Email);
+            if (existingUser != null)
+            {
+                ModelState.AddModelError("Email", "Email is already registered.");
+            }
+
+            // Check if password meets requirements
+            var passwordValidator = new PasswordValidator<ApplicationUser>();
+            var result = await passwordValidator.ValidateAsync(userManager, null, userViewModel.Password);
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("Password", error.Description);
+                }
+            }
+
             var identityUser = new ApplicationUser
             {
                 UserName = userViewModel.Username,
@@ -51,7 +75,7 @@ namespace ShopWeb.Controllers
             };
 
             var identityResult = await userManager.CreateAsync(identityUser, userViewModel.Password);
-            
+
             if (identityResult is not null)
             {
                 if (identityResult.Succeeded)
