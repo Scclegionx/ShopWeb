@@ -2,16 +2,26 @@
 using ShopWeb.Models.ViewModels.ResponseVM;
 using ShopWeb.Repositories;
 using ShopWeb.Models.Domain;
+using Microsoft.AspNetCore.Identity;
 
 namespace ShopWeb.Controllers
 {
     public class ResponseController : Controller
     {
         private readonly IResponseRepository _responseRepository;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public ResponseController(IResponseRepository responseRepository)
+        public ResponseController(IResponseRepository responseRepository, UserManager<ApplicationUser> userManager)
         {
             _responseRepository = responseRepository;
+            this.userManager = userManager;
+        }
+
+        public async Task<IActionResult> customerIndex()
+        {
+            var userId = Guid.Parse(userManager.GetUserId(User));
+            var responses = await _responseRepository.GetResponsesByUserIdAsync(userId);
+            return View(responses);
         }
 
         // GET: Response
@@ -62,11 +72,19 @@ namespace ShopWeb.Controllers
         public async Task<IActionResult> Edit(Guid id)
         {
             var response = await _responseRepository.GetResponseByIdAsync(id);
-            if (response == null)
+            var model = new ResponseViewModel
+            {
+                Id = response.Id,
+                UserId = response.UserId,
+                Heading = response.Heading,
+                Content = response.Content,
+                CreatedAt = response.CreatedAt
+            };
+            if (model == null)
             {
                 return NotFound();
             }
-            return View(response);
+            return View(model);
         }
 
         // POST: Response/Edit/{id}
@@ -90,7 +108,7 @@ namespace ShopWeb.Controllers
                     CreatedAt = responseViewModel.CreatedAt
                 };
                 await _responseRepository.UpdateResponseAsync(response);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("customerIndex");
             }
             return View(responseViewModel);
         }
