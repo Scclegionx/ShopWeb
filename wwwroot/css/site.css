@@ -115,7 +115,7 @@ body {
     padding: 20px; /* Adjust as needed */
     margin-bottom: 20px; /* Spacing between cards, adjust as needed */
 }
-#all-product-container {
+#product-list-container {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
 }

@@ -21,43 +21,54 @@ namespace ShopWeb.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(string productName, int page = 1)
+        public async Task<IActionResult> Index(string productName, string category, int page = 1)
         {
+            const int pageSize = 10;
 
-            const int pageSize = 10; 
+            // Get total count for pagination
             var totalProductsCount = await productRepository.GetTotalProductsCount();
+
+            // Calculate page count
             var pageCount = (int)Math.Ceiling((double)totalProductsCount / pageSize);
 
-            if (productName != null)
+            IEnumerable<Product> products;
+
+            // Check if both productName and category are provided
+            if (!string.IsNullOrEmpty(productName) && !string.IsNullOrEmpty(category))
             {
-                var productSearch = await productRepository.FindByNameAsync(productName);
-                var cates = await cateRepository.GetAllAsync();
-                var model = new HomeViewModel
-                {
-                    Products = productSearch,
-                    Categories = cates,
-                    PageNumber = page,
-                    PageCount = pageCount
-                };
-                return View(model);
-
-            } else
-            {
-                var products = await productRepository.GetAllAsync(page, pageSize);
-
-                var cates = await cateRepository.GetAllAsync();
-
-                var model = new HomeViewModel
-                {
-                    Products = products,
-                    Categories = cates,
-                    PageNumber = page,
-                    PageCount = pageCount
-                };
-
-                return View(model);
+                // Find products matching both name and category
+                products = await productRepository.FindByNameAndCategoryAsync(productName, category);
             }
-            
+            // If only productName is provided
+            else if (!string.IsNullOrEmpty(productName))
+            {
+                // Find products by name
+                products = await productRepository.FindByNameAsync(productName);
+            }
+            // If only category is provided
+            else if (!string.IsNullOrEmpty(category))
+            {
+                // Find products by category
+                products = await productRepository.GetProductsByCategoryAsync(category);
+            }
+            // If neither productName nor category is provided, fetch all products
+            else
+            {
+                products = await productRepository.GetAllAsync(page, pageSize);
+            }
+
+            // Get categories for display
+            var categories = await cateRepository.GetAllAsync();
+
+            var model = new HomeViewModel
+            {
+                Products = products,
+                Categories = categories,
+                PageNumber = page,
+                PageCount = pageCount
+            };
+
+            return View(model);
         }
 
         public IActionResult Privacy()
@@ -70,5 +81,20 @@ namespace ShopWeb.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        [HttpGet]
+        public async Task<IActionResult> SortByCategory(string category)
+        {
+            var products = await productRepository.GetProductsByCategoryAsync(category);
+
+            var model = new HomeViewModel
+            {
+                Products = products,
+                Categories = await cateRepository.GetAllAsync()
+            };
+
+            return PartialView("_ProductList", model);
+        }
+
     }
 }

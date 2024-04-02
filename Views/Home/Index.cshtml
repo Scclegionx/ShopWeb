@@ -14,7 +14,7 @@
                     foreach (var cate in Model.Categories)
                     {
                         <div style="display: block;">
-                            <span class="badge bg-dark me-1">
+                            <span class="badge bg-dark me-1 category-tag">
                                 @cate.Name
                             </span>
                         </div>
@@ -44,10 +44,11 @@
                 {
                     <label>Search:</label>
                     <input type="text" placeholder="Type something..." name="productName" />
+                    <input type="hidden" id="category" name="category" value="" />
                     <button class="btn-dark" type="submit">Tìm</button>
                 }
             </div>
-            <div id="all-product-container">
+            <div id="product-list-container">
                 @if (Model != null && Model.Products.Any())
                 {
                     foreach (var product in Model.Products)
@@ -103,3 +104,31 @@
 
     
 </div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.category-tag').click(function () {
+                var categoryName = $(this).text().trim();
+                sortByCategory(categoryName);
+                $('#category').val(categoryName);
+            });
+        });
+
+        function sortByCategory(categoryName) {
+            $.ajax({
+                url: '/Home/SortByCategory',
+                type: 'GET',
+                data: { category: categoryName },
+                success: function (data) {
+                    $('#product-list-container').empty();
+                    $('#product-list-container').html(data);
+                },
+                error: function () {
+                    alert('Error occurred while sorting products.');
+                }
+            });
+        }
+    </script>
+
+}

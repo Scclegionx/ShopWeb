@@ -11,5 +11,7 @@ namespace ShopWeb.Repositories
         Task<Product?> DeleteAsync(Guid id);
         Task<IEnumerable<Product?>> FindByNameAsync(string productName);
         Task<int> GetTotalProductsCount();
+        Task<List<Product>> GetProductsByCategoryAsync(string category);
+        Task<IEnumerable<Product>> FindByNameAndCategoryAsync(string productName, string category);
     }
 }

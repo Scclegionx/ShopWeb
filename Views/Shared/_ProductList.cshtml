@@ -1,0 +1,35 @@
+﻿@model ShopWeb.Models.ViewModels.HomeViewModel;
+
+@if (Model != null && Model.Products.Any())
+{
+    foreach (var product in Model.Products)
+    {
+        <div class="mb-5 bg-light box-shadow p-5" id="product-container">
+            <div>
+                <img src="@product.FeaturedImageUrl" alt="@product.Name" class="mb-2 d-block img-fluid" />
+
+                <h2 class="mb-4" style="text-align: center;">@product.Name</h2>
+            </div>
+            <div id="product-p2-container">
+                <div id="price-container">
+                    <span class="mark">Giá: @product.Price</span>
+                </div>
+                <div id="quantity-container">
+                    <span>Số lượng: @product.Quantity</span>
+                </div>
+            </div>
+
+            <div>
+                <a class="btn btn-dark"
+                   asp-area=""
+                   asp-controller="Products"
+                   asp-action="Index"
+                   asp-route-id="{@product.Id}">Chi Tiết</a>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <p>No Products Found!</p>
+}
