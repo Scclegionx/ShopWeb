@@ -4,6 +4,8 @@ using ShopWeb.Models.Domain;
 using ShopWeb.Models.ViewModels.LoginVM;
 using ShopWeb.Models.ViewModels.RegisterVM;
 using ShopWeb.Models.ViewModels.UserVM;
+using ShopWeb.Repositories;
+using ShopWeb.Models.ViewModels.LikeVM;
 
 namespace ShopWeb.Controllers
 {
@@ -11,11 +13,15 @@ namespace ShopWeb.Controllers
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly IProductLikeRepository productLikeRepository;
+        private readonly IProductRepository productRepository;
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IProductLikeRepository productLikeRepository, IProductRepository productRepository)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.productLikeRepository = productLikeRepository;
+            this.productRepository = productRepository;
         }
         [HttpGet]
         public IActionResult Register()
@@ -254,5 +260,38 @@ namespace ShopWeb.Controllers
 
             return RedirectToAction("Login", "Account");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> LikedProducts()
+        {
+            // Get the currently logged-in user's ID
+            Guid userId = Guid.Parse(userManager.GetUserId(User));
+
+            // Fetch the liked products for the user
+            var listOfId = await productLikeRepository.GetLikedProductIds(userId);
+
+            var allLikedProducts = new List<Product>();
+
+            foreach (var productId in listOfId)
+            {
+                var model = await productRepository.GetAsync(productId);
+                if (model != null)
+                {
+                    allLikedProducts.Add(model);
+                }
+            }
+            if (allLikedProducts != null)
+            {
+                var modelForView = new LikeProductsViewModel
+                {
+                    LikedProducts = allLikedProducts
+                };
+                return View(modelForView);
+            } else
+            {
+                return View(null);
+            }
+        }
+
     }
 }

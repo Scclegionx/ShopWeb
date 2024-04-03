@@ -27,6 +27,16 @@ namespace ShopWeb.Repositories
             return await shopWebDbContext.ProductLike.Where(x =>  x.ProductId == productId).ToListAsync();
         }
 
+        public async Task<IEnumerable<Guid>> GetLikedProductIds(Guid userId)
+        {
+            var likedProductIds = await shopWebDbContext.ProductLike
+                .Where(pl => pl.UserId == userId)
+                .Select(pl => pl.ProductId)
+                .ToListAsync();
+
+            return likedProductIds;
+        }
+
         public async Task<int> GetTotalLikes(Guid productId)
         {
             return await shopWebDbContext.ProductLike.CountAsync(x => x.ProductId == productId);
