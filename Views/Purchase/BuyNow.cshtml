@@ -55,5 +55,13 @@
 {
     @Html.HiddenFor(model => model.TotalPrice)
 
+    <label for="paymentMethod">Select Payment Method:</label>
+    <select id="paymentMethod" name="paymentMethod">
+        <option value="COD">COD</option>
+        <option value="CK">Chuyển khoản</option>
+        <!-- Add more payment methods as needed -->
+    </select>
+
+
     <button type="submit" class="btn btn-primary">Confirm Order</button>
 }

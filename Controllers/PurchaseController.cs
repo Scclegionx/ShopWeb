@@ -148,8 +148,16 @@ namespace ShopWeb.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Confirm(PurchaseViewModel purchaseViewModel)
+        public async Task<IActionResult> Confirm(PurchaseViewModel purchaseViewModel, string paymentMethod)
         {
+            var PM = "";
+            if (paymentMethod == "CK")
+            {
+                PM = "Chuyển khoản";
+            } else if (paymentMethod == "COD")
+            {
+                PM = "COD";
+            }
             var userId = Guid.Parse(userManager.GetUserId(User));
             var currentUserCart = await cartRepository.GetCurrentUserCartAsync(userId);
 
@@ -157,7 +165,8 @@ namespace ShopWeb.Controllers
             {
                 UserId = Guid.Parse(userManager.GetUserId(User)),
                 PurchaseDate = DateTime.Now,
-                TotalPrice = purchaseViewModel.TotalPrice
+                TotalPrice = purchaseViewModel.TotalPrice,
+                PaymentMethod = PM,
             };
 
             await purchaseRepository.SavePurchaseAsync(purchase);
