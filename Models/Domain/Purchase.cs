@@ -6,6 +6,7 @@
         public Guid UserId { get; set; }
         public DateTime PurchaseDate { get; set; }
         public decimal TotalPrice { get; set; }
+        public string PaymentMethod { get; set; }
         public ICollection<PurchaseItem> Items { get; set; }
     }
 }
