@@ -5,6 +5,7 @@ using ShopWeb.Models.ViewModels;
 using ShopWeb.Repositories;
 using System.Diagnostics;
 using PagedList;
+using Microsoft.AspNetCore.Identity;
 
 namespace ShopWeb.Controllers
 {
@@ -13,16 +14,27 @@ namespace ShopWeb.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IProductRepository productRepository;
         private readonly ICateRepository cateRepository;
-        public HomeController(ILogger<HomeController> logger, IProductRepository productRepository, ICateRepository cateRepository)
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
+
+        public HomeController(ILogger<HomeController> logger, IProductRepository productRepository, ICateRepository cateRepository, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             _logger = logger;
             this.productRepository = productRepository;   
             this.cateRepository = cateRepository;
+            this.userManager = userManager;
+            this.signInManager = signInManager;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index(string productName, string category, int page = 1)
         {
+            if (signInManager.IsSignedIn(User) && User.IsInRole("Shipper"))
+            {
+                return RedirectToAction("Index", "Shipper");
+            }
+
+
             const int pageSize = 10;
 
             // Get total count for pagination

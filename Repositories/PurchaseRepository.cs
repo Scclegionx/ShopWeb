@@ -53,7 +53,7 @@ namespace ShopWeb.Repositories
 
         public async Task<IEnumerable<Purchase>> GetOwnPurchases(Guid userId)
         {
-            return await shopWebDbContext.Purchase.Where(x => x.UserId == userId).ToListAsync();
+            return await shopWebDbContext.Purchase.Where(x => x.UserId == userId && x.State != "Done").ToListAsync();
         }
 
         public async Task<Purchase?> GetPurchaseById(Guid id)
@@ -62,12 +62,23 @@ namespace ShopWeb.Repositories
             return purchase;
         }
 
+        public async Task<IEnumerable<Purchase>> GetPurchaseByShipperId(Guid shipperId)
+        {
+            return await shopWebDbContext.Purchase.Where(x => x.ShipperID == shipperId && x.State != "Done").ToListAsync();
+        }
+
         public async Task<Purchase> SavePurchaseAsync(Purchase purchase)
         {
             // Implement logic to save purchase to the database
             await shopWebDbContext.Purchase.AddAsync(purchase);
             await shopWebDbContext.SaveChangesAsync();
             return purchase;
+        }
+
+        public async Task UpdatePurchaseAsync(Purchase purchase)
+        {
+            shopWebDbContext.Entry(purchase).State = EntityState.Modified;
+            await shopWebDbContext.SaveChangesAsync();
         }
     }
 }

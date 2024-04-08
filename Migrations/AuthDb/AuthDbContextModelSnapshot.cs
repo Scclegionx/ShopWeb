@@ -69,6 +69,13 @@ namespace ShopWeb.Migrations.AuthDb
                             ConcurrencyStamp = "d21169e5-d672-4720-845d-14dd6278c740",
                             Name = "SuperAdmin",
                             NormalizedName = "SuperAdmin"
+                        },
+                        new
+                        {
+                            Id = "a37d654b-9771-4d90-b9d4-e6b88509c394",
+                            ConcurrencyStamp = "a37d654b-9771-4d90-b9d4-e6b88509c394",
+                            Name = "Shipper",
+                            NormalizedName = "Shipper"
                         });
                 });
 
@@ -275,15 +282,15 @@ namespace ShopWeb.Migrations.AuthDb
                             AccessFailedCount = 0,
                             Address = "123 Main Street",
                             Avatar = "test",
-                            ConcurrencyStamp = "93957b84-2fb6-4b07-beec-5c9d7deea66f",
+                            ConcurrencyStamp = "1081cf14-aed9-4fe4-a904-6825508b9572",
                             Email = "superadmin@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "SUPERADMIN@GMAIL.COM",
                             NormalizedUserName = "SUPERADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEEq8x8Y+YOeENbklbb1RURaj7XaZ7tGN3p8/gzvYgOOVwy2dXl++RHHN6PjeiYcxqQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBn5RMiy3/euKRfWJ/yF3nKkbtAo4kwgJER1MyJLYpfsWElxM2+SmW6E0z1mAV+4wA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "4b56b0c2-a575-435e-93f3-10e79d91addb",
+                            SecurityStamp = "d71f5f59-b77c-475e-b35b-2b7f396906f1",
                             TwoFactorEnabled = false,
                             UserName = "superadmin"
                         });

@@ -12,5 +12,7 @@ namespace ShopWeb.Repositories
         Task<IEnumerable<PurchaseItem>> GetAllPurchaseItems(Guid PurchaseId);
         Task<Purchase?> DeletePurchaseAsync(Guid id);
         Task<IEnumerable<Purchase>> GetOwnPurchases(Guid userId);
+        Task UpdatePurchaseAsync(Purchase purchase);
+        Task<IEnumerable<Purchase>> GetPurchaseByShipperId(Guid shipperId);
     }
 }

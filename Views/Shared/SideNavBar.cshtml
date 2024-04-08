@@ -1,6 +1,6 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using Microsoft.AspNetCore.Identity;
+@using ShopWeb.Models.Domain;
+@inject SignInManager<ApplicationUser> signInManager;
 @{
 }
 
@@ -10,10 +10,17 @@
         <li><a asp-area="" asp-controller="Account" asp-action="UserDetail">Chi Tiết</a></li>
         <li><a asp-area="" asp-controller="Account" asp-action="Edit">Cập nhật thông tin</a></li>
         <li><a asp-area="" asp-controller="Account" asp-action="ChangePassword">Đổi mật khẩu</a></li>
-        <li><a asp-area="" asp-controller="Account" asp-action="LikedProducts">Sản phẩm yêu thích</a></li>
-        <li><a asp-area="" asp-controller="Purchase" asp-action="Index">Đơn hàng của bạn</a></li>
-        <li><a href="#">Lịch sử mua hàng</a></li>
-        <li><a href="#">Tracking</a></li>
+        @if (signInManager.IsSignedIn(User) && !User.IsInRole("Shipper") )
+        {
+            <li><a asp-area="" asp-controller="Account" asp-action="LikedProducts">Sản phẩm yêu thích</a></li>
+            <li><a asp-area="" asp-controller="Purchase" asp-action="Index">Đơn hàng của bạn</a></li>
+            <li><a href="#">Lịch sử mua hàng</a></li>
+            <li><a href="#">Tracking</a></li>
+        }
+        @if (signInManager.IsSignedIn(User) && User.IsInRole("Shipper"))
+        {
+            <li><a asp-area="" asp-controller="Shipper" asp-action="MyOrder">Đơn ship của bạn</a></li>
+        }
         <li><a asp-area="" asp-controller="Response" asp-action="customerIndex">Trợ giúp</a></li>
     </ul>
 </nav>

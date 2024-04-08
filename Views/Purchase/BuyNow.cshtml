@@ -55,6 +55,12 @@
 {
     @Html.HiddenFor(model => model.TotalPrice)
 
+    @Html.LabelFor(m => m.Address, new {@class="control-label"})
+    @Html.TextBoxFor(m => m.Address, new { @class="form-control"})
+
+    @Html.LabelFor(m => m.Note, new { @class = "control-label" })
+    @Html.TextBoxFor(m => m.Note, new { @class = "form-control" })
+
     <label for="paymentMethod">Select Payment Method:</label>
     <select id="paymentMethod" name="paymentMethod">
         <option value="COD">COD</option>

@@ -85,6 +85,9 @@ namespace ShopWeb.Controllers
                     if (userViewModel.AdminRoleCheckBox)
                     {
                         roles.Add("Admin");
+                    } else if (userViewModel.ShipperRoleCheckBox)
+                    {
+                        roles.Add("Shipper");
                     }
 
                     await userManager.AddToRolesAsync(identityUser, roles);

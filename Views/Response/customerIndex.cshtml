@@ -1,37 +1,44 @@
 ﻿@model List<ShopWeb.Models.Domain.Response>
 
-<h1>Responses</h1>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Create New</a>
-</p>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>User Id</th>
-            <th>Heading</th>
-            <th>Content</th>
-            <th>Created At</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var response in Model)
-        {
+@await Html.PartialAsync("SideNavBar")
+
+<div id="response-container">
+    <h1>Responses</h1>
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Create New</a>
+    </p>
+
+    <table class="table">
+        <thead>
             <tr>
-                <td>@response.Id</td>
-                <td>@response.UserId</td>
-                <td>@response.Heading</td>
-                <td>@response.Content</td>
-                <td>@response.CreatedAt</td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@response.Id">Details</a> |
-                    <a asp-action="Edit" asp-route-id="@response.Id">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@response.Id">Delete</a>
-                </td>
+                <th>Id</th>
+                <th>User Id</th>
+                <th>Heading</th>
+                <th>Content</th>
+                <th>Created At</th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var response in Model)
+            {
+                <tr>
+                    <td>@response.Id</td>
+                    <td>@response.UserId</td>
+                    <td>@response.Heading</td>
+                    <td>@response.Content</td>
+                    <td>@response.CreatedAt</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@response.Id">Details</a> |
+                        <a asp-action="Edit" asp-route-id="@response.Id">Edit</a> |
+                        <a asp-action="Delete" asp-route-id="@response.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+

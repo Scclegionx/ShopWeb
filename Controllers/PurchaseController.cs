@@ -167,6 +167,10 @@ namespace ShopWeb.Controllers
                 PurchaseDate = DateTime.Now,
                 TotalPrice = purchaseViewModel.TotalPrice,
                 PaymentMethod = PM,
+                Address = purchaseViewModel.Address,
+                Note = purchaseViewModel.Note,
+                State = "None",
+                ShipperID = null
             };
 
             await purchaseRepository.SavePurchaseAsync(purchase);
