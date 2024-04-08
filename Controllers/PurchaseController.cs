@@ -241,5 +241,20 @@ namespace ShopWeb.Controllers
             var purchases = await purchaseRepository.GetAllPurchases();
             return View(purchases);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> History()
+        {
+            var userId = Guid.Parse(userManager.GetUserId(User));
+            var models = await purchaseRepository.GetOwnPurchaseForHistory(userId);
+            return View(models);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Tracking()
+        {
+            var userId = Guid.Parse(userManager.GetUserId(User));
+            var models = await purchaseRepository.GetOwnPurchaseForTracking(userId);
+            return View(models);
+        }
     }
 }

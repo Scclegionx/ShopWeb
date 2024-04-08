@@ -131,7 +131,7 @@ body {
     margin: 0 0 20px 1200px;
 }
 /*login, register, cateAdmin, productAdmin */
-#login-container, #register-container, #cateAdmin-container, #productAdmin-container, #rating-container, #purchase-container, #response-container {
+#login-container, #register-container, #cateAdmin-container, #productAdmin-container, #rating-container, #purchase-container, #response-container, #tracking-container, #history-container {
     border-radius: 15px; /* Adjust the value for the roundness of corners */
     border: 5px solid #ADD8E6; /* Light blue border */
     background-color: #F0F8FF; /* Light background color */
@@ -139,8 +139,8 @@ body {
     padding: 20px; /* Adjust as needed */
     margin-bottom: 20px; /* Spacing between cards, adjust as needed */
 }
-#purchase-container, #response-container {
-    margin-left: 200px;  
+#purchase-container, #response-container, #tracking-container, #history-container {
+    margin-left: 200px;
 }
 /*UserAdmin*/
 #userAdmin-container {

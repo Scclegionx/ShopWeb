@@ -14,8 +14,8 @@
         {
             <li><a asp-area="" asp-controller="Account" asp-action="LikedProducts">Sản phẩm yêu thích</a></li>
             <li><a asp-area="" asp-controller="Purchase" asp-action="Index">Đơn hàng của bạn</a></li>
-            <li><a href="#">Lịch sử mua hàng</a></li>
-            <li><a href="#">Tracking</a></li>
+            <li><a asp-area="" asp-controller="Purchase" asp-action="History">Lịch sử mua hàng</a></li>
+            <li><a asp-area="" asp-controller="Purchase" asp-action="Tracking">Tracking</a></li>
         }
         @if (signInManager.IsSignedIn(User) && User.IsInRole("Shipper"))
         {

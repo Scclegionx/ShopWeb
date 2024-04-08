@@ -14,5 +14,7 @@ namespace ShopWeb.Repositories
         Task<IEnumerable<Purchase>> GetOwnPurchases(Guid userId);
         Task UpdatePurchaseAsync(Purchase purchase);
         Task<IEnumerable<Purchase>> GetPurchaseByShipperId(Guid shipperId);
+        Task<IEnumerable<Purchase>> GetOwnPurchaseForTracking(Guid userId);
+        Task<IEnumerable<Purchase>> GetOwnPurchaseForHistory(Guid userId);
     }
 }
