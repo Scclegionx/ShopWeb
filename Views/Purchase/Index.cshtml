@@ -21,6 +21,8 @@
                 <th>Purchase Date</th>
                 <th>Total Price</th>
                 <th>Phương thức thanh toán</th>
+                <th>Địa chỉ</th>
+                <th>Ghi chú</th>
                 <th></th>
                 <th></th>
             </tr>
@@ -34,6 +36,8 @@
                     <td>@purchase.PurchaseDate</td>
                     <td>@purchase.TotalPrice</td>
                     <td>@purchase.PaymentMethod</td>
+                    <td>@purchase.Address</td>
+                    <td>@purchase.Note</td>
                     <td><a asp-area="" asp-controller="Purchase" asp-action="Detail" asp-route-id="{@purchase.Id}">Chi Tiết</a></td>
                     <td>
                         <form asp-action="Delete" asp-route-id="@purchase.Id" method="post">

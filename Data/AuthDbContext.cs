@@ -28,6 +28,7 @@ namespace ShopWeb.Data
             var userRoleId = "7b77a51f-5bff-479a-af59-27d84c9257a9";
             var adminRoleId = "51ccd6c8-6c80-4852-bf8e-d4dc98516dc1";
             var superAdminRoleId = "d21169e5-d672-4720-845d-14dd6278c740";
+            var shipperRoleId = "a37d654b-9771-4d90-b9d4-e6b88509c394";
 
             var roles = new List<IdentityRole>
             {
@@ -51,6 +52,13 @@ namespace ShopWeb.Data
                     NormalizedName = "SuperAdmin",
                     Id = superAdminRoleId,
                     ConcurrencyStamp = superAdminRoleId,
+                },
+                new IdentityRole
+                {
+                    Name = "Shipper",
+                    NormalizedName = "Shipper",
+                    Id = shipperRoleId,
+                    ConcurrencyStamp = shipperRoleId,
                 }
             };
 

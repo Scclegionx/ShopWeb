@@ -1,0 +1,55 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using ShopWeb.Models.Domain;
+
+@inject UserManager<ApplicationUser> userManager;
+
+@model ShopWeb.Models.ViewModels.PurchaseVM.AcceptPurchaseRequest
+@{
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+<div class="container py-5" id="cateAdmin-container">
+    <h2>Bạn có chắc muốn nhận đơn hàng này?</h2>
+    @using (Html.BeginForm("AcceptPurchase", "Shipper", FormMethod.Post))
+    {
+        <div class="col-md-8 mb-3">
+            @Html.LabelFor(m => m.Id, new { @class = "col-md-4 control-label" })
+            @Html.TextBoxFor(m => m.Id, new { @class = "form-control", @readonly = true })
+        </div>
+        <div class="col-md-8 mb-3">
+            @Html.LabelFor(m => m.UserName, new { @class = "col-md-4 control-label" })
+            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @readonly = true })
+        </div>
+        <div class="col-md-8 mb-3">
+            @Html.LabelFor(m => m.PurchaseDate, new { @class = "col-md-4 control-label" })
+            @Html.TextBoxFor(m => m.PurchaseDate, new { @class = "form-control", @readonly = true })
+        </div>
+        <div class="col-md-8 mb-3">
+            @Html.LabelFor(m => m.TotalPrice, new { @class = "col-md-4 control-label" })
+            @Html.TextBoxFor(m => m.TotalPrice, new { @class = "form-control", @readonly = true })
+        </div>
+        <div class="col-md-8 mb-3">
+            @Html.LabelFor(m => m.Address, new { @class = "col-md-4 control-label" })
+            @Html.TextBoxFor(m => m.Address, new { @class = "form-control", @readonly = true })
+        </div>
+        <div class="col-md-8 mb-3">
+            @Html.LabelFor(m => m.Note, new { @class = "col-md-4 control-label" })
+            @Html.TextBoxFor(m => m.Note, new { @class = "form-control", @readonly = true })
+        </div>
+        <div class="col-md-8 mb-3">
+            @Html.LabelFor(m => m.PaymentMethod, new { @class = "col-md-4 control-label" })
+            @Html.TextBoxFor(m => m.PaymentMethod, new { @class = "form-control", @readonly = true })
+        </div>
+        @Html.HiddenFor(m => m.State)
+        <input type="hidden" name="ShipperId" value="@Guid.Parse(userManager.GetUserId(User))" />
+
+        <button type="submit" class="btn btn-dark">Xác nhận</button>
+    }
+    <a asp-area=""
+       asp-action="Index"
+       asp-controller="Shipper">Cancel</a>
+</div>

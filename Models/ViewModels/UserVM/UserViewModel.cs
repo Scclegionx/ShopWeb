@@ -9,6 +9,7 @@ namespace ShopWeb.Models.ViewModels.UserVM
         [Required]
         public string Email { get; set; }
         public string Password { get; set; }
+        public bool ShipperRoleCheckBox { get; set; }
         public bool AdminRoleCheckBox { get; set; }
         [Required]
         public string Avatar { get; set; }

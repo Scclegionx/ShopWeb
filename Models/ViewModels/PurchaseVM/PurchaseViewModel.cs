@@ -13,5 +13,7 @@ namespace ShopWeb.Models.ViewModels.PurchaseVM
         public string PaymentMethod { get; set; }
         public string CouponCode { get; set; } 
         public decimal DiscountAmount { get; set; }
+        public string Address { get; set; }
+        public string Note { get; set; }
     }
 }

@@ -42,9 +42,12 @@
                             <div class="me-3 text-light">
                                 <a style="text-decoration: none; color: white" asp-area="" asp-controller="Account" asp-action="UserDetail">@User?.Identity?.Name</a>
                             </div>
-                            <div class="me-3 text-light">
-                                <a class="nav-link text-light" asp-area="" asp-controller="Cart" asp-action="Index">Giỏ hàng</a>
-                            </div>
+                            @if (!User.IsInRole("Shipper"))
+                            {    
+                                <div class="me-3 text-light">
+                                    <a class="nav-link text-light" asp-area="" asp-controller="Cart" asp-action="Index">Giỏ hàng</a>
+                                </div>
+                            }
 
                             <a class="btn me-3 bg-light text-dark "
                                asp-area=""
