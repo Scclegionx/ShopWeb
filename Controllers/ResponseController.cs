@@ -3,6 +3,7 @@ using ShopWeb.Models.ViewModels.ResponseVM;
 using ShopWeb.Repositories;
 using ShopWeb.Models.Domain;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ShopWeb.Controllers
 {
@@ -25,6 +26,7 @@ namespace ShopWeb.Controllers
         }
 
         // GET: Response
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             var responses = await _responseRepository.GetAllResponsesAsync();
@@ -39,7 +41,17 @@ namespace ShopWeb.Controllers
             {
                 return NotFound();
             }
-            return View(response);
+            var sentUserId = response.UserId.ToString();
+            var sentUser = await userManager.FindByIdAsync(sentUserId);
+            var model = new ResponseViewModel
+            {
+                Id = response.Id,
+                UserName = sentUser.UserName ?? "User Not Found",
+                Heading = response.Heading,
+                Content = response.Content,
+                CreatedAt = response.CreatedAt,
+            };
+            return View(model);
         }
 
         // GET: Response/Create
@@ -60,10 +72,11 @@ namespace ShopWeb.Controllers
                     UserId = responseViewModel.UserId,
                     Heading = responseViewModel.Heading,
                     Content = responseViewModel.Content,
-                    CreatedAt = DateTime.Now
+                    CreatedAt = DateTime.Now,
+                    State = "Pending"
                 };
                 await _responseRepository.AddResponseAsync(response);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("customerIndex");
             }
             return View(responseViewModel);
         }
@@ -135,6 +148,25 @@ namespace ShopWeb.Controllers
                 return NotFound();
             }
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> UpdateState(Guid id)
+        {
+            var response = await _responseRepository.GetResponseByIdAsync(id);
+            if (response == null)
+            {
+                return NotFound();
+            }
+
+            if (response.State == "Pending")
+            {
+                response.State = "Done";
+            }
+
+            await _responseRepository.UpdateResponseAsync(response);
+
+            return RedirectToAction("Index");
         }
     }
 }

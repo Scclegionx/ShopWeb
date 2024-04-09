@@ -18,6 +18,7 @@
                 <th>Heading</th>
                 <th>Content</th>
                 <th>Created At</th>
+                <th>State</th>
                 <th></th>
             </tr>
         </thead>
@@ -30,11 +31,15 @@
                     <td>@response.Heading</td>
                     <td>@response.Content</td>
                     <td>@response.CreatedAt</td>
-                    <td>
-                        <a asp-action="Details" asp-route-id="@response.Id">Details</a> |
-                        <a asp-action="Edit" asp-route-id="@response.Id">Edit</a> |
-                        <a asp-action="Delete" asp-route-id="@response.Id">Delete</a>
-                    </td>
+                    <td>@response.State</td>
+                    @if (response.State == "Pending")
+                    {
+                        <td>
+                            <a asp-action="Details" asp-route-id="@response.Id">Details</a> |
+                            <a asp-action="Edit" asp-route-id="@response.Id">Edit</a> |
+                            <a asp-action="Delete" asp-route-id="@response.Id">Delete</a>
+                        </td>
+                    }
                 </tr>
             }
         </tbody>
