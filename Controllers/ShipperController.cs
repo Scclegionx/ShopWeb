@@ -106,7 +106,7 @@ namespace ShopWeb.Controllers
 
             await purchaseRepository.UpdatePurchaseAsync(purchase);
 
-            return RedirectToAction("Index");
+            return RedirectToAction("MyOrder");
         }
 
         [HttpGet]

@@ -10,6 +10,8 @@
             <th>Heading</th>
             <th>Content</th>
             <th>Created At</th>
+            <th>State</th>
+            <th></th>
             <th></th>
         </tr>
     </thead>
@@ -22,11 +24,16 @@
                 <td>@response.Heading</td>
                 <td>@response.Content</td>
                 <td>@response.CreatedAt</td>
+                <td>@response.State</td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@response.Id">Details</a> |
-                    <a asp-action="Edit" asp-route-id="@response.Id">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@response.Id">Delete</a>
+                    <a asp-action="Details" asp-route-id="@response.Id">Details</a>
                 </td>
+                @if (response.State == "Pending")
+                {
+                    <td>
+                        <a class="btn btn-dark" asp-area="" asp-controller="Response" asp-action="UpdateState" asp-route-id="@response.Id">Mark as Done</a>
+                    </td>
+                }
             </tr>
         }
     </tbody>
