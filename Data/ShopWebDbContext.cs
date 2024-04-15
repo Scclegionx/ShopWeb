@@ -18,5 +18,6 @@ namespace ShopWeb.Data
         public DbSet<PurchaseItem> PurchaseItems { get; set; } 
         public DbSet<Coupon> Coupon { get; set; }
         public DbSet<Response> Responses { get; set; }
+        public DbSet<ProductVariant> ProductVariants { get; set; }
     }
 }
