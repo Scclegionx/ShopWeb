@@ -188,7 +188,8 @@ namespace ShopWeb.Controllers
                             ProductName = productInCart.Name,
                             Price = productInCart.Price,
                             Quantity = item.Quantity,
-                            Variants = listForView
+                            Variants = listForView,
+                            ProductId = productInCart.Id,
                         });
                     } else
                     {
@@ -197,7 +198,8 @@ namespace ShopWeb.Controllers
                             ProductName = productInCart.Name,
                             Price = productVariantPrice.Price,
                             Quantity = item.Quantity,
-                            Variants = listForView
+                            Variants = listForView,
+                            ProductId = productInCart.Id,
                         });
                     }
                 }
@@ -247,6 +249,22 @@ namespace ShopWeb.Controllers
                 State = "None",
                 ShipperID = null
             };
+
+            var listProductId = new List<Guid>();
+            var listQuantity = new List<int>();
+
+            foreach (var id in purchaseViewModel.ProductId)
+            {
+                listProductId.Add(id);
+            }
+
+            foreach (var quan in purchaseViewModel.Quantity) { listQuantity.Add(quan); }
+
+            for (var i = 0; i < listProductId.Count; i++)
+            {
+                await purchaseRepository.UpdatePurchaseCount(listProductId[i], listQuantity[i]);
+            }
+
 
             await purchaseRepository.SavePurchaseAsync(purchase);
 

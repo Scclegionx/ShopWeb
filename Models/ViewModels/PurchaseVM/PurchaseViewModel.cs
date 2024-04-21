@@ -15,5 +15,7 @@ namespace ShopWeb.Models.ViewModels.PurchaseVM
         public decimal DiscountAmount { get; set; }
         public string Address { get; set; }
         public string Note { get; set; }
+        public List<Guid> ProductId { get; set; }
+        public List<int> Quantity { get; set; }
     }
 }
