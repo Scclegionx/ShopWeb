@@ -18,10 +18,17 @@ namespace ShopWeb.Repositories
             await shopWebDbContext.SaveChangesAsync();
         }
 
-        public async Task<double> GetAverageRating(Guid productId)
+        public async Task<double?> GetAverageRating(Guid productId)
         {
-            var averageRating = shopWebDbContext.ProductRatings.Where(r => r.ProductId == productId).Average(r => r.Rating);
-            return averageRating;
+            var productRatings = await shopWebDbContext.ProductRatings.Where(r => r.ProductId == productId).ToListAsync();
+            if (productRatings.Any())
+            {
+                return productRatings.Average(r => r.Rating);
+            }
+            else
+            {
+                return null; // or any default value you prefer
+            }
         }
 
         public async Task<ProductRating> GetRatingByUserAndProduct(Guid userId, Guid productId)

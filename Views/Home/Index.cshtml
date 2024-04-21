@@ -31,12 +31,39 @@
 
     <div id="index-container">
         <div class="row justify-content-center" id="index-bestSeller-container">
-            <div id="home-image-container">
-                <img src="https://res.cloudinary.com/diblfklia/image/upload/v1709648001/b5kwreuh6yr42yxjnlyw.jpg" class="mb-2 d-block img-fluid" />
-            </div>
-            <div class="container" id="bestSeller-container">
-                <h1>Best Seller</h1>
-            </div>
+            <h2>Best Selling Products</h2>
+            @if (Model.bestSellingProducts != null && Model.bestSellingProducts.Any())
+            {
+                <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        @foreach (var product in Model.bestSellingProducts)
+                        {
+                            <div class="carousel-item @(product == Model.bestSellingProducts.First() ? "active" : "")">
+                                <a asp-area="" asp-action="Index" asp-controller="Products" asp-route-id="{@product.Id}">
+                                    <img src="@product.FeaturedImageUrl" class="d-block w-100" alt="@product.Name">
+                                </a>
+                                <div class="carousel-caption d-none d-md-block">
+                                    <h5>@product.Name</h5>
+                                    <p>Price: @product.Price</p>
+                                    <p>Purchase Count: @product.PurchaseCount</p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            }
+            else
+            {
+                <p>No best-selling products found.</p>
+            }
         </div>
         <div id="search-allProducts-container">
             <div id="search-container">
@@ -112,6 +139,12 @@
                 var categoryName = $(this).text().trim();
                 sortByCategory(categoryName);
                 $('#category').val(categoryName);
+            });
+        });
+
+        $(document).ready(function () {
+            $('.carousel').carousel({
+                interval: 5000 // Change slide every 5 seconds
             });
         });
 

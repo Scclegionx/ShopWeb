@@ -11,5 +11,6 @@
         public ICollection<Category> Categories { get; set; }
         public ICollection<ProductLike> ProductLike { get; set; }
         public ICollection<ProductComment> ProductComment { get; set; }
+        public int PurchaseCount { get; set; }
     }
 }

@@ -7,6 +7,6 @@ namespace ShopWeb.Repositories
         Task<ProductRating> GetRatingByUserAndProduct(Guid userId, Guid productId);
         Task AddAsync(ProductRating rating);
         Task UpdateAsync(ProductRating rating);
-        Task<double> GetAverageRating(Guid productId);
+        Task<double?> GetAverageRating(Guid productId);
     }
 }

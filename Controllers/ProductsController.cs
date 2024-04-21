@@ -40,7 +40,10 @@ namespace ShopWeb.Controllers
             var liked = false;
             var product = await productRepository.GetAsync(id);
 
-            double averageRating = await productRatingRepository.GetAverageRating(id);
+            double? averageRating = await productRatingRepository.GetAverageRating(id);
+            if (averageRating == null) {
+                averageRating = 0;
+            }
 
             if (product != null)
             {

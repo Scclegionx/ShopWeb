@@ -90,5 +90,23 @@ namespace ShopWeb.Repositories
             shopWebDbContext.Entry(purchase).State = EntityState.Modified;
             await shopWebDbContext.SaveChangesAsync();
         }
+        public async Task UpdatePurchaseCount(Guid productId, int quantity)
+        {
+            var product = await shopWebDbContext.Products.FindAsync(productId);
+            if (product != null)
+            {
+                product.PurchaseCount += quantity;
+                await shopWebDbContext.SaveChangesAsync();
+            }
+        }
+
+        public async Task<List<Product>> GetBestSellingProducts()
+        {
+            return await shopWebDbContext.Products.OrderByDescending(p => p.PurchaseCount)
+                                            .Take(5)
+                                            .ToListAsync();
+        }
+
+
     }
 }
