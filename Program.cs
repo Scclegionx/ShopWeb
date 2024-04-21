@@ -39,6 +39,7 @@ builder.Services.AddScoped<ICouponRepository, CouponRepository>();
 builder.Services.AddScoped<IResponseRepository, ResponseRepository>();
 builder.Services.AddScoped<IVariantAttributesRepository, VariantAttributesRepository>();
 builder.Services.AddScoped<IProductVariantRepository, ProductVariantRepository>(); 
+builder.Services.AddScoped<IProductRatingRepository, ProductRatingRepository>();
 
 var app = builder.Build();
 

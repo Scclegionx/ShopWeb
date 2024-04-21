@@ -20,5 +20,6 @@ namespace ShopWeb.Data
         public DbSet<Response> Responses { get; set; }
         public DbSet<ProductVariant> ProductVariants { get; set; }
         public DbSet<VariantAttribute> VariantAttributes { get; set; }
+        public DbSet<ProductRating> ProductRatings { get; set; } 
     }
 }

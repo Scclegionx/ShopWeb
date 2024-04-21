@@ -15,5 +15,6 @@ namespace ShopWeb.Models.ViewModels.ProductVM
         public ICollection<Category> Categories { get; set; }
         public ICollection<ProductLike> ProductLike { get; set; }
         public IEnumerable<ProductCommentViewModel> Comments { get; set; }
+        public int Rating { get; set; }
     }
 }

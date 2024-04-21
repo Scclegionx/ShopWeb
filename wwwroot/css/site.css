@@ -102,9 +102,27 @@ body {
     margin: 10px 5px 10px 5px;
 }
 #index-bestSeller-container {
-    display: grid;
-    grid-template-columns: 5fr 2fr;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 50vh; /* Set height to 100% of the viewport height */
 }
+
+.carousel {
+    width: 40%; /* Adjust the width as needed */
+}
+.carousel-item img {
+    height: 300px; /* Set the desired height for the images */
+    width: auto; /* Maintain the aspect ratio */
+    object-fit: cover; /* Ensure that the entire image is displayed within the specified dimensions */
+}
+
+#index-bestSeller-container h2 {
+    text-align: center;
+    margin-bottom: 20px; /* Adjust margin as needed */
+}
+
 #home-image-container {
     float: right;
     margin-left: 6px;
@@ -240,4 +258,20 @@ body {
 .variant-form {
     display: grid;
     grid-template-columns: 1fr 1fr;
+}
+
+
+/* product rating*/
+
+.rating {
+    font-size: 24px;
+}
+
+.star {
+    color: #888;
+    cursor: pointer;
+}
+
+.star.active {
+    color: #ffc107; /* Change to your desired active color */
 }

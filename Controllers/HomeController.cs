@@ -16,14 +16,16 @@ namespace ShopWeb.Controllers
         private readonly ICateRepository cateRepository;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly IPurchaseRepository purchaseRepository;
 
-        public HomeController(ILogger<HomeController> logger, IProductRepository productRepository, ICateRepository cateRepository, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public HomeController(ILogger<HomeController> logger, IProductRepository productRepository, ICateRepository cateRepository, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IPurchaseRepository purchaseRepository)
         {
             _logger = logger;
             this.productRepository = productRepository;   
             this.cateRepository = cateRepository;
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.purchaseRepository = purchaseRepository;
         }
 
         [HttpGet]
@@ -33,7 +35,7 @@ namespace ShopWeb.Controllers
             {
                 return RedirectToAction("Index", "Shipper");
             }
-
+            var bestSellingProducts = await purchaseRepository.GetBestSellingProducts();
 
             const int pageSize = 10;
 
@@ -77,7 +79,8 @@ namespace ShopWeb.Controllers
                 Products = products,
                 Categories = categories,
                 PageNumber = page,
-                PageCount = pageCount
+                PageCount = pageCount,
+                bestSellingProducts = bestSellingProducts,
             };
 
             return View(model);

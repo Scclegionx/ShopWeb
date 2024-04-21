@@ -8,5 +8,6 @@ namespace ShopWeb.Models.ViewModels
         public IEnumerable<Category> Categories { get; set;}
         public int PageNumber { get; set; }
         public int PageCount { get; set; }
+        public List<Product> bestSellingProducts { get; set; }
     }
 }
