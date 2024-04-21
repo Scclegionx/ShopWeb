@@ -12,8 +12,8 @@ using ShopWeb.Data;
 namespace ShopWeb.Migrations
 {
     [DbContext(typeof(ShopWebDbContext))]
-    [Migration("20240331121747_add response")]
-    partial class addresponse
+    [Migration("20240420143003_modify pruchaseItem")]
+    partial class modifypruchaseItem
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -64,6 +64,9 @@ namespace ShopWeb.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductVariantId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Quantity")
@@ -192,14 +195,55 @@ namespace ShopWeb.Migrations
                     b.ToTable("ProductLike");
                 });
 
+            modelBuilder.Entity("ShopWeb.Models.Domain.ProductVariant", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductVariants");
+                });
+
             modelBuilder.Entity("ShopWeb.Models.Domain.Purchase", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Note")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("PurchaseDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ShipperID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
@@ -219,6 +263,9 @@ namespace ShopWeb.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductVariantId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("PurchaseId")
@@ -253,12 +300,40 @@ namespace ShopWeb.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.ToTable("Responses");
+                });
+
+            modelBuilder.Entity("ShopWeb.Models.Domain.VariantAttribute", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ProductVariantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductVariantId");
+
+                    b.ToTable("VariantAttributes");
                 });
 
             modelBuilder.Entity("CategoryProduct", b =>
@@ -311,6 +386,17 @@ namespace ShopWeb.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ShopWeb.Models.Domain.ProductVariant", b =>
+                {
+                    b.HasOne("ShopWeb.Models.Domain.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("ShopWeb.Models.Domain.PurchaseItem", b =>
                 {
                     b.HasOne("ShopWeb.Models.Domain.Product", "Product")
@@ -328,6 +414,15 @@ namespace ShopWeb.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("ShopWeb.Models.Domain.VariantAttribute", b =>
+                {
+                    b.HasOne("ShopWeb.Models.Domain.ProductVariant", null)
+                        .WithMany("Attributes")
+                        .HasForeignKey("ProductVariantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("ShopWeb.Models.Domain.Cart", b =>
                 {
                     b.Navigation("Items");
@@ -338,6 +433,11 @@ namespace ShopWeb.Migrations
                     b.Navigation("ProductComment");
 
                     b.Navigation("ProductLike");
+                });
+
+            modelBuilder.Entity("ShopWeb.Models.Domain.ProductVariant", b =>
+                {
+                    b.Navigation("Attributes");
                 });
 
             modelBuilder.Entity("ShopWeb.Models.Domain.Purchase", b =>

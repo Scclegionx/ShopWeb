@@ -9,7 +9,7 @@
 </div>
 
 <div class="container py-5" id="productAdmin-container">
-    @using (Html.BeginForm("Add", "AdminProducts", FormMethod.Post))
+    @using (Html.BeginForm("Add", "AdminProducts", FormMethod.Post, new { id = "productForm" }))
     {
         <div class="col-md-8 mb-3">
             @Html.LabelFor(m => m.Name, new { @class = "col-md-4 control-label" })
@@ -43,6 +43,50 @@
 
             </select>
         </div>
+
+
+        <!-- Initial form for adding variant attributes -->
+        <div id="check">
+            <div id="variantForms">
+                <div class="variant-form" id="variant-form0">
+                    <div class="form-group" id="form-group-variant-name">
+                        <label for="variantName">Variant Name</label>
+                        <input type="text" class="form-control" name="VariantNameForm" placeholder="Enter variant name">
+                    </div>
+                    <div class="form-group" id="form-group-variant-value">
+                        <label for="variantValue">Variant Value</label>
+                        <input type="text" class="form-control" name="VariantValueForm" placeholder="Enter variant value">
+                    </div>
+                </div>
+                <button type="button" class="btn btn-secondary add-variant-value-btn" data-form-key="variant-form0">More Variant Value</button>
+            </div>
+        </div>
+
+        <!-- Button to add more variant forms -->
+        <button type="button" class="btn btn-secondary" id="addVariantBtn">Add Variant Attribute</button>
+        <button type="button" class="btn btn-secondary" id="doneBtn">Done</button>
+        <button type="button" class="btn btn-secondary" id="testBtn">Test</button>
+        <hr />
+
+        <!-- Table to display variant attributes -->
+        <h2>Variant Attributes</h2>
+        <table class="table" id="variant-table">
+            <thead id="variantAttributesHead">
+                <tr>
+
+                </tr>
+            </thead>
+            <tbody id="variantAttributesBody">
+                <tr>
+
+                </tr>
+            </tbody>
+        </table>
+
+
+
+
+
         <div class="col-md-8 mb-3">
             <button type="submit" class="btn btn-dark">Submit</button>
         </div>
@@ -59,6 +103,94 @@
         const featuredUploadElement = document.getElementById("featuredImageUpload");
         const featuredImageUrlElement = document.getElementById("featuredImageUrl");
         const featuredImageDisplayElement = document.getElementById("featuredImageDisplay");
+        const variantTableElement = document.getElementById("variant-table")
+
+
+
+
+
+        $('#testBtn').click(function () {
+            // Call the sendDataToBackend function to send data to the backend
+            gatherFormData();
+        });
+
+        // Define your custom function to gather form data
+        function gatherFormData() {
+            var variantData = [];
+
+            $('#variant-table tbody tr').each(function () {
+                var rowData = {};
+
+                $(this).find('td').each(function (index) {
+                    // Check if the cell contains an input field
+                    if ($(this).find('input').length === 0) {
+                        // Get the text content of the cell and trim any leading or trailing whitespace
+                        var attribute = $(this).text().trim();
+
+                        // Store the data in the rowData object using the cell index as the key
+                        rowData['attribute' + index] = attribute;
+                    }
+                });
+
+                // Get the values from the input fields
+                var price = $(this).find('input[name^="Price"]').val();
+                var quantity = $(this).find('input[name^="Quantity"]').val();
+
+                // Store the data in an object
+                rowData.price = price;
+                rowData.quantity = quantity;
+
+                // Push the object to the variantData array
+                variantData.push(rowData);
+            });
+            console.log(variantData);
+            return variantData;
+        }
+
+
+        async function renderCombinations(array) {
+            var combinations = [];
+            var currentCombination = [];
+
+            // Recursive function to generate combinations
+            function generateCombinations(index) {
+                if (index >= array.length) {
+                    combinations.push(currentCombination.slice()); // Push a copy of the current combination
+                    return;
+                }
+
+                for (var i = 0; i < array[index].length; i++) {
+                    currentCombination.push(array[index][i]);
+                    generateCombinations(index + 1);
+                    currentCombination.pop(); // Backtrack to try the next element in the current array
+                }
+            }
+
+            generateCombinations(0); // Start generating combinations from the first array
+
+            // Render combinations
+            //for (var j = 0; j < combinations.length; j++) {
+            //    console.log(combinations[j].join(' ')); // Render each combination as a string separated by space
+            //}
+
+
+            for (var i = 0; i < combinations.length; i++) {
+                var combination = combinations[i];
+                var row = '<tr>';
+
+                for (var j = 0; j < combination.length; j++) {
+                    row += '<td><input type="text" class="form-control" name="VariantAttributes[' + i + '].Value['+j+']" value="'+combination[j]+'" readonly></td>'
+                }
+
+                row += '<td><input type="text" class="form-control" name="VariantAttributes[' + i + '].Price" placeholder="Enter price"></td>' +
+                    '<td><input type="text" class="form-control" name="VariantAttributes['+ i +'].Quantity" placeholder="Enter quantity"></td>' +
+                    '</tr>';
+
+                $('#variantAttributesBody').append(row);
+            }
+
+        }
+
         
         async function uploadFeaturedImage(e) {
             console.log(e.target.files[0]);
@@ -83,6 +215,124 @@
         }
 
         featuredUploadElement.addEventListener('change', uploadFeaturedImage);
+
+        
+
+
+        $(document).ready(function () {
+            var variantCounter = 1;
+            var variantValueCounter = 1;
+
+            
+
+            async function updateTableColumns() {
+                $('#variantAttributesHead tr').empty();
+                $('#variantAttributesBody tr').empty();
+
+                $('[name="VariantNameForm"]').each(function (index) {
+                    var variantName = $(this).val(); // Get the value of the input field
+
+                    // Append a table header with the variant name to the table head
+                    $('#variantAttributesHead tr').append('<th><input type="text" class="form-control" name="VariantAttributes[0].Name['+index+']" value="'+variantName+'" readonly></th>');
+                });
+
+                $('#variant-table #variantAttributesHead tr').append('<th>Price</th>');
+                $('#variant-table #variantAttributesBody tr').append('<td><input type="text" class="form-control" /></td>');
+                $('#variant-table #variantAttributesHead tr').append('<th>Quantity</th>');
+                $('#variant-table #variantAttributesBody tr').append('<td><input type="text" class="form-control" /></td>');
+
+            }
+
+
+            async function updateTableRows() {
+                var variantNames = [];
+                var variantValuesArray = [];
+
+                $('.variant-form').each(function () {
+                    var variantValues = [];
+                    $(this).find('input[name="VariantValueForm"]').each(function () {
+                        var value = $(this).val();
+                        variantValues.push(value);
+                    });
+                    variantValuesArray.push(variantValues);
+                });
+
+
+                // Clear existing table rows
+                $('#variantAttributesBody').empty();
+
+                //console.log(variantValuesArray);
+
+                // Generate table rows
+
+
+                renderCombinations(variantValuesArray);
+
+                
+            }
+
+
+
+
+
+            
+
+            // Function to add a new variant form
+            function addVariantForm() {3
+                var newForm = '<div class="variant-form" id="variant-form'+ variantCounter +'">' +
+                    '<div class="form-group" id="form-group-variant-name">' +
+                    '<label for="variantName">Variant Name</label>' +
+                    '<input type="text" class="form-control" name="VariantNameForm" placeholder="Enter variant name">' +
+                    '</div>' +
+                    '<div class="form-group" id="form-group-variant-value">' +
+                    '<label for="variantValue">Variant Value</label>' +
+                    '<input type="text" class="form-control" name="VariantValueForm" placeholder="Enter variant value">' +
+                    '</div>' +
+                    '</div>' + '<button type="button" class="btn btn-secondary add-variant-value-btn" data-form-key="variant-form' + variantCounter + '" >More Variant Value</button>';
+
+                $('#variantForms').append(newForm);
+            }
+
+
+            $('#addVariantBtn').click(function () {
+                addVariantForm();
+                variantCounter++;
+                
+            });
+
+            $('#doneBtn').click(function () {
+                updateTableColumns();
+                updateTableRows();
+            })
+
+
+            function addVariantValueForm(formKey) {
+                var newForm =
+                    '<div class="form-group" id="form-group-variant-value">' +
+                    '<label for="variantValue">Variant Value</label>' +
+                    '<input type="text" class="form-control" name="VariantValueForm" placeholder="Enter variant value">' +
+                    '</div>' +
+                    '</div>';
+
+                $('#' + formKey).append(newForm);
+            }
+
+            $(document).on('click', '.add-variant-value-btn', function () {
+                var formKey = $(this).data('form-key');
+                addVariantValueForm(formKey);
+                //console.log(variantValueCounter)
+            });
+
+
+
+
+
+            
+
+
+        });
+
+
 
     </script>
 }

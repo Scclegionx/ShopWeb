@@ -1,0 +1,97 @@
+﻿@model ShopWeb.Models.ViewModels.ProductVM.EditProductRequest
+
+@{
+    ViewData["Title"] = "Product Detail";
+}
+
+<div class="container py-5" id="productAdmin-container">
+    <div class="col-md-8 mb-3">
+        @Html.LabelFor(m => m.Name, new { @class = "col-md-4 control-label" })
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @readonly = true })
+    </div>
+    <div class="col-md-8 mb-3">
+        @Html.LabelFor(m => m.Description, new { @class = "col-md-4 control-label" })
+        <div class="form-control">
+            @Html.Raw(Model.Description)
+        </div>
+    </div>
+    <div class="col-md-8 mb-3">
+        <label class="form-label">Featured Image Upload</label>
+        <input type="file" id="featuredImageUpload" class="form-control" readonly />
+
+        @if (Model.FeaturedImageUrl != null)
+        {
+            <img src="@Model.FeaturedImageUrl" id="featuredImageDisplay" style="display:block;width: 300px" />
+        }
+        else
+        {
+            <img src="" id="featuredImageDisplay" style="display:none;width: 300px" />
+        }
+    </div>
+    <div class="col-md-8 mb-3">
+        @Html.LabelFor(m => m.FeaturedImageUrl, new { @class = "col-md-4 control-label" })
+        @Html.TextBoxFor(m => m.FeaturedImageUrl, new { @class = "form-control", id = "featuredImageUrl", @readonly = true })
+    </div>
+    <div class="col-md-8 mb-3">
+        @Html.LabelFor(m => m.Price, new { @class = "col-md-4 control-label" })
+        @Html.TextBoxFor(m => m.Price, new { @class = "form-control", @readonly = true })
+    </div>
+    <div class="col-md-8 mb-3">
+        @Html.LabelFor(m => m.Quantity, new { @class = "col-md-4 control-label" })
+        @Html.TextBoxFor(m => m.Quantity, new { @class = "form-control", @readonly = true })
+    </div>
+    <div class="mb-3">
+        @Html.LabelFor(m => m.Categories, new { @class = "col-md-4 control-label" })
+        @if (Model != null && Model.Categories.Any())
+        {
+            foreach (var cate in Model.Categories)
+            {
+                <div style="display: block;">
+                    <span class="badge bg-dark me-1 category-tag">
+                        @cate.Text
+                    </span>
+                </div>
+                <hr />
+            }
+        }
+        else
+        {
+            <p>No Categories Found!</p>
+        }
+    </div>
+
+    @if(Model.VariantAttributes != null && Model.VariantAttributes.Any())
+    {
+        <h2>Variant Attributes</h2>
+        <table class="table" id="variant-table">
+            <thead id="variantAttributesHead">
+                <tr>
+                    @foreach (var variantName in Model.VariantAttributes[0].Name)
+                    {
+                        <th>@variantName</th>
+                    }
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="variantAttributesBody">
+                @foreach (var variantValue in Model.VariantAttributes)
+                {
+                    <tr>
+                        @foreach (var valueVA in variantValue.Value)
+                        {
+                            <td>@valueVA</td>
+                        }
+                        <td>@variantValue.Price</td>
+                        <td>@variantValue.Quantity</td>
+                        <td><a asp-area="" asp-action="EditVariant" asp-controller="AdminProducts" asp-route-id="{@variantValue.ProductVariantId}" class="btn btn-dark">Sửa</a></td>
+                        <td><a asp-area="" asp-action="DeleteVariant" asp-controller="AdminProducts" asp-route-id="{@variantValue.ProductVariantId}" class="btn btn-danger">Xóa</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+</div>

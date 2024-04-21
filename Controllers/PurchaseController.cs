@@ -15,11 +15,15 @@ namespace ShopWeb.Controllers
         private readonly IProductRepository productRepository;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly ICouponRepository couponRepository;
+        private readonly IVariantAttributesRepository variantAttributesRepository;
+        private readonly IProductVariantRepository productVariantRepository;
 
         public PurchaseController(IPurchaseRepository purchaseRepository,
             ICartRepository cartRepository,
             IProductRepository productRepository,
-            UserManager<ApplicationUser> userManager, ICouponRepository couponRepository
+            UserManager<ApplicationUser> userManager, ICouponRepository couponRepository,
+            IVariantAttributesRepository variantAttributesRepository,
+            IProductVariantRepository productVariantRepository
             )
         {
             this.purchaseRepository = purchaseRepository;
@@ -27,6 +31,8 @@ namespace ShopWeb.Controllers
             this.productRepository = productRepository;
             this.userManager = userManager;
             this.couponRepository = couponRepository;
+            this.variantAttributesRepository = variantAttributesRepository;
+            this.productVariantRepository = productVariantRepository;
         }
         [HttpGet]
         public async Task<IActionResult> Index()
@@ -49,20 +55,43 @@ namespace ShopWeb.Controllers
                     var PurchaseItemForView = new List<PurchaseItemViewModel>();
                     foreach (var item in PurchaseIteminDomain)
                     {
+                        var listForView = new List<List<VariantAttribute>>();
+                        var mdls = await variantAttributesRepository.GetAllVariantsAttributeByVariantAsync(item.ProductVariantId);
+                        listForView.Add(mdls);
                         var productInCart = await productRepository.GetAsync(item.ProductId);
-                        PurchaseItemForView.Add(new PurchaseItemViewModel
+                        var productVariantPrice = await productVariantRepository.GetAsync(item.ProductVariantId);
+                        if (productVariantPrice is null)
                         {
-                            ProductName = productInCart.Name,
-                            Price = productInCart.Price,
-                            Quantity = item.Quantity
-                        });
+                            PurchaseItemForView.Add(new PurchaseItemViewModel
+                            {
+                                ProductName = productInCart.Name,
+                                Price = productInCart.Price,
+                                Quantity = item.Quantity,
+                                Variants = listForView
+                            });
+                        }
+                        else
+                        {
+                            PurchaseItemForView.Add(new PurchaseItemViewModel
+                            {
+                                ProductName = productInCart.Name,
+                                Price = productVariantPrice.Price,
+                                Quantity = item.Quantity,
+                                Variants = listForView
+                            });
+                        }
+                    }
+                    decimal totalPrice = 0;
+                    foreach (var cartItem in PurchaseItemForView)
+                    {
+                        totalPrice += cartItem.Price * cartItem.Quantity;
                     }
 
                     // Map the cart data to PurchaseViewModel
                     var purchaseViewModel = new PurchaseViewModel
                     {
                         PurchaseItems = PurchaseItemForView,
-                        TotalPrice = currentUserPurchase.TotalPrice,
+                        TotalPrice = totalPrice,
                     };
 
                     return View(purchaseViewModel);
@@ -81,20 +110,43 @@ namespace ShopWeb.Controllers
                     var PurchaseItemForView = new List<PurchaseItemViewModel>();
                     foreach (var item in PurchaseIteminDomain)
                     {
+                        var listForView = new List<List<VariantAttribute>>();
+                        var mdls = await variantAttributesRepository.GetAllVariantsAttributeByVariantAsync(item.ProductVariantId);
+                        listForView.Add(mdls);
                         var productInCart = await productRepository.GetAsync(item.ProductId);
-                        PurchaseItemForView.Add(new PurchaseItemViewModel
+                        var productVariantPrice = await productVariantRepository.GetAsync(item.ProductVariantId);
+                        if (productVariantPrice is null)
                         {
-                            ProductName = productInCart.Name,
-                            Price = productInCart.Price,
-                            Quantity = item.Quantity
-                        });
+                            PurchaseItemForView.Add(new PurchaseItemViewModel
+                            {
+                                ProductName = productInCart.Name,
+                                Price = productInCart.Price,
+                                Quantity = item.Quantity,
+                                Variants = listForView
+                            });
+                        } else
+                        {
+                            PurchaseItemForView.Add(new PurchaseItemViewModel
+                            {
+                                ProductName = productInCart.Name,
+                                Price = productVariantPrice.Price,
+                                Quantity = item.Quantity,
+                                Variants = listForView
+                            });
+                        }
+                    }
+
+                    decimal totalPrice = 0;
+                    foreach (var cartItem in PurchaseItemForView)
+                    {
+                        totalPrice += cartItem.Price * cartItem.Quantity;
                     }
 
                     // Map the cart data to PurchaseViewModel
                     var purchaseViewModel = new PurchaseViewModel
                     {
                         PurchaseItems = PurchaseItemForView,
-                        TotalPrice = currentUserPurchase.TotalPrice,
+                        TotalPrice = totalPrice,
                     };
 
                     return View(purchaseViewModel);
@@ -124,19 +176,42 @@ namespace ShopWeb.Controllers
                 var CartItemForView = new List<CartItemViewModel>();
                 foreach (var item in CartIteminDomain)
                 {
+                    var listForView = new List<List<VariantAttribute>>();
+                    var mdls = await variantAttributesRepository.GetAllVariantsAttributeByVariantAsync(item.ProductVariantId);
+                    listForView.Add(mdls);
                     var productInCart = await productRepository.GetAsync(item.ProductId);
-                    CartItemForView.Add(new CartItemViewModel
+                    var productVariantPrice = await productVariantRepository.GetAsync(item.ProductVariantId);
+                    if (productVariantPrice is null)
                     {
-                        ProductName = productInCart.Name,
-                        Price = productInCart.Price,
-                        Quantity = item.Quantity
-                    });
+                        CartItemForView.Add(new CartItemViewModel
+                        {
+                            ProductName = productInCart.Name,
+                            Price = productInCart.Price,
+                            Quantity = item.Quantity,
+                            Variants = listForView
+                        });
+                    } else
+                    {
+                        CartItemForView.Add(new CartItemViewModel
+                        {
+                            ProductName = productInCart.Name,
+                            Price = productVariantPrice.Price,
+                            Quantity = item.Quantity,
+                            Variants = listForView
+                        });
+                    }
+                }
+
+                decimal totalPrice = 0;
+                foreach (var cartItem in CartItemForView)
+                {
+                    totalPrice += cartItem.Price * cartItem.Quantity;
                 }
 
                 var cartViewModel = new PurchaseViewModel
                 {
                     Items = CartItemForView,
-                    TotalPrice = currentUserCart.Items.Sum(item => item.Quantity * item.Product.Price)
+                    TotalPrice = totalPrice
                 };
 
                 return View(cartViewModel);
@@ -184,7 +259,8 @@ namespace ShopWeb.Controllers
                     {
                         PurchaseId = purchase.Id,
                         ProductId = item.ProductId,
-                        Quantity = item.Quantity
+                        Quantity = item.Quantity,
+                        ProductVariantId = item.ProductVariantId,
                         // Add any other relevant data from the cart item to the purchase item
                     };
                     await purchaseRepository.AddPurchaseItem(purchaseItem);

@@ -11,10 +11,15 @@ namespace ShopWeb.Controllers
     {
         private readonly ICateRepository cateRepository;
         private readonly IProductRepository productRepository;
-        public AdminProductsController(ICateRepository cateRepository, IProductRepository productRepository) 
+        private readonly IVariantAttributesRepository variantAttributesRepository;
+        private readonly IProductVariantRepository productVariantRepository;
+
+        public AdminProductsController(ICateRepository cateRepository, IProductRepository productRepository, IVariantAttributesRepository variantAttributesRepository, IProductVariantRepository productVariantRepository) 
         {
             this.cateRepository = cateRepository;
             this.productRepository = productRepository;
+            this.variantAttributesRepository = variantAttributesRepository;
+            this.productVariantRepository = productVariantRepository;
         }
         [HttpGet]
         public async Task<IActionResult> Add()
@@ -31,6 +36,8 @@ namespace ShopWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(AddProductRequest addProductRequest)
         {
+            
+
             var model = new Product
             {
                 Name = addProductRequest.Name,
@@ -51,6 +58,45 @@ namespace ShopWeb.Controllers
             }
             model.Categories = selectedCates;
             await productRepository.AddAsync(model);
+
+
+            // Add variant attributes to the database
+            if (addProductRequest.VariantAttributes != null && addProductRequest.VariantAttributes.Any())
+            {
+                int numAttributes = addProductRequest.VariantAttributes[0].Name.Count();
+                foreach (var variantAttributeRequest in addProductRequest.VariantAttributes)
+                {
+                    var productVariantId = Guid.NewGuid();
+                    var productVariant = new ProductVariant
+                    {
+                        Id = productVariantId,
+                        ProductId = model.Id,
+                        Price = variantAttributeRequest.Price,
+                        Quantity = variantAttributeRequest.Quantity,
+                    };
+
+                    // Add product variant to the database
+                    await productVariantRepository.AddAsync(productVariant);
+
+                    
+
+                    // Add variant attributes for the product variant
+                    for (int i = 0; i < numAttributes; i++)
+                    {
+                        var variantAttribute = new VariantAttribute
+                        {
+                            Key = addProductRequest.VariantAttributes[0].Name[i],
+                            Value = variantAttributeRequest.Value[i],
+                            ProductVariantId = productVariant.Id,
+                        };
+                        await variantAttributesRepository.AddAsync(variantAttribute);
+                    }
+
+                    
+                }
+            }
+
+
             return RedirectToAction("List", "AdminProducts");
         }
         [HttpGet]
@@ -71,6 +117,27 @@ namespace ShopWeb.Controllers
         {
             var product = await productRepository.GetAsync(id);
             var categoriesDomainModel = await cateRepository.GetAllAsync();
+            var allVariantProducts = await productVariantRepository.GetVariantsByProductIdAsync(id);
+            var listVAForView = new List<VariantAttributeRequest>();
+            foreach (var variant in allVariantProducts)
+            {
+                var listName = new List<string>();
+                var listValue = new List<string>();
+                var allVA = await variantAttributesRepository.GetAllVariantsAttributeByVariantAsync(variant.Id);
+                foreach (var variantAttribute in allVA)
+                {
+                    listName.Add(variantAttribute.Key);
+                    listValue.Add(variantAttribute.Value);
+                }
+                var mdl = new VariantAttributeRequest
+                {
+                    Name = listName,
+                    Value = listValue,
+                    Price = variant.Price,
+                    Quantity = variant.Quantity,
+                };
+                listVAForView.Add(mdl);
+            }
             if (product != null)
             {
                 var model = new EditProductRequest
@@ -87,6 +154,7 @@ namespace ShopWeb.Controllers
                         Value = x.Id.ToString(),
                     }),
                     SelectedCategory = product.Categories.Select(x => x.Id.ToString()).ToArray(), 
+                    VariantAttributes = listVAForView
                 };
                 return View(model);
             }
@@ -162,5 +230,142 @@ namespace ShopWeb.Controllers
                 return View(null);
             }
         }
+        [HttpGet]
+        public async Task<IActionResult> Detail(Guid id)
+        {
+            var product = await productRepository.GetAsync(id);
+            var categoriesDomainModel = await cateRepository.GetAllAsync();
+            var allVariantProducts = await productVariantRepository.GetVariantsByProductIdAsync(id);
+            var listVAForView = new List<VariantAttributeRequest>();
+            foreach (var variant in allVariantProducts)
+            {
+                var listName = new List<string>();
+                var listValue = new List<string>();
+                var allVA = await variantAttributesRepository.GetAllVariantsAttributeByVariantAsync(variant.Id);
+                foreach (var variantAttribute in allVA)
+                {
+                    listName.Add(variantAttribute.Key);
+                    listValue.Add(variantAttribute.Value);
+                }
+                var mdl = new VariantAttributeRequest
+                {
+                    Name = listName,
+                    Value = listValue,
+                    Price = variant.Price,
+                    Quantity = variant.Quantity,
+                    ProductVariantId = variant.Id,
+                };
+                listVAForView.Add(mdl);
+            }
+            if (product != null)
+            {
+                var model = new EditProductRequest
+                {
+                    Id = product.Id,
+                    Name = product.Name,
+                    Description = product.Description,
+                    FeaturedImageUrl = product.FeaturedImageUrl,
+                    Price = product.Price,
+                    Quantity = product.Quantity,
+                    Categories = categoriesDomainModel.Select(x => new SelectListItem
+                    {
+                        Text = x.Name,
+                        Value = x.Id.ToString(),
+                    }),
+                    SelectedCategory = product.Categories.Select(x => x.Id.ToString()).ToArray(),
+                    VariantAttributes = listVAForView,
+                };
+                return View(model);
+            }
+            return View(null);
+        }
+        [HttpGet]
+        public async Task<IActionResult> EditVariant(Guid id)
+        {
+            var variant = await productVariantRepository.GetAsync(id);
+            if (variant == null)
+            {
+                return NotFound();
+            }
+
+            var variantAttributes = await variantAttributesRepository.GetAllVariantsAttributeByVariantAsync(id);
+            var model = new EditVariantRequest
+            {
+                VariantId = variant.Id,
+                Price = variant.Price,
+                Quantity = variant.Quantity,
+                ProductId = variant.ProductId,
+                VariantAttributes = variantAttributes.Select(va => new VariantAttributeRequestForEdit
+                {
+                    Key = va.Key,
+                    Value = va.Value
+                }).ToList()
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditVariant(EditVariantRequest editVariantRequest)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(editVariantRequest);
+            }
+
+            var variant = await productVariantRepository.GetAsync(editVariantRequest.VariantId);
+            if (variant == null)
+            {
+                return NotFound();
+            }
+
+            variant.Price = editVariantRequest.Price;
+            variant.Quantity = editVariantRequest.Quantity;
+
+            await productVariantRepository.UpdateAsync(variant);
+
+            // Update variant attributes
+            foreach (var variantAttributeRequest in editVariantRequest.VariantAttributes)
+            {
+                // Get the existing variant attribute by ProductVariantId and Key
+                var existingVariantAttributes = await variantAttributesRepository.GetByProductVariantIdAsync(editVariantRequest.VariantId);
+
+                // Find the matching variant attribute by Key
+                var existingVariantAttribute = existingVariantAttributes.FirstOrDefault(va => va.Key == variantAttributeRequest.Key);
+
+                // If the existing variant attribute is found, update its value
+                if (existingVariantAttribute != null)
+                {
+                    existingVariantAttribute.Value = variantAttributeRequest.Value;
+                    await variantAttributesRepository.UpdateAsync(existingVariantAttribute);
+                }
+            }
+
+
+            return RedirectToAction("Detail", "AdminProducts", new { id = variant.ProductId });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteVariant(Guid id)
+        {
+            var variant = await productVariantRepository.GetAsync(id);
+            if (variant == null)
+            {
+                return NotFound();
+            }
+
+            await productVariantRepository.DeleteAsync(id);
+
+            // Also delete variant attributes associated with this variant
+            var variantAttributes = await variantAttributesRepository.GetAllVariantsAttributeByVariantAsync(id);
+            foreach (var variantAttribute in variantAttributes)
+            {
+                await variantAttributesRepository.DeleteAsync(variantAttribute.Id);
+            }
+
+            return RedirectToAction("Detail", "AdminProducts", new { id = variant.ProductId });
+        }
+
+
     }
 }

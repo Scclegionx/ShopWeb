@@ -20,5 +20,7 @@ namespace ShopWeb.Models.ViewModels.ProductVM
         [Display(Name = "Danh Mục Mặt Hàng")]
         public IEnumerable<SelectListItem> Categories { get; set; }
         public string[] SelectedCategory { get; set; } = Array.Empty<string>();
+        public List<VariantAttributeRequest> VariantAttributes { get; set; }
+        
     }
 }

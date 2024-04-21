@@ -52,6 +52,12 @@
             <select class="form-select" asp-items="@Model.Categories" asp-for="SelectedCategory">
             </select>
         </div>
+
+
+       
+
+
+
         <div class="col-md-8 mb-3">
             <button type="submit" class="btn btn-dark">Lưu</button>
         </div>
@@ -69,6 +75,8 @@
         const featuredUploadElement = document.getElementById("featuredImageUpload");
         const featuredImageUrlElement = document.getElementById("featuredImageUrl");
         const featuredImageDisplayElement = document.getElementById("featuredImageDisplay");
+
+        
 
         async function uploadFeaturedImage(e) {
             console.log(e.target.files[0]);

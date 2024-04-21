@@ -20,7 +20,38 @@ namespace ShopWeb.Repositories
             return await shopWebDbContext.Carts.FirstOrDefaultAsync(c => c.UserId == userId);
         }
 
-        public async Task AddProductToCartAsync(Cart cart, Guid productId, int quantity, Guid userId)
+        public async Task AddProductWithNoVariantToCartAsync(Cart cart, Guid productId, int quantity, Guid userId)
+        {
+            var product = await shopWebDbContext.Products.FindAsync(productId);
+            if (product == null)
+            {
+                // Handle invalid product ID
+                return;
+            }
+
+            if (cart == null)
+            {
+                cart = new Cart { UserId = userId };
+                shopWebDbContext.Carts.Add(cart);
+            }
+
+            cart.Items ??= new List<CartItem>();
+
+            var existingItem = await shopWebDbContext.CartItems.Where(x => x.CartId == cart.Id).FirstOrDefaultAsync(c => c.ProductId == productId);
+
+            if (existingItem != null)
+            {
+                existingItem.Quantity += quantity;
+            }
+            else
+            {
+                cart.Items.Add(new CartItem { ProductId = productId, Quantity = quantity });
+            }
+
+            await shopWebDbContext.SaveChangesAsync();
+        }
+
+        public async Task AddProductToCartAsync(Cart cart, Guid productId, int quantity, Guid productVariantId, Guid userId)
         {
             var product = await shopWebDbContext.Products.FindAsync(productId);
             if (product == null)
@@ -37,7 +68,9 @@ namespace ShopWeb.Repositories
 
             cart.Items ??= new List<CartItem>();
 
-            var existingItem = await shopWebDbContext.CartItems.Where(x => x.CartId == cart.Id).FirstOrDefaultAsync(c => c.ProductId == productId);
+            var existingItem = await shopWebDbContext.CartItems
+                .Where(x => x.CartId == cart.Id && x.ProductId == productId && x.ProductVariantId == productVariantId)
+                .FirstOrDefaultAsync();
 
             if (existingItem != null)
             {
@@ -45,7 +78,7 @@ namespace ShopWeb.Repositories
             }
             else
             {
-                cart.Items.Add(new CartItem { ProductId = productId, Quantity = quantity });
+                cart.Items.Add(new CartItem { ProductId = productId, Quantity = quantity, ProductVariantId = productVariantId });
             }
 
             await shopWebDbContext.SaveChangesAsync();

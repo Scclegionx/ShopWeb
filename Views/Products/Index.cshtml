@@ -11,6 +11,7 @@
 }
 
 
+
 <div class="container my-5">
     <div class="row justify-content-center">
         <div class="col-12 col-lg-6" id="product-detail-container">
@@ -50,10 +51,37 @@
                 <div class="mb-3 product-details-content"> 
                     @Html.Raw(Model.Description)
                 </div>
+                
+
 
                 @using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
                 {
                     <div class="container py-5">
+                        @if (Model.Variants != null && Model.Variants.Any())
+                        {
+                            <div class="variants-container">
+                                <h5>Phiên bản:</h5>
+                                <select name="chosenVariant" id="chosenVariantSelect">
+                                    @foreach (var variant in Model.Variants)
+                                    {
+                                        @if (variant.FirstOrDefault() != null)
+                                        {
+                                            <option value=@variant.FirstOrDefault().ProductVariantId>
+                                                @foreach (var attribute in variant)
+                                                {
+                                                    @Html.Raw($"<p>{attribute.Value} </p>")
+                                                }
+                                            </option>
+                                        } else
+                                        {
+                                            <option>
+                                                No Variant
+                                            </option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        }
                         <input type="hidden" name="productId" value="@Model.Id" />
                         <input type="number" name="quantity" value="1" min="1" class="form-control mb-3" />
                         <button type="submit" class="btn btn-dark">Thêm vào giỏ hàng</button>
@@ -121,6 +149,7 @@
         const btnLikeElement = document.getElementById("btnLike");
         const totalLikesElement = document.getElementById("totalLikes");
         const productId = "@Model.Id";
+
 
         async function getTotalLikes() {
             fetch(`/api/productlike/${productId}/totalLikes`, {
