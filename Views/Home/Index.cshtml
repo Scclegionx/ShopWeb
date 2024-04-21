@@ -82,7 +82,16 @@
                     {
                         <div class="mb-5 bg-light box-shadow p-5" id="product-container">
                             <div>
-                                <img src="@product.FeaturedImageUrl" alt="@product.Name" class="mb-2 d-block img-fluid" />
+                                @if (product.State == "Available")
+                                {
+                                    <img src="@product.FeaturedImageUrl" alt="@product.Name" class="mb-2 d-block img-fluid" />
+                                } else
+                                {
+                                    <div class="image-container">
+                                        <img src="@product.FeaturedImageUrl" alt="@product.Name" class="mb-2 d-block img-fluid first-layer" />
+                                        <img src="/Assets/ood.jpg" class="second-layer" />
+                                    </div>
+                                }
 
                                 <h2 class="mb-4" style="text-align: center;">@product.Name</h2>
                             </div>
@@ -94,14 +103,16 @@
                                     <span>Số lượng: @product.Quantity</span>
                                 </div>
                             </div>
-
-                            <div>
-                                <a class="btn btn-dark"
-                                   asp-area=""
-                                   asp-controller="Products"
-                                   asp-action="Index"
-                                   asp-route-id="{@product.Id}">Chi Tiết</a>
-                            </div>
+                            @if (product.State == "Available")
+                            {
+                                <div>
+                                    <a class="btn btn-dark"
+                                       asp-area=""
+                                       asp-controller="Products"
+                                       asp-action="Index"
+                                       asp-route-id="{@product.Id}">Chi Tiết</a>
+                                </div>
+                            }
                         </div>
                     }
                 } else

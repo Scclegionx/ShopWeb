@@ -13,5 +13,7 @@ namespace ShopWeb.Repositories
         Task<int> GetTotalProductsCount();
         Task<List<Product>> GetProductsByCategoryAsync(string category);
         Task<IEnumerable<Product>> FindByNameAndCategoryAsync(string productName, string category);
+        Task UpdateProductQuantity(Guid productId, int quantity);
+        Task CheckProductAvailability(Guid productId);
     }
 }

@@ -60,10 +60,10 @@ body {
     padding: 20px; /* Adjust as needed */
     margin: 10px 5px 10px 5px; /* Spacing between cards, adjust as needed */
 }
-#price-container {s
+#price-container {
     position: absolute;
-    left: 20px;
-    bottom: 20px;
+    left: 0px;
+    bottom: 0px;
 }
 #quantity-container {
     position: absolute;
@@ -274,4 +274,31 @@ body {
 
 .star.active {
     color: #ffc107; /* Change to your desired active color */
+}
+
+/* out of order*/
+.image-container {
+    position: relative;
+    width: 100%; /* Ensure the container fills its parent */
+    height: auto; /* Maintain aspect ratio */
+}
+
+.first-layer,
+.second-layer {
+    display: block;
+    width: 100%; /* Ensure the image fills the container horizontally */
+    height: auto; /* Maintain aspect ratio */
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.first-layer {
+    z-index: 1; /* Ensure the first layer is on top */
+    opacity: 0.5;
+}
+
+.second-layer {
+     /* Set the opacity for the second layer */
+    z-index: 0; /* Ensure the second layer is below the first layer */
 }

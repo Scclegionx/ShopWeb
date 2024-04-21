@@ -45,6 +45,7 @@ namespace ShopWeb.Controllers
                 FeaturedImageUrl = addProductRequest.FeaturedImageUrl,
                 Price = addProductRequest.Price,
                 Quantity = addProductRequest.Quantity,
+                State = "Available"
             };
             var selectedCates = new List<Category>();
             foreach (var selectedCateId in addProductRequest.SelectedCategory)

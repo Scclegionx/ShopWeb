@@ -96,5 +96,32 @@ namespace ShopWeb.Repositories
                 .Where(p => p.Name.Contains(productName) && p.Categories.Any(c => c.Name == category))
                 .ToListAsync();
         }
+
+        public async Task UpdateProductQuantity(Guid productId, int quantity)
+        {
+            var product = await shopWebDbContext.Products.FindAsync(productId);
+            if (product != null)
+            {
+                product.Quantity -= quantity;
+                await shopWebDbContext.SaveChangesAsync();
+            }
+        }
+        public async Task CheckProductAvailability(Guid productId)
+        {
+            var product = await shopWebDbContext.Products.FindAsync(productId);
+            if (product != null)
+            {
+                if (product.Quantity <= 0)
+                {
+                    product.State = "Out of Order";
+                }
+                else
+                {
+                    product.State = "Available";
+                }
+                await shopWebDbContext.SaveChangesAsync();
+            }
+        }
+
     }
 }

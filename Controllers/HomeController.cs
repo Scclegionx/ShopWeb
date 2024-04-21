@@ -74,6 +74,11 @@ namespace ShopWeb.Controllers
             // Get categories for display
             var categories = await cateRepository.GetAllAsync();
 
+            foreach (var product in products) 
+            {
+                await productRepository.CheckProductAvailability(product.Id);
+            }
+
             var model = new HomeViewModel
             {
                 Products = products,
