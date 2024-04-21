@@ -13,17 +13,23 @@ namespace ShopWeb.Controllers
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IProductCommentRepository productCommentRepository;
+        private readonly IProductVariantRepository productVariantRepository;
+        private readonly IVariantAttributesRepository variantAttributesRepository;
 
         public ProductsController(IProductRepository productRepository, IProductLikeRepository productLikeRepository,
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
-            IProductCommentRepository productCommentRepository)
+            IProductCommentRepository productCommentRepository,
+            IProductVariantRepository productVariantRepository,
+            IVariantAttributesRepository variantAttributesRepository)
         {
             this.productRepository = productRepository;
             this.productLikeRepository = productLikeRepository;
             this.signInManager = signInManager;
             this.userManager = userManager;
             this.productCommentRepository = productCommentRepository;
+            this.productVariantRepository = productVariantRepository;
+            this.variantAttributesRepository = variantAttributesRepository;
         }
         [HttpGet]
         public async Task<IActionResult> Index(Guid id)
@@ -45,6 +51,20 @@ namespace ShopWeb.Controllers
                     }
                 }
                 ViewData["TotalLikes"] = totalLikes;
+
+                var productVariants = await productVariantRepository.GetVariantsByProductIdAsync(id);
+
+
+                var listForView = new List<List<VariantAttribute>>();
+
+                if (productVariants is not null)
+                {
+                    foreach (var productVariant in productVariants)
+                    {
+                        var mdls = await variantAttributesRepository.GetAllVariantsAttributeByVariantAsync(productVariant.Id);
+                        listForView.Add(mdls);
+                    }
+                }
 
                 var productInDomain = await productCommentRepository.GetAllAsync(product.Id);
 
@@ -81,7 +101,8 @@ namespace ShopWeb.Controllers
                     Quantity = product.Quantity,
                     Categories = product.Categories,
                     ProductLike = product.ProductLike,
-                    Comments = productCommentForView
+                    Comments = productCommentForView,
+                    Variants = listForView
                 };
                 ViewData["Liked"] = liked;
                 return View(model);

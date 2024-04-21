@@ -22,5 +22,8 @@ namespace ShopWeb.Models.ViewModels.ProductVM
         public IEnumerable<SelectListItem> Categories { get; set; }
         //Collect Cates
         public string[] SelectedCategory { get; set; } = Array.Empty<string>();
+        public List<VariantAttributeRequest> VariantAttributes { get; set; }
+
     }
+
 }

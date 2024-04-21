@@ -3,8 +3,8 @@
     public class ProductVariant
     {
         public Guid Id { get; set; }
-        public ICollection<VariantAttribute> Attributes { get; set; } // Dynamic attributes
-        public int Price { get; set; }
+        public List<VariantAttribute> Attributes { get; set; } // Dynamic attributes
+        public decimal Price { get; set; }
         public int Quantity { get; set; }
         public Guid ProductId { get; set; }
         public Product Product { get; set; }
@@ -14,5 +14,6 @@
         public Guid Id { get; set; }
         public string Key { get; set; }
         public string Value { get; set; }
+        public Guid ProductVariantId { get; set; }
     }
 }

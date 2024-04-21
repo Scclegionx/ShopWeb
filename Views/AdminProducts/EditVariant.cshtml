@@ -1,0 +1,47 @@
+﻿@model ShopWeb.Models.ViewModels.ProductVM.EditVariantRequest
+
+<h2>Edit Variant Attribute</h2>
+
+@using (Html.BeginForm("EditVariant", "AdminProducts", FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.VariantId)
+
+    <div class="form-group">
+        <label asp-for="Price" class="control-label"></label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Quantity" class="control-label"></label>
+        <input asp-for="Quantity" class="form-control" />
+        <span asp-validation-for="Quantity" class="text-danger"></span>
+    </div>
+
+    <h3>Variant Attributes</h3>
+    @for (var i = 0; i < Model.VariantAttributes.Count; i++)
+    {
+        <input type="hidden" asp-for="@Model.VariantAttributes[i].Id" value="@Model.VariantId" class="form-control" />
+
+        <div class="form-group">
+            <label asp-for="@Model.VariantAttributes[i].Key" class="control-label"></label>
+            <input asp-for="@Model.VariantAttributes[i].Key" class="form-control" />
+            <span asp-validation-for="@Model.VariantAttributes[i].Key" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="@Model.VariantAttributes[i].Value" class="control-label"></label>
+            <input asp-for="@Model.VariantAttributes[i].Value" class="form-control" />
+            <span asp-validation-for="@Model.VariantAttributes[i].Value" class="text-danger"></span>
+        </div>
+    }
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Detail" asp-controller="AdminProducts" asp-route-id="@Model.ProductId" class="btn btn-secondary">Cancel</a>
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

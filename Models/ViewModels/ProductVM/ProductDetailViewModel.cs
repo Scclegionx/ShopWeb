@@ -11,6 +11,7 @@ namespace ShopWeb.Models.ViewModels.ProductVM
         public int Price { get; set; }
         public int Quantity { get; set; }
         public string CommentDescription { get; set; }
+        public List<List<VariantAttribute>> Variants { get; set; }
         public ICollection<Category> Categories { get; set; }
         public ICollection<ProductLike> ProductLike { get; set; }
         public IEnumerable<ProductCommentViewModel> Comments { get; set; }
