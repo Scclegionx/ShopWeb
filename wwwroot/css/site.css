@@ -241,3 +241,19 @@ body {
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
+
+
+/* product rating*/
+
+.rating {
+    font-size: 24px;
+}
+
+.star {
+    color: #888;
+    cursor: pointer;
+}
+
+.star.active {
+    color: #ffc107; /* Change to your desired active color */
+}

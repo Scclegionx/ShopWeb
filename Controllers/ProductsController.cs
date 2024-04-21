@@ -15,13 +15,15 @@ namespace ShopWeb.Controllers
         private readonly IProductCommentRepository productCommentRepository;
         private readonly IProductVariantRepository productVariantRepository;
         private readonly IVariantAttributesRepository variantAttributesRepository;
+        private readonly IProductRatingRepository productRatingRepository;
 
         public ProductsController(IProductRepository productRepository, IProductLikeRepository productLikeRepository,
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
             IProductCommentRepository productCommentRepository,
             IProductVariantRepository productVariantRepository,
-            IVariantAttributesRepository variantAttributesRepository)
+            IVariantAttributesRepository variantAttributesRepository,
+            IProductRatingRepository productRatingRepository)
         {
             this.productRepository = productRepository;
             this.productLikeRepository = productLikeRepository;
@@ -30,12 +32,15 @@ namespace ShopWeb.Controllers
             this.productCommentRepository = productCommentRepository;
             this.productVariantRepository = productVariantRepository;
             this.variantAttributesRepository = variantAttributesRepository;
+            this.productRatingRepository = productRatingRepository;
         }
         [HttpGet]
         public async Task<IActionResult> Index(Guid id)
         {
             var liked = false;
             var product = await productRepository.GetAsync(id);
+
+            double averageRating = await productRatingRepository.GetAverageRating(id);
 
             if (product != null)
             {
@@ -105,10 +110,12 @@ namespace ShopWeb.Controllers
                     Variants = listForView
                 };
                 ViewData["Liked"] = liked;
+                ViewData["AverageRating"] = averageRating;
                 return View(model);
 
             }
             ViewData["Liked"] = liked;
+            ViewData["AverageRating"] = averageRating;
             return View();
 
             
@@ -131,6 +138,36 @@ namespace ShopWeb.Controllers
                 return RedirectToAction("Index", "Products");
             }
             return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> RateProduct(ProductDetailViewModel model)
+        {
+            // Get the current user's ID
+            var userId = Guid.Parse(userManager.GetUserId(User));
+            var productId = model.Id;
+
+            // Check if the user has already rated the product
+            var existingRating = await productRatingRepository.GetRatingByUserAndProduct(userId, productId);
+            if (existingRating != null)
+            {
+                // If the user has already rated the product, update their rating
+                existingRating.Rating = model.Rating;
+                await productRatingRepository.UpdateAsync(existingRating);
+            }
+            else
+            {
+                // If the user hasn't rated the product yet, add a new rating
+                var productRating = new ProductRating
+                {
+                    UserId = userId,
+                    ProductId = productId,
+                    Rating = model.Rating
+                };
+                await productRatingRepository.AddAsync(productRating);
+            }
+
+            // Redirect back to the product details page
+            return RedirectToAction("Index", "Home");
         }
     }
 }

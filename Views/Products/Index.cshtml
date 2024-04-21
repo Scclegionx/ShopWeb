@@ -89,11 +89,30 @@
                 }
 
                 <div class="container py-5" id="rating-container">
-                    @using (Html.BeginForm("", "", FormMethod.Post))
+                    @using (Html.BeginForm("RateProduct", "Products", FormMethod.Post))
                     {
+
+                        @Html.HiddenFor(m => m.Id)
                         <h5>Bạn đánh giá sản phẩm này chất lượng như nào?</h5>
-                        <button type="submit" class=" btn btn-dark" >Đánh giá</button>
+                        <div class="form-group">
+                            <select class="form-control" asp-for="Rating">
+                                <option value="1">1 Star</option>
+                                <option value="2">2 Stars</option>
+                                <option value="3">3 Stars</option>
+                                <option value="4">4 Stars</option>
+                                <option value="5">5 Stars</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-dark">Đánh giá</button>
                     }
+                </div>
+
+                <div class="rating">
+                    <span class="star" data-value="1">&#9733;</span>
+                    <span class="star" data-value="2">&#9733;</span>
+                    <span class="star" data-value="3">&#9733;</span>
+                    <span class="star" data-value="4">&#9733;</span>
+                    <span class="star" data-value="5">&#9733;</span>
                 </div>
 
                 <div class="card">
@@ -149,6 +168,20 @@
         const btnLikeElement = document.getElementById("btnLike");
         const totalLikesElement = document.getElementById("totalLikes");
         const productId = "@Model.Id";
+
+        $(document).ready(function () {
+
+            var ratingValue = @Html.Raw(Json.Serialize(ViewData["AverageRating"]));
+            var roundedRating = Math.round(ratingValue * 2) / 2;
+
+
+            $('.star').each(function () {
+                var starValue = parseFloat($(this).attr('data-value'));
+                if (starValue <= roundedRating) {
+                    $(this).addClass('active');
+                }
+            });
+        });
 
 
         async function getTotalLikes() {
