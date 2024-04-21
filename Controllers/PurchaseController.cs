@@ -263,6 +263,7 @@ namespace ShopWeb.Controllers
             for (var i = 0; i < listProductId.Count; i++)
             {
                 await purchaseRepository.UpdatePurchaseCount(listProductId[i], listQuantity[i]);
+                await productRepository.UpdateProductQuantity(listProductId[i], listQuantity[i]);
             }
 
 
