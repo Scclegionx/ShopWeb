@@ -57,8 +57,8 @@
                         <label for="variantValue">Variant Value</label>
                         <input type="text" class="form-control" name="VariantValueForm" placeholder="Enter variant value">
                     </div>
+                    <button type="button" class="btn btn-secondary add-variant-value-btn" data-form-key="variant-form0">More Variant Value</button>
                 </div>
-                <button type="button" class="btn btn-secondary add-variant-value-btn" data-form-key="variant-form0">More Variant Value</button>
             </div>
         </div>
 
@@ -280,6 +280,7 @@
             // Function to add a new variant form
             function addVariantForm() {3
                 var newForm = '<div class="variant-form" id="variant-form'+ variantCounter +'">' +
+                    '<button type="button" class="btn btn-danger delete-variant-btn"><i class="bi bi-x-circle"></i></button>' +
                     '<div class="form-group" id="form-group-variant-name">' +
                     '<label for="variantName">Variant Name</label>' +
                     '<input type="text" class="form-control" name="VariantNameForm" placeholder="Enter variant name">' +
@@ -287,8 +288,9 @@
                     '<div class="form-group" id="form-group-variant-value">' +
                     '<label for="variantValue">Variant Value</label>' +
                     '<input type="text" class="form-control" name="VariantValueForm" placeholder="Enter variant value">' +
-                    '</div>' +
-                    '</div>' + '<button type="button" class="btn btn-secondary add-variant-value-btn" data-form-key="variant-form' + variantCounter + '" >More Variant Value</button>';
+                    '<button type="button" class="btn btn-secondary add-variant-value-btn" data-form-key="variant-form' + variantCounter + '" >More Variant Value</button>' +
+                    '</div>' + 
+                    '</div>';
 
                 $('#variantForms').append(newForm);
             }
@@ -311,6 +313,7 @@
                     '<div class="form-group" id="form-group-variant-value">' +
                     '<label for="variantValue">Variant Value</label>' +
                     '<input type="text" class="form-control" name="VariantValueForm" placeholder="Enter variant value">' +
+                    '<button type="button" class="btn btn-danger delete-variant-value-btn"><i class="bi bi-x-circle"></i></button>' +
                     '</div>' +
                     '</div>';
 
@@ -321,6 +324,14 @@
                 var formKey = $(this).data('form-key');
                 addVariantValueForm(formKey);
                 //console.log(variantValueCounter)
+            });
+
+            $(document).on('click', '.delete-variant-value-btn', function () {
+                $(this).closest('.form-group').remove();
+            });
+            $(document).on('click', '.delete-variant-btn', function () {
+                $(this).closest('.variant-form').remove(); 
+
             });
 
 
