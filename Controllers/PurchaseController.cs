@@ -334,6 +334,13 @@ namespace ShopWeb.Controllers
         public async Task<IActionResult> PurchaseManage()
         {
             var purchases = await purchaseRepository.GetAllPurchases();
+            var donePurchases = purchases.Where(p => p.State == "Done").ToList();
+            var otherPurchases = purchases.Where(p => p.State != "Done").ToList();
+
+            ViewData["donePurchases"] = donePurchases;
+            ViewData["otherPurchases"] = otherPurchases;
+
+
             return View(purchases);
         }
 

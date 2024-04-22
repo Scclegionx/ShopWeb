@@ -1,6 +1,9 @@
 ﻿@model ShopWeb.Models.ViewModels.LikeVM.LikeProductsViewModel
 
+@await Html.PartialAsync("SideNavBar");
+
 <h1>Liked Products</h1>
+
 
 @if (Model.LikedProducts != null && Model.LikedProducts.Any())
 {

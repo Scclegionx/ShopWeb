@@ -83,7 +83,7 @@
                             </div>
                         }
                         <input type="hidden" name="productId" value="@Model.Id" />
-                        <input type="number" name="quantity" value="1" min="1" class="form-control mb-3" />
+                        <input type="number" name="quantity" value="1" min="1" class="form-control mb-3" max="@Model.Quantity" oninput="validateInput(this)" />
                         <button type="submit" class="btn btn-dark">Thêm vào giỏ hàng</button>
                     </div>
                 }
@@ -182,6 +182,26 @@
                 }
             });
         });
+
+        function validateInput(input) {
+            var min = parseInt(input.getAttribute('min'));
+            var max = parseInt(input.getAttribute('max'));
+
+            // Parse the current value of the input field
+            var value = parseInt(input.value);
+
+            // Check if the parsed value is less than the minimum allowed value
+            if (value < min) {
+                // If the value is less than the minimum, set the value to the minimum allowed value
+                input.value = min;
+            }
+
+            // Check if the parsed value is greater than the maximum allowed value
+            if (value > max) {
+                // If the value is greater than the maximum, set the value to the maximum allowed value
+                input.value = max;
+            }
+        }
 
 
         async function getTotalLikes() {
