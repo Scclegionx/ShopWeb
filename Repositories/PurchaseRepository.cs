@@ -58,7 +58,7 @@ namespace ShopWeb.Repositories
 
         public async Task<IEnumerable<Purchase>> GetOwnPurchaseForTracking(Guid userId)
         {
-            return await shopWebDbContext.Purchase.Where(x => x.UserId == userId).ToListAsync();
+            return await shopWebDbContext.Purchase.Where(x => x.UserId == userId && x.State != "Done").ToListAsync();
         }
 
         public async Task<IEnumerable<Purchase>> GetOwnPurchases(Guid userId)
