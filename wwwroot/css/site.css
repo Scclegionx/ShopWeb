@@ -258,6 +258,19 @@ body {
 .variant-form {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    position: relative;
+}
+
+.delete-variant-btn {
+    position: absolute;
+    top: 5px; /* Adjust as needed */
+    right: 5px; /* Adjust as needed */
+}
+
+.add-variant-value-btn {
+    position: absolute;
+    bottom: 5px; /* Adjust as needed */
+    right: 5px; /* Adjust as needed */
 }
 
 

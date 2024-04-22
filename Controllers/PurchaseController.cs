@@ -311,13 +311,30 @@ namespace ShopWeb.Controllers
                     var CartItemForView = new List<CartItemViewModel>();
                     foreach (var item in CartIteminDomain)
                     {
+                        var listForView = new List<List<VariantAttribute>>();
+                        var mdls = await variantAttributesRepository.GetAllVariantsAttributeByVariantAsync(item.ProductVariantId);
+                        listForView.Add(mdls);
+                        var productVariantPrice = await productVariantRepository.GetAsync(item.ProductVariantId);
                         var productInCart = await productRepository.GetAsync(item.ProductId);
-                        CartItemForView.Add(new CartItemViewModel
+                        if (productVariantPrice != null)
                         {
-                            ProductName = productInCart.Name,
-                            Price = productInCart.Price,
-                            Quantity = item.Quantity
-                        });
+                            CartItemForView.Add(new CartItemViewModel
+                            {
+                                ProductName = productInCart.Name,
+                                Price = productVariantPrice.Price,
+                                Quantity = item.Quantity,
+                                Variants = listForView
+                            });
+                        } else
+                        {
+                            CartItemForView.Add(new CartItemViewModel
+                            {
+                                ProductName = productInCart.Name,
+                                Price = productInCart.Price,
+                                Quantity = item.Quantity,
+                                Variants = listForView
+                            });
+                        }
                     }
                     model.Items = CartItemForView;
                     // Recalculate the total price by subtracting the discount amount
