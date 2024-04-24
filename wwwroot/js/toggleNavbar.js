@@ -7,3 +7,4 @@ document.getElementById('hideButton').addEventListener('click', function () {
     var sidebar = document.getElementById('admin-sidebar');
     sidebar.style.left = '-250px'; // Hide the navbar
 });
+

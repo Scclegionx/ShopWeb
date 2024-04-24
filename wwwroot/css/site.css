@@ -23,11 +23,7 @@ html {
 }
 
 body {
-    margin-bottom: 60px;
-    background-image: url("../Assets/12804670_5086946.jpg");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
+    
 }
 
 .product-details-content img {
@@ -43,142 +39,52 @@ body {
 }
 
 
-/*home product css*/
-#home-page-container {
-    display: grid;
-    grid-template-columns: 1fr 5fr;
-    margin: 50px;
+#template-mo-zay-hero-carousel .carousel-item img {
+    height: 600px; /* Adjust the height to your desired size */
+    object-fit: fill; /* Maintain aspect ratio and cover container */
 }
 
-#product-container {
-    display: block;
-    position: relative;
-    border-radius: 15px; /* Adjust the value for the roundness of corners */
-    border: 5px solid #ADD8E6; /* Light blue border */
-    background-color: #F0F8FF; /* Light background color */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
-    padding: 20px; /* Adjust as needed */
-    margin: 10px 5px 10px 5px; /* Spacing between cards, adjust as needed */
-}
-#price-container {
-    position: absolute;
-    left: 0px;
-    bottom: 0px;
-}
-#quantity-container {
-    position: absolute;
-    right: 20px;
-    bottom: 20px;
-}
-#category-container {
-    /*border: 10px solid blue;
-    height: 100vh;
-    background-color: floralwhite;
-    border-radius: 10px;
-    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
-    -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
-    -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
-    margin: -30px;*/
-    border-radius: 15px; /* Adjust the value for the roundness of corners */
-    border: 5px solid #ADD8E6; /* Light blue border */
-    background-color: #F0F8FF; /* Light background color */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
-    padding: 20px; /* Adjust as needed */
-    margin: 10px 10px 10px -40px; /* Spacing between cards, adjust as needed */
-}
-#product-p2-container {
-    
-}
-#bestSeller-container {
-    border-radius: 15px; /* Adjust the value for the roundness of corners */
-    border: 5px solid #ADD8E6; /* Light blue border */
-    background-color: #F0F8FF; /* Light background color */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
-    padding: 20px; /* Adjust as needed */
-    margin: 0px 10px 20px 37px; /* Spacing between cards, adjust as needed */
-}
-#index-container {
-    display: block;
-    margin: 10px 5px 10px 5px;
-}
-#index-bestSeller-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 50vh; /* Set height to 100% of the viewport height */
+/* Modal Header */
+#modalSearch .modal-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    padding: 1rem;
 }
 
-.carousel {
-    width: 40%; /* Adjust the width as needed */
-}
-.carousel-item img {
-    height: 300px; /* Set the desired height for the images */
-    width: auto; /* Maintain the aspect ratio */
-    object-fit: cover; /* Ensure that the entire image is displayed within the specified dimensions */
+/* Modal Title */
+#modalSearch .modal-title {
+    color: #343a40;
+    font-size: 1.25rem;
 }
 
-#index-bestSeller-container h2 {
-    text-align: center;
-    margin-bottom: 20px; /* Adjust margin as needed */
+/* Modal Body */
+#modalSearch .modal-body {
+    padding: 1rem;
 }
 
-#home-image-container {
-    float: right;
-    margin-left: 6px;
-    border-radius: 15px; /* Adjust the value for the roundness of corners */
-    border: 5px solid #ADD8E6; /* Light blue border */
-    background-color: #F0F8FF; /* Light background color */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
-    padding: 20px; /* Adjust as needed */
-    margin-bottom: 20px; /* Spacing between cards, adjust as needed */
+/* Modal Footer */
+#modalSearch .modal-footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+    padding: 1rem;
 }
-#product-list-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+
+/* Close Button */
+#modalSearch .btn-close {
+    color: #6c757d;
+    opacity: 1;
 }
-#search-allProducts-container {
-    border-radius: 15px; /* Adjust the value for the roundness of corners */
-    border: 5px solid #ADD8E6; /* Light blue border */
-    background-color: #F0F8FF; /* Light background color */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
-    padding: 20px; /* Adjust as needed */
-    margin: 0 -50px 0 -6px;
-}
-#search-container {
-    margin: 0 0 20px 1200px;
-}
-/*login, register, cateAdmin, productAdmin */
-#login-container, #register-container, #cateAdmin-container, #productAdmin-container, #rating-container, #purchase-container, #response-container, #tracking-container, #history-container,
-.variant-form {
-    border-radius: 15px; /* Adjust the value for the roundness of corners */
-    border: 5px solid #ADD8E6; /* Light blue border */
-    background-color: #F0F8FF; /* Light background color */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
-    padding: 20px; /* Adjust as needed */
-    margin-bottom: 20px; /* Spacing between cards, adjust as needed */
-}
-#purchase-container, #response-container, #tracking-container, #history-container {
-    margin-left: 200px;
-}
-/*UserAdmin*/
-#userAdmin-container {
-    border-radius: 15px; /* Adjust the value for the roundness of corners */
-    border: 5px solid #ADD8E6; /* Light blue border */
-    background-color: #F0F8FF; /* Light background color */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
-    padding: 20px; /* Adjust as needed */
-    margin-bottom: 20px; /* Spacing between cards, adjust as needed */
-}
-/*product detail*/
-#product-detail-container {
-    border-radius: 15px; /* Adjust the value for the roundness of corners */
-    border: 5px solid #ADD8E6; /* Light blue border */
-    background-color: #F0F8FF; /* Light background color */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
-    padding: 20px; /* Adjust as needed */
-    margin-bottom: 20px; /* Spacing between cards, adjust as needed */
-}
+
+    /* Close Button Hover */
+    #modalSearch .btn-close:hover {
+        color: #343a40;
+    }
+
+
+
+
+
+
 /*user-navbar*/
 #user-navbar-container {
     position: fixed;
@@ -213,6 +119,7 @@ body {
     background-color: #333;
     padding: 20px;
     transition: left 0.3s ease; /* Add smooth transition effect */
+    z-index: 9999;
 }
 
 #admin-sidebar ul {
@@ -229,8 +136,49 @@ body {
     color: white;
     text-decoration: none;
 }
+#admin-sidebar a:hover {
+    color: #ffc6bf; /* Set font color for hovered navbar links */
+}
+
+/* Dropdown styles */
+#admin-sidebar .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 999;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+#admin-sidebar .dropdown-menu li {
+    margin-bottom: 5px;
+}
+
+#admin-sidebar .dropdown-menu a {
+    color: #333; /* Default color */
+    text-decoration: none;
+    transition: color 0.3s ease; /* Smooth transition */
+}
+
+#admin-sidebar .dropdown-menu a:hover {
+    text-decoration: none; /* Remove underline on hover */
+    color: #ffc6bf; /* Change color on hover */
+    background-color: #333;
+}
+
+#admin-sidebar .dropdown-menu a:focus,
+#admin-sidebar .dropdown-menu a:active {
+    color: #777; /* Change color when clicked */
+    text-decoration: none; /* Remove underline when clicked */
+    background-color: #e5e5e5;
+}
+
+
+
 #toggleButton {
-    color: white;
+    color: black;
     margin: 0 20px 0 20px;
     font-size: 24px;
 }
@@ -315,3 +263,111 @@ body {
      /* Set the opacity for the second layer */
     z-index: 0; /* Ensure the second layer is below the first layer */
 }
+
+
+#product-list-container .card img {
+    height: 300px;
+    object-fit: fill; /* Maintain aspect ratio and cover container */
+}
+
+
+/* Footer */
+#tempaltemo_footer a {
+    color: #dcdde1;
+}
+
+    #tempaltemo_footer a:hover {
+        color: #68bb7d;
+    }
+
+#tempaltemo_footer ul.footer-link-list li {
+    padding-top: 10px;
+}
+
+#tempaltemo_footer ul.footer-icons li {
+    width: 2.6em;
+    height: 2.6em;
+    line-height: 2.6em;
+}
+
+    #tempaltemo_footer ul.footer-icons li:hover {
+        background-color: #cfd6e1;
+        transition: .5s;
+    }
+
+        #tempaltemo_footer ul.footer-icons li:hover i {
+            color: #212934;
+            transition: .5s;
+        }
+
+#tempaltemo_footer .border-light {
+    border-color: #2d343f !important;
+}
+
+
+/*  1. Category admin    */
+
+
+/* Form container */
+#cateAdmin-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 2px solid #007bff; /* Border color */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.3); /* Box shadow color */
+    background-color: #f8f9fa; /* Background color */
+}
+
+    /* Form labels */
+    #cateAdmin-container label {
+        font-weight: bold;
+        color: #343a40; /* Label text color */
+    }
+
+    /* Form input fields */
+    #cateAdmin-container input[type="text"],
+    #cateAdmin-container input[type="email"] {
+        width: 100%;
+        padding: 0.5rem;
+        margin-top: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 0.25rem;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+        /* Form input fields focus */
+        #cateAdmin-container input[type="text"]:focus,
+        #cateAdmin-container input[type="email"]:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+        }
+
+    /* Error messages */
+    #cateAdmin-container .text-danger {
+        color: #dc3545;
+    }
+
+    /* Submit button */
+    #cateAdmin-container button[type="submit"] {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        margin-top: 1rem;
+        font-size: 1rem;
+        font-weight: bold;
+        color: #fff;
+        background-color: #343a40; /* Button background color */
+        border: none;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        transition: background-color 0.15s ease-in-out;
+    }
+
+        /* Submit button hover */
+        #cateAdmin-container button[type="submit"]:hover {
+            background-color: #23272b; /* Button hover background color */
+        }
+
+
+
