@@ -12,6 +12,18 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ShopWeb.styles.css" asp-append-version="true" />
     <link href="~/Scripts/datatable-js/dataTables.bootstrap.css" rel="stylesheet"/>
+
+    <link rel="apple-touch-icon" href="assets/img/apple-icon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/templatemo.css">
+    <link rel="stylesheet" href="css/custom.css">
+
+    <!-- Load fonts style after rendering the layout styles -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
+    <link rel="stylesheet" href="css/fontawesome.min.css">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href='https://cdn.jsdelivr.net/npm/froala-editor@latest/css/froala_editor.pkgd.min.css' rel='stylesheet' type='text/css' />
     <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/froala-editor@latest/js/froala_editor.pkgd.min.js'></script>
@@ -20,58 +32,80 @@
     <header>
         @if (ViewBag.RenderDefaultNavbar == null || ViewBag.RenderDefaultNavbar)
         {
-            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
-            <div class="container-fluid">
+            <nav class="navbar navbar-expand-lg navbar-light shadow">
+                <div class="container-fluid d-flex justify-content-between align-items-center">
                     @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                     {
                         <i class="bi bi-sliders" id="toggleButton"></i>
                     }
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ShopWeb</a>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        
-
-                    </ul>
-                    <div class="d-flex align-items-center">
-
-                        @if (signInManager.IsSignedIn(User))
-                        {
-                            <div class="me-3 text-light">
-                                <a style="text-decoration: none; color: white" asp-area="" asp-controller="Account" asp-action="UserDetail">@User?.Identity?.Name</a>
-                            </div>
-                            @if (!User.IsInRole("Shipper"))
-                            {    
-                                <div class="me-3 text-light">
-                                    <a class="nav-link text-light" asp-area="" asp-controller="Cart" asp-action="Index">Giỏ hàng</a>
+                    <a class="navbar-brand text-success logo h1 align-self-center" asp-area="" asp-controller="Home" asp-action="Index">Hapodidae</a>
+                    <div class="align-self-center collapse navbar-collapse flex-fill  d-lg-flex justify-content-lg-between" id="templatemo_main_nav">
+                        <div class="flex-fill">
+                            <ul class="navbar-nav flex-grow-1">
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="about.html">About</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="shop.html">Shop</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="contact.html">Contact</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="navbar align-self-center d-flex">
+                            <div class="d-lg-none flex-sm-fill mt-3 mb-4 col-7 col-sm-auto pr-3">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="inputMobileSearch" placeholder="Search ...">
+                                    <div class="input-group-text">
+                                        <i class="bi bi-search"></i>
+                                    </div>
                                 </div>
+                            </div>
+                            <a class="nav-icon d-none d-lg-inline" data-bs-toggle="modal" data-bs-target="#modalSearch">
+                                <i class="bi bi-search text-dark mr-2"></i>
+                            </a>
+                            @if (signInManager.IsSignedIn(User))
+                            {
+                                <a class="nav-icon position-relative text-decoration-none" asp-area="" asp-controller="Account" asp-action="UserDetail">
+                                    <i class="bi bi-person-fill text-dark mr-3"></i>
+                                    <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">+99</span>
+                                </a>
+                                <div class="me-3 text-light">
+                                    <a style="text-decoration: none;" asp-area="" asp-controller="Account" asp-action="UserDetail">@User?.Identity?.Name</a>
+                                </div>
+                                @if (!User.IsInRole("Shipper"))
+                                {
+                                    <a class="nav-icon position-relative text-decoration-none" asp-area="" asp-controller="Cart" asp-action="Index">
+                                        <i class="bi bi-cart-check-fill text-dark mr-1"></i>
+                                        <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">7</span>
+                                    </a>
+                                }
+
+                                <a class="btn me-3 bg-light text-dark "
+                                   asp-area=""
+                                   asp-controller="Account"
+                                   asp-action="Logout">Đăng xuất</a>
                             }
-
-                            <a class="btn me-3 bg-light text-dark "
-                               asp-area=""
-                               asp-controller="Account"
-                            asp-action="Logout">Đăng xuất</a>
-
-                        } else
-                        {
-                            <a class="btn me-3 bg-light text-dark "
-                               asp-area=""
-                               asp-controller="Account"
-                               asp-action="Login">Đăng nhập</a>
-                            <a class="btn me-3 bg-light text-dark "
-                               asp-area=""
-                               asp-controller="Account"
-                               asp-action="Register">Đăng ký</a>
-                        }
-
-                        
+                            else
+                            {
+                                <a class="btn me-3 bg-light text-dark "
+                                   asp-area=""
+                                   asp-controller="Account"
+                                   asp-action="Login">Đăng nhập</a>
+                                <a class="btn me-3 bg-light text-dark "
+                                   asp-area=""
+                                   asp-controller="Account"
+                                   asp-action="Register">Đăng ký</a>
+                            }
+                        </div>
+                            
                     </div>
-
                 </div>
-            </div>
-        </nav>
+            </nav>
         }
         @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
         {
@@ -82,31 +116,31 @@
                     </li>
                     <hr style="color:white" />
                     <li class="nav-item">
-                        <a class="nav-link text-light" asp-area="" asp-controller="AdminUser" asp-action="List">Danh sách người dùng</a>
+                        <a class="nav-link " asp-area="" asp-controller="AdminUser" asp-action="List">Danh sách người dùng</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-light" asp-area="" asp-controller="Coupon" asp-action="Index">Phiếu giảm giá</a>
+                        <a class="nav-link" asp-area="" asp-controller="Coupon" asp-action="Index">Phiếu giảm giá</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" aria-expanded="false">
                             Danh mục
                         </a>
-                        <ul class="dropdown-menu" style="background-color: #334" >
-                            <li><a class="dropdown-item " asp-area="" asp-action="Add" asp-controller="AdminCategory">Thêm mới danh mục</a></li>
-                            <li><a class="dropdown-item " asp-area="" asp-action="List" asp-controller="AdminCategory">Tất cả danh mục</a></li>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" asp-area="" asp-controller="AdminCategory" asp-action="Add">Thêm mới danh mục</a></li>
+                            <li><a class="dropdown-item" asp-area="" asp-controller="AdminCategory" asp-action="List">Tất cả danh mục</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" aria-expanded="false">
                             Mặt hàng
                         </a>
-                        <ul class="dropdown-menu" style="background-color: #334">
-                            <li><a class="dropdown-item" asp-area="" asp-action="Add" asp-controller="AdminProducts">Thêm mới mặt hàng</a></li>
-                            <li><a class="dropdown-item" asp-area="" asp-action="List" asp-controller="AdminProducts">Tất cả mặt hàng</a></li>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" asp-area="" asp-controller="AdminProducts" asp-action="Add">Thêm mới mặt hàng</a></li>
+                            <li><a class="dropdown-item" asp-area="" asp-controller="AdminProducts" asp-action="List">Tất cả mặt hàng</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item"><a asp-area="" asp-controller="Purchase" asp-action="PurchaseManage" class="nav-link text-light">Quản lý đơn hàng</a></li>
-                    <li class="nav-item"><a asp-area="" asp-controller="Response" asp-action="Index" class="nav-link text-light">Phản hồi</a></li>
+                    <li class="nav-item"><a asp-area="" asp-controller="Purchase" asp-action="PurchaseManage" class="nav-link">Quản lý đơn hàng</a></li>
+                    <li class="nav-item"><a asp-area="" asp-controller="Response" asp-action="Index" class="nav-link">Phản hồi</a></li>
                 </ul>
             </nav>
         }
@@ -117,15 +151,127 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="bg-dark" id="tempaltemo_footer">
         <div class="container">
-            &copy; 2024 - ShopWeb - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="row">
+
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-success border-bottom pb-3 border-light logo">Hapodidae</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li>
+                            <i class="fas fa-map-marker-alt fa-fw"></i>
+                            Nguyen Chanh, Ha Noi, Viet Nam
+                        </li>
+                        <li>
+                            <i class="fa fa-phone fa-fw"></i>
+                            <a class="text-decoration-none" href="tel:010-020-0340">0966719012</a>
+                        </li>
+                        <li>
+                            <i class="fa fa-envelope fa-fw"></i>
+                            <a class="text-decoration-none" href="mailto:info@company.com">info@company.com</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-light border-bottom pb-3 border-light">Products</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li><a class="text-decoration-none" href="#">Luxury</a></li>
+                        <li><a class="text-decoration-none" href="#">Sport Wear</a></li>
+                        <li><a class="text-decoration-none" href="#">Men's Shoes</a></li>
+                        <li><a class="text-decoration-none" href="#">Women's Shoes</a></li>
+                        <li><a class="text-decoration-none" href="#">Popular Dress</a></li>
+                        <li><a class="text-decoration-none" href="#">Gym Accessories</a></li>
+                        <li><a class="text-decoration-none" href="#">Sport Shoes</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-md-4 pt-5">
+                    <h2 class="h2 text-light border-bottom pb-3 border-light">Further Info</h2>
+                    <ul class="list-unstyled text-light footer-link-list">
+                        <li><a class="text-decoration-none" href="#">Home</a></li>
+                        <li><a class="text-decoration-none" href="#">About Us</a></li>
+                        <li><a class="text-decoration-none" href="#">Shop Locations</a></li>
+                        <li><a class="text-decoration-none" href="#">FAQs</a></li>
+                        <li><a class="text-decoration-none" href="#">Contact</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="row text-light mb-4">
+                <div class="col-12 mb-3">
+                    <div class="w-100 my-3 border-top border-light"></div>
+                </div>
+                <div class="col-auto me-auto">
+                    <ul class="list-inline text-left footer-icons">
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a class="text-light text-decoration-none" target="_blank" href="http://facebook.com/"><i class="fab fa-facebook-f fa-lg fa-fw"></i></a>
+                        </li>
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a class="text-light text-decoration-none" target="_blank" href="https://www.instagram.com/"><i class="fab fa-instagram fa-lg fa-fw"></i></a>
+                        </li>
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a class="text-light text-decoration-none" target="_blank" href="https://twitter.com/"><i class="fab fa-twitter fa-lg fa-fw"></i></a>
+                        </li>
+                        <li class="list-inline-item border border-light rounded-circle text-center">
+                            <a class="text-light text-decoration-none" target="_blank" href="https://www.linkedin.com/"><i class="fab fa-linkedin fa-lg fa-fw"></i></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-auto">
+                    <label class="sr-only" for="subscribeEmail">Email address</label>
+                    <div class="input-group mb-2">
+                        <input type="text" class="form-control bg-dark border-light" id="subscribeEmail" placeholder="Email address">
+                        <div class="input-group-text btn-success text-light">Subscribe</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-100 bg-black py-3">
+            <div class="container">
+                <div class="row pt-2">
+                    <div class="col-12">
+                        <p class="text-left text-light">
+                            Copyright &copy; 2024 - ShopWeb - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            | Designed by <a rel="sponsored" href="https://templatemo.com" target="_blank">TemplateMo</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
     </footer>
     <script src="/js/toggleNavbar.js"></script>
+    <script src="/js//toggleDropDown.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
+
+@using (Html.BeginForm("Index", "Home", FormMethod.Get))
+{
+    <div class="modal fade" id="modalSearch" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Search Products</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label>Search:</label>
+                    <input type="text" placeholder="Type something..." name="productName" />
+                    <input type="hidden" id="category" name="category" value="" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+}

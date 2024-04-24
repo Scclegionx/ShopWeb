@@ -1,0 +1,35 @@
+﻿/* Modal Header */
+#modalSearch .modal-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    padding: 1rem;
+}
+
+/* Modal Title */
+#modalSearch .modal-title {
+    color: #343a40;
+    font-size: 1.25rem;
+}
+
+/* Modal Body */
+#modalSearch .modal-body {
+    padding: 1rem;
+}
+
+/* Modal Footer */
+#modalSearch .modal-footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+    padding: 1rem;
+}
+
+/* Close Button */
+#modalSearch .btn-close {
+    color: #6c757d;
+    opacity: 1;
+}
+
+    /* Close Button Hover */
+    #modalSearch .btn-close:hover {
+        color: #343a40;
+    }

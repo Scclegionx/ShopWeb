@@ -6,7 +6,7 @@
 }
 
 <div id="home-page-container">
-    <div class="container" id="category-container">
+    <!-- <div class="container" id="category-container">
         <div class="row justify-content-center">
             <div class="col-6 " >
                 @if (Model != null && Model.Categories.Any())
@@ -26,12 +26,20 @@
                 }
             </div>
         </div>
-    </div>
+    </div> -->
 
 
     <div id="index-container">
-        <div class="row justify-content-center" id="index-bestSeller-container">
-            <h2>Best Selling Products</h2>
+        <div class="row justify-content-center" id="template-mo-zay-hero-carousel">
+            <div class="row text-center py-3">
+                <div class="col-lg-6 m-auto">
+                    <h1 class="h1">Sản phẩm bán chạy</h1>
+                    <p>
+                        Reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                        Excepteur sint occaecat cupidatat non proident.
+                    </p>
+                </div>
+            </div>
             @if (Model.bestSellingProducts != null && Model.bestSellingProducts.Any())
             {
                 <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
@@ -66,55 +74,69 @@
             }
         </div>
         <div id="search-allProducts-container">
-            <div id="search-container">
-                @using (Html.BeginForm("Index", "Home", FormMethod.Get))
-                {
-                    <label>Search:</label>
-                    <input type="text" placeholder="Type something..." name="productName" />
-                    <input type="hidden" id="category" name="category" value="" />
-                    <button class="btn-dark" type="submit">Tìm</button>
-                }
-            </div>
+            
             <div id="product-list-container">
                 @if (Model != null && Model.Products.Any())
                 {
-                    foreach (var product in Model.Products)
-                    {
-                        <div class="mb-5 bg-light box-shadow p-5" id="product-container">
-                            <div>
-                                @if (product.State == "Available")
+                    <section class="bg-light">
+                        <div class="container py-5">
+                            <div class="row text-center py-3">
+                                <div class="col-lg-6 m-auto">
+                                    <h1 class="h1">Featured Product</h1>
+                                    <p>
+                                        Reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                        Excepteur sint occaecat cupidatat non proident.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                @foreach (var product in Model.Products)
                                 {
-                                    <img src="@product.FeaturedImageUrl" alt="@product.Name" class="mb-2 d-block img-fluid" />
-                                } else
-                                {
-                                    <div class="image-container">
-                                        <img src="@product.FeaturedImageUrl" alt="@product.Name" class="mb-2 d-block img-fluid first-layer" />
-                                        <img src="/Assets/ood.jpg" class="second-layer" />
+                                    <div class="col-12 col-md-4 mb-4">
+                                        <div class="card h-100">
+                                            @if (product.State == "Available")
+                                            {
+                                                <img src="@product.FeaturedImageUrl" alt="@product.Name" class="mb-2 d-block img-fluid" />
+                                            } else
+                                            {
+                                                <div class="image-container">
+                                                    <img src="@product.FeaturedImageUrl" alt="@product.Name" class="mb-2 d-block img-fluid first-layer" />
+                                                    <img src="/Assets/ood.jpg" class="second-layer" />
+                                                </div>
+                                            }
+                                            <div class="card-body">
+                                                <ul class="list-unstyled d-flex justify-content-between">
+                                                    <li>
+                                                        <i class="text-warning bi bi-star-fill"></i>
+                                                        <i class="text-warning bi bi-star-fill"></i>
+                                                        <i class="text-warning bi bi-star-fill"></i>
+                                                        <i class="text-muted bi bi-star"></i>
+                                                        <i class="text-muted bi bi-star"></i>
+                                                    </li>
+                                                    <li class="text-muted text-right">Giá: @product.Price</li>
+                                                </ul>
+                                                <h2 class="h2 text-decoration-none text-dark">@product.Name</h2>
+                                                <p class="card-text">
+                                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt in culpa qui officia deserunt.
+                                                </p>
+                                                <p class="text-muted">Reviews (24)</p>
+                                                @if (product.State == "Available")
+                                                {
+                                                    <div>
+                                                        <a class="btn btn-dark"
+                                                           asp-area=""
+                                                           asp-controller="Products"
+                                                           asp-action="Index"
+                                                           asp-route-id="{@product.Id}">Chi Tiết</a>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
                                     </div>
                                 }
-
-                                <h2 class="mb-4" style="text-align: center;">@product.Name</h2>
-                            </div>
-                            <div id="product-p2-container">
-                                <div id="price-container">
-                                    <span class="mark">Giá: @product.Price</span>
-                                </div>
-                                <div id="quantity-container">
-                                    <span>Số lượng: @product.Quantity</span>
-                                </div>
-                            </div>
-                            @if (product.State == "Available")
-                            {
-                                <div>
-                                    <a class="btn btn-dark"
-                                       asp-area=""
-                                       asp-controller="Products"
-                                       asp-action="Index"
-                                       asp-route-id="{@product.Id}">Chi Tiết</a>
-                                </div>
-                            }
+                            </div>     
                         </div>
-                    }
+                    </section>
                 } else
                 {
                     <p>No Products Found!</p>
