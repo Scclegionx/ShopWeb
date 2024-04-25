@@ -10,9 +10,12 @@ namespace ShopWeb.Repositories
     public class ProductRepository : IProductRepository
     {
         private readonly ShopWebDbContext shopWebDbContext;
-        public ProductRepository(ShopWebDbContext shopWebDbContext)
+        private readonly IProductRatingRepository productRatingRepository;
+
+        public ProductRepository(ShopWebDbContext shopWebDbContext, IProductRatingRepository productRatingRepository)
         {
             this.shopWebDbContext = shopWebDbContext;
+            this.productRatingRepository = productRatingRepository;
         }
         public async Task<Product> AddAsync(Product product)
         {
@@ -68,6 +71,39 @@ namespace ShopWeb.Repositories
                 existingProd.Price = product.Price;
                 existingProd.Quantity = product.Quantity;
                 existingProd.Categories = product.Categories;
+
+                await shopWebDbContext.SaveChangesAsync();
+                return existingProd;
+            }
+            return null;
+        }
+
+        public async Task<Product?> UpdateRatingAsync (Guid id)
+        {
+            double? averageR = await productRatingRepository.GetAverageRating(id);
+            if (averageR == null) 
+            {
+                averageR = 0;
+            }
+            var roundedRating = Math.Round((decimal)averageR * 2) / 2;
+
+            var existingProd = await shopWebDbContext.Products.Include(x => x.Categories).FirstOrDefaultAsync(x => x.Id == id);
+            if (existingProd != null)
+            {
+                existingProd.Rating = (int)roundedRating;
+
+                await shopWebDbContext.SaveChangesAsync();
+                return existingProd;
+            }
+            return null;
+
+        }
+        public async Task<Product?> UpdateCommentCountAsync (Guid id, int totalComments)
+        {
+            var existingProd = await shopWebDbContext.Products.Include(x => x.Categories).FirstOrDefaultAsync(x => x.Id == id);
+            if (existingProd != null)
+            {
+                existingProd.CommentsCount = totalComments;
 
                 await shopWebDbContext.SaveChangesAsync();
                 return existingProd;
