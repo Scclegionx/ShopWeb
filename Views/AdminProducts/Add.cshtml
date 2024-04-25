@@ -65,23 +65,24 @@
         <!-- Button to add more variant forms -->
         <button type="button" class="btn btn-secondary" id="addVariantBtn">Add Variant Attribute</button>
         <button type="button" class="btn btn-secondary" id="doneBtn">Done</button>
-        <button type="button" class="btn btn-secondary" id="testBtn">Test</button>
         <hr />
 
         <!-- Table to display variant attributes -->
         <h2>Variant Attributes</h2>
-        <table class="table" id="variant-table">
-            <thead id="variantAttributesHead">
-                <tr>
+        <div id="table-variant-container">
+            <table class="table" id="variant-table">
+                <thead id="variantAttributesHead">
+                    <tr>
 
-                </tr>
-            </thead>
-            <tbody id="variantAttributesBody">
-                <tr>
+                    </tr>
+                </thead>
+                <tbody id="variantAttributesBody">
+                    <tr>
 
-                </tr>
-            </tbody>
-        </table>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
 
 
@@ -179,7 +180,7 @@
                 var row = '<tr>';
 
                 for (var j = 0; j < combination.length; j++) {
-                    row += '<td><input type="text" class="form-control" name="VariantAttributes[' + i + '].Value['+j+']" value="'+combination[j]+'" readonly></td>'
+                    row += '<td><input type="text" id="thead-table" class="form-control" name="VariantAttributes[' + i + '].Value['+j+']" value="'+combination[j]+'" readonly></td>'
                 }
 
                 row += '<td><input type="text" class="form-control" name="VariantAttributes[' + i + '].Price" placeholder="Enter price"></td>' +
@@ -233,7 +234,7 @@
                     var variantName = $(this).val(); // Get the value of the input field
 
                     // Append a table header with the variant name to the table head
-                    $('#variantAttributesHead tr').append('<th><input type="text" class="form-control" name="VariantAttributes[0].Name['+index+']" value="'+variantName+'" readonly></th>');
+                    $('#variantAttributesHead tr').append('<th><input type="text" class="form-control value-only text-light" name="VariantAttributes[0].Name['+index+']" value="'+variantName+'" readonly></th>');
                 });
 
                 $('#variant-table #variantAttributesHead tr').append('<th>Price</th>');
@@ -312,6 +313,7 @@
                 var newForm =
                     '<div class="form-group" id="form-group-variant-value">' +
                     '<label for="variantValue">Variant Value</label>' +
+                    '<div class="input-group">' +
                     '<input type="text" class="form-control" name="VariantValueForm" placeholder="Enter variant value">' +
                     '<button type="button" class="btn btn-danger delete-variant-value-btn"><i class="bi bi-x-circle"></i></button>' +
                     '</div>' +

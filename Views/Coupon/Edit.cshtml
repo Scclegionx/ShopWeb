@@ -2,24 +2,27 @@
 
 <h1>Edit Coupon</h1>
 
-@using (Html.BeginForm())
-{
-    @Html.HiddenFor(model => model.Id)
+<div id="coupon-container">
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Code)
-        @Html.TextBoxFor(model => model.Code, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.DiscountAmount)
-        @Html.TextBoxFor(model => model.DiscountAmount, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.DiscountAmount, "", new { @class = "text-danger" })
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.ExpirationDate)
-        @Html.TextBoxFor(model => model.ExpirationDate, "{0:yyyy-MM-dd}", new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.ExpirationDate, "", new { @class = "text-danger" })
-    </div>
-    <button type="submit" class="btn btn-primary">Save</button>
-}
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Code)
+            @Html.TextBoxFor(model => model.Code, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.DiscountAmount)
+            @Html.TextBoxFor(model => model.DiscountAmount, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.DiscountAmount, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.ExpirationDate)
+            @Html.TextBoxFor(model => model.ExpirationDate, "{0:yyyy-MM-dd}", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.ExpirationDate, "", new { @class = "text-danger" })
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+    }
+</div>

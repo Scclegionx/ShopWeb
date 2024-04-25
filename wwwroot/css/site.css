@@ -1,4 +1,247 @@
-﻿html {
+﻿/* Typography */
+body, ul, li, p, a, label, input, div {
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px !important;
+    font-weight: 300 !important;
+}
+
+.h1 {
+    font-family: 'Roboto', sans-serif;
+    font-size: 48px !important;
+    font-weight: 200 !important;
+}
+
+.h2 {
+    font-family: 'Roboto', sans-serif;
+    font-size: 30px !important;
+    font-weight: 300;
+}
+
+.h3 {
+    font-family: 'Roboto', sans-serif;
+    font-size: 22px !important;
+}
+/* General */
+.logo {
+    font-weight: 500 !important;
+}
+
+.text-warning {
+    color: #ede861 !important;
+}
+
+.text-muted {
+    color: #bcbcbc !important;
+}
+
+.text-success {
+    color: #59ab6e !important;
+}
+
+.text-light {
+    color: #cfd6e1 !important;
+}
+
+.bg-dark {
+    background-color: #212934 !important;
+}
+
+.bg-light {
+    background-color: #e9eef5 !important;
+}
+
+.bg-black {
+    background-color: #1d242d !important;
+}
+
+.bg-success {
+    background-color: #59ab6e !important;
+}
+
+.btn-success {
+    background-color: #59ab6e !important;
+    border-color: #56ae6c !important;
+}
+
+.pagination .page-link:hover {
+    color: #000;
+}
+
+.pagination .page-link:hover, .pagination .page-link.active {
+    background-color: #69bb7e;
+    color: #fff;
+}
+
+
+/* Hero Carousel */
+#template-mo-zay-hero-carousel {
+    background: #efefef !important;
+}
+/* Accordion */
+.templatemo-accordion a {
+    color: #000;
+}
+
+    .templatemo-accordion a:hover {
+        color: #333d4a;
+    }
+/* Shop */
+.shop-top-menu a:hover {
+    color: #69bb7e !important;
+}
+/* Product */
+.product-wap {
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.10);
+}
+
+    .product-wap .product-color-dot.color-dot-red {
+        background: #f71515;
+    }
+
+    .product-wap .product-color-dot.color-dot-blue {
+        background: #6db4fe;
+    }
+
+    .product-wap .product-color-dot.color-dot-black {
+        background: #000000;
+    }
+
+    .product-wap .product-color-dot.color-dot-light {
+        background: #e0e0e0;
+    }
+
+    .product-wap .product-color-dot.color-dot-green {
+        background: #0bff7e;
+    }
+
+.card.product-wap .card .product-overlay {
+    background: rgba(0,0,0,.2);
+    visibility: hidden;
+    opacity: 0;
+    transition: .3s;
+}
+
+.card.product-wap:hover .card .product-overlay {
+    visibility: visible;
+    opacity: 1;
+}
+
+.card.product-wap a {
+    color: #000;
+}
+
+#carousel-related-product .slick-slide:focus {
+    outline: none !important;
+}
+
+#carousel-related-product .slick-dots li button:before {
+    font-size: 15px;
+    margin-top: 20px;
+}
+/* Brand */
+.brand-img {
+    filter: grayscale(100%);
+    opacity: 0.5;
+    transition: .5s;
+}
+
+    .brand-img:hover {
+        filter: grayscale(0%);
+        opacity: 1;
+    }
+/* Carousel Hero */
+#template-mo-zay-hero-carousel .carousel-indicators li {
+    margin-top: -50px;
+    background-color: #59ab6e;
+}
+
+#template-mo-zay-hero-carousel .carousel-control-next i,
+#template-mo-zay-hero-carousel .carousel-control-prev i {
+    color: #59ab6e !important;
+    font-size: 2.8em !important;
+}
+
+/* Carousel Brand */
+.tempaltemo-carousel .h1 {
+    font-size: .5em !important;
+    color: #000 !important;
+}
+/* Services */
+.services-icon-wap {
+    transition: .3s;
+}
+
+    .services-icon-wap:hover, .services-icon-wap:hover i {
+        color: #fff;
+    }
+
+    .services-icon-wap:hover {
+        background: #69bb7e;
+    }
+/* Contact map */
+.leaflet-control a, .leaflet-control {
+    font-size: 10px !important;
+}
+
+.form-control {
+    border: 1px solid #e8e8e8;
+}
+
+/*
+// Extra small devices (portrait phones, less than 576px)
+// No media query since this is the default in Bootstrap
+*/
+/* Small devices (landscape phones, 576px and up)*/
+.product-wap .h3, .product-wap li, .product-wap i, .product-wap p {
+    font-size: 12px !important;
+}
+
+.product-wap .product-color-dot {
+    width: 6px;
+    height: 6px;
+}
+
+@media (min-width: 576px) {
+    .tempaltemo-carousel .h1 {
+        font-size: 1em !important;
+    }
+}
+
+/*// Medium devices (tablets, 768px and up)*/
+@media (min-width: 768px) {
+    #templatemo_main_nav .navbar-nav {
+        max-width: 450px;
+    }
+}
+
+/* Large devices (desktops, 992px and up)*/
+@media (min-width: 992px) {
+    #templatemo_main_nav .navbar-nav {
+        max-width: 550px;
+    }
+
+    #template-mo-zay-hero-carousel .carousel-item {
+        min-height: 30rem !important;
+    }
+
+    .product-wap .h3, .product-wap li, .product-wap i, .product-wap p {
+        font-size: 18px !important;
+    }
+
+    .product-wap .product-color-dot {
+        width: 12px;
+        height: 12px;
+    }
+}
+
+/* Extra large devices (large desktops, 1200px and up)*/
+@media (min-width: 1200px) {
+}
+
+
+
+
+html {
     font-size: 14px;
     
 }
@@ -36,6 +279,12 @@ body {
 
 .myclass th, .myclass td, .myclass thead th, .myclass tbody td, .myclass tfoot td, .myclass tfoot th {
     width: auto !important;
+}
+
+
+
+#templatemo_main_nav .navbar .nav-icon {
+    margin-right: 20px;
 }
 
 
@@ -310,10 +559,11 @@ body {
 
 /* Form container */
 #cateAdmin-container {
-    max-width: 600px;
-    margin: 0 auto;
+    max-width: 1200px;
+    max-height: 1000px;
+    margin: 50px auto;
     padding: 20px;
-    border: 2px solid #007bff; /* Border color */
+    border: 2px solid #28a745; /* Border color */
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 123, 255, 0.3); /* Box shadow color */
     background-color: #f8f9fa; /* Background color */
@@ -370,4 +620,219 @@ body {
         }
 
 
+/* 2. product admin   */
 
+#productAdmin-container {
+    max-width: 1200px;
+    margin: 50px auto; /* Adjust margin to create space between navbar and form */
+    padding: 20px;
+    border: 2px solid #28a745; /* Border color */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.3); /* Box shadow color */
+    background-color: #f8f9fa; /* Background color */
+}
+#productAdmin-container label {
+    font-weight: bold;
+    color: #343a40; /* Label text color */
+}
+#productAdmin-container input[type="text"],
+#productAdmin-container select {
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+#productAdmin-container input[type="text"]:focus,
+#productAdmin-container select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+}
+#productAdmin-container .text-danger {
+    color: #dc3545;
+}
+#productAdmin-container button[type="submit"],
+.add-variant-value-btn,
+#addVariantBtn ,
+#doneBtn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    margin-top: 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: #343a40; /* Button background color */
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out;
+}
+#productAdmin-container button[type="submit"]:hover {
+    background-color: #23272b; /* Button hover background color */
+}
+
+.variant-form {
+    max-width: 1000px;
+    margin: 20px auto; /* Adjust margin as needed */
+    padding: 20px;
+    border: 2px solid #007bff; /* Border color */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.3); /* Box shadow color */
+    background-color: #f8f9fa; /* Background color */
+}
+
+
+
+
+    /* Form labels */
+    #check label {
+        font-weight: bold;
+        color: #343a40; /* Label text color */
+    }
+
+    /* Form input fields */
+    #check input[type="text"] {
+        width: 100%;
+        padding: 0.5rem;
+        margin-top: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 0.25rem;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+        /* Form input fields focus */
+        #check input[type="text"]:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+        }
+
+/* Submit button */
+#check button[type="button"] {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    margin-top: 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: #343a40; /* Button background color */
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out;
+}
+
+    /* Submit button hover */
+    #check button[type="button"]:hover {
+        background-color: #23272b; /* Button hover background color */
+    }
+
+
+#variant-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    #variant-table input[type="text"].value-only {
+        border: none; /* Remove borders */
+        background-color: transparent; /* Make background transparent */
+        padding: 0; /* Remove padding */
+        margin: 0; /* Remove margin */
+        width: auto; /* Adjust width */
+        font-size: inherit; /* Inherit font size */
+    }
+
+    input[type="text"].value-only:focus {
+        outline: none; /* Remove focus outline */
+    }
+
+
+
+#variant-table th,
+#variant-table td,
+.value-only {
+    padding: 10px;
+    text-align: left;
+}
+
+
+#variant-table thead tr {
+    background-color: #007bff; /* Header background color */
+    color: #fff; /* Header text color */
+}
+
+#variant-table tbody tr:nth-child(even) {
+    background-color: #f8f9fa; /* Even row background color */
+}
+
+#variant-table tbody tr:hover {
+    background-color: #cce5ff; /* Hover row background color */
+}
+
+#variant-table th,
+#variant-table td {
+    border: 1px solid #dee2e6; /* Table border color */
+}
+
+#variant-table th,.value-only {
+    font-weight: bold;
+}
+
+
+/* 3.Coupon  */
+#coupon-container {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 2px solid #28a745; /* Green border color */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(40, 167, 69, 0.3); /* Green box shadow color */
+    background-color: #f8f9fa; /* Light gray background color */
+}
+
+#coupon-container label {
+    font-weight: bold;
+}
+
+#coupon-container input[type="text"],
+#coupon-container input[type="date"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+#coupon-container input[type="text"]:focus,
+#coupon-container input[type="date"]:focus {
+    outline: none;
+    border-color: #28a745; /* Green border color on focus */
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25); /* Green box shadow color on focus */
+}
+
+#coupon-container .btn-primary {
+    margin-top: 10px;
+    width: 100%;
+}
+
+#coupon-container button[type="submit"] {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    margin-top: 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: #343a40; /* Button background color */
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out;
+}
+
+/* Submit button hover */
+#coupon-container button[type="submit"]:hover {
+    background-color: #23272b; /* Button hover background color */
+}
