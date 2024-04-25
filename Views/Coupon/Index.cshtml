@@ -1,32 +1,34 @@
 ﻿@model IEnumerable<ShopWeb.Models.Domain.Coupon>
 
-<h1>Coupons</h1>
+<div id="coupon-container">
+    <h1>Coupons</h1>
 
-<p>
-    <a asp-controller="Coupon" asp-action="Create" class="btn btn-primary">Create New</a>
-</p>
+    <p>
+        <a asp-controller="Coupon" asp-action="Create" class="btn btn-primary">Create New</a>
+    </p>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Code</th>
-            <th>Discount</th>
-            <th>Expiration Date</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var coupon in Model)
-        {
+    <table class="table">
+        <thead>
             <tr>
-                <td>@coupon.Code</td>
-                <td>@coupon.DiscountAmount</td>
-                <td>@coupon.ExpirationDate</td>
-                <td>
-                    <a asp-controller="Coupon" asp-action="Edit" asp-route-id="@coupon.Id">Edit</a>
-                    <a asp-controller="Coupon" asp-action="Delete" asp-route-id="@coupon.Id">Delete</a>
-                </td>
+                <th>Code</th>
+                <th>Discount</th>
+                <th>Expiration Date</th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var coupon in Model)
+            {
+                <tr>
+                    <td>@coupon.Code</td>
+                    <td>@coupon.DiscountAmount</td>
+                    <td>@coupon.ExpirationDate</td>
+                    <td>
+                        <a asp-controller="Coupon" asp-action="Edit" asp-route-id="@coupon.Id">Edit</a>
+                        <a asp-controller="Coupon" asp-action="Delete" asp-route-id="@coupon.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
