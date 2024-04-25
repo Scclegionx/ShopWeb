@@ -24,5 +24,9 @@ namespace ShopWeb.Repositories
         {
            return await shopWebDbContext.ProductComment.Where(x =>  x.ProductId == productId).ToListAsync();
         }
+        public async Task<int> CountAllCommentsByIdAsync(Guid productId)
+        {
+            return await shopWebDbContext.ProductComment.Where(x => x.ProductId == productId).CountAsync();
+        }
     }
 }

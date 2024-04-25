@@ -17,8 +17,12 @@ namespace ShopWeb.Controllers
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly IPurchaseRepository purchaseRepository;
+        private readonly IProductRatingRepository productRatingRepository;
+        private readonly IProductCommentRepository productCommentRepository;
 
-        public HomeController(ILogger<HomeController> logger, IProductRepository productRepository, ICateRepository cateRepository, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IPurchaseRepository purchaseRepository)
+        public HomeController(ILogger<HomeController> logger, IProductRepository productRepository, ICateRepository cateRepository, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IPurchaseRepository purchaseRepository,
+            IProductRatingRepository productRatingRepository,
+            IProductCommentRepository productCommentRepository)
         {
             _logger = logger;
             this.productRepository = productRepository;   
@@ -26,11 +30,15 @@ namespace ShopWeb.Controllers
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.purchaseRepository = purchaseRepository;
+            this.productRatingRepository = productRatingRepository;
+            this.productCommentRepository = productCommentRepository;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index(string productName, string category, int page = 1)
         {
+            
+
             if (signInManager.IsSignedIn(User) && User.IsInRole("Shipper"))
             {
                 return RedirectToAction("Index", "Shipper");
@@ -77,6 +85,7 @@ namespace ShopWeb.Controllers
             foreach (var product in products) 
             {
                 await productRepository.CheckProductAvailability(product.Id);
+                
             }
 
             var model = new HomeViewModel
@@ -87,7 +96,6 @@ namespace ShopWeb.Controllers
                 PageCount = pageCount,
                 bestSellingProducts = bestSellingProducts,
             };
-
             return View(model);
         }
 

@@ -138,6 +138,8 @@ namespace ShopWeb.Controllers
                     TimeAdd = DateTime.Now,
                 };
                 await productCommentRepository.AddAsync(model);
+                var allComments = await productCommentRepository.CountAllCommentsByIdAsync(productDetailViewModel.Id);
+                await productRepository.UpdateCommentCountAsync(productDetailViewModel.Id, allComments);
                 return RedirectToAction("Index", "Products");
             }
             return View();
@@ -156,6 +158,7 @@ namespace ShopWeb.Controllers
                 // If the user has already rated the product, update their rating
                 existingRating.Rating = model.Rating;
                 await productRatingRepository.UpdateAsync(existingRating);
+                await productRepository.UpdateRatingAsync(productId);
             }
             else
             {
@@ -167,6 +170,7 @@ namespace ShopWeb.Controllers
                     Rating = model.Rating
                 };
                 await productRatingRepository.AddAsync(productRating);
+                await productRepository.UpdateRatingAsync(productId);
             }
 
             // Redirect back to the product details page

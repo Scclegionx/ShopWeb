@@ -6,5 +6,6 @@ namespace ShopWeb.Repositories
     {
         Task<ProductComment> AddAsync(ProductComment productComment);
         Task<IEnumerable<ProductComment>> GetAllAsync(Guid productId);
+        Task<int> CountAllCommentsByIdAsync(Guid productId);
     }
 }

@@ -13,5 +13,7 @@
         public ICollection<ProductComment> ProductComment { get; set; }
         public int PurchaseCount { get; set; }
         public string State { get; set; }
+        public int Rating { get; set; }
+        public int CommentsCount { get; set; }
     }
 }

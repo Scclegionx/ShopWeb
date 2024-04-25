@@ -15,5 +15,7 @@ namespace ShopWeb.Repositories
         Task<IEnumerable<Product>> FindByNameAndCategoryAsync(string productName, string category);
         Task UpdateProductQuantity(Guid productId, int quantity);
         Task CheckProductAvailability(Guid productId);
+        Task<Product?> UpdateRatingAsync(Guid id);
+        Task<Product?> UpdateCommentCountAsync(Guid id, int totalComments);
     }
 }

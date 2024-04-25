@@ -107,11 +107,19 @@
                                             <div class="card-body">
                                                 <ul class="list-unstyled d-flex justify-content-between">
                                                     <li>
-                                                        <i class="text-warning bi bi-star-fill"></i>
-                                                        <i class="text-warning bi bi-star-fill"></i>
-                                                        <i class="text-warning bi bi-star-fill"></i>
-                                                        <i class="text-muted bi bi-star"></i>
-                                                        <i class="text-muted bi bi-star"></i>
+                                                        <div class="rating">
+                                                            @for (int i = 1; i <= 5; i++)
+                                                            {
+                                                                if (i <= product.Rating)
+                                                                {
+                                                                    <span class="star text-warning" data-value="@i">&#9733;</span>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span class="star text-muted" data-value="@i">&#9734;</span>
+                                                                }
+                                                            }
+                                                        </div>
                                                     </li>
                                                     <li class="text-muted text-right">Giá: @product.Price</li>
                                                 </ul>
@@ -119,7 +127,13 @@
                                                 <p class="card-text">
                                                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt in culpa qui officia deserunt.
                                                 </p>
-                                                <p class="text-muted">Reviews (24)</p>
+                                                @if (product.CommentsCount < 2)
+                                                {
+                                                    <p class="text-muted">Review(@product.CommentsCount)</p>
+                                                } else
+                                                {
+                                                    <p class="text-muted">Reviews(@product.CommentsCount)</p>
+                                                }
                                                 @if (product.State == "Available")
                                                 {
                                                     <div>
@@ -167,6 +181,7 @@
 
 @section Scripts {
     <script>
+
         $(document).ready(function () {
             $('.category-tag').click(function () {
                 var categoryName = $(this).text().trim();
