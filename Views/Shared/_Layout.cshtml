@@ -37,6 +37,11 @@
                         <i class="bi bi-sliders" id="toggleButton"></i>
                     }
                     <a class="navbar-brand text-success logo h1 align-self-center" asp-area="" asp-controller="Home" asp-action="Index">Hapodidae</a>
+
+                    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#templatemo_main_nav" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
                     <div class="align-self-center collapse navbar-collapse flex-fill  d-lg-flex justify-content-lg-between" id="templatemo_main_nav">
                         <div class="flex-fill">
                             <ul class="navbar-nav flex-grow-1">
@@ -56,12 +61,16 @@
                         </div>
                         <div class="navbar align-self-center d-flex">
                             <div class="d-lg-none flex-sm-fill mt-3 mb-4 col-7 col-sm-auto pr-3">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" id="inputMobileSearch" placeholder="Search ...">
-                                    <div class="input-group-text">
-                                        <i class="bi bi-search"></i>
+                                @using (Html.BeginForm("Index", "Home", FormMethod.Get))
+                                {
+                                    <div class="input-group">
+                                        <input name="productName" type="text" class="form-control" id="inputMobileSearch" placeholder="Search ...">
+                                        <input type="hidden" id="category" name="category" value="" />
+                                        <button type="submit" class="input-group-text">
+                                            <i class="bi bi-search"></i>
+                                        </button>
                                     </div>
-                                </div>
+                                }
                             </div>
                             <a class="nav-icon d-none d-lg-inline" data-bs-toggle="modal" data-bs-target="#modalSearch">
                                 <i class="bi bi-search text-dark mr-2"></i>
@@ -73,7 +82,7 @@
                                     <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">+99</span>
                                 </a>
                                 <div class="me-3 text-light">
-                                    <a style="text-decoration: none;" asp-area="" asp-controller="Account" asp-action="UserDetail">@User?.Identity?.Name</a>
+                                    <a style="text-decoration: none; color: #28a745" asp-area="" asp-controller="Account" asp-action="UserDetail">@User?.Identity?.Name</a>
                                 </div>
                                 @if (!User.IsInRole("Shipper"))
                                 {
@@ -261,12 +270,12 @@
                 </div>
                 <div class="modal-body">
                     <label>Search:</label>
-                    <input type="text" placeholder="Type something..." name="productName" />
+                    <input style="border-color: #28a745;" type="text" placeholder="Type something..." name="productName" />
                     <input type="hidden" id="category" name="category" value="" />
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Search</button>
+                    <button type="submit" style="background-color: #28a745;" class="btn btn-primary">Search</button>
                 </div>
 
             </div>

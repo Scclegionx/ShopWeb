@@ -1,5 +1,9 @@
 ﻿@model List<ShopWeb.Models.Domain.Purchase>
 
+@{
+    ViewBag.RenderDefaultNavbar = false;
+}
+
 @await Html.PartialAsync("SideNavBar")
 
 <h1>Purchase Tracking</h1>

@@ -1,6 +1,8 @@
 ﻿@model List<ShopWeb.Models.Domain.Response>
 
-
+@{
+    ViewBag.RenderDefaultNavbar = false;
+}
 
 @await Html.PartialAsync("SideNavBar")
 

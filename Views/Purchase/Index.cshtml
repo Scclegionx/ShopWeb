@@ -1,6 +1,10 @@
 ﻿@model List<ShopWeb.Models.Domain.Purchase>
 @{
 }
+@{
+    ViewBag.RenderDefaultNavbar = false;
+}
+
 @if (TempData["SuccessMessage"] != null)
 {
     <div class="alert alert-success">

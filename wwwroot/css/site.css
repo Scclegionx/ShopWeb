@@ -1,4 +1,16 @@
-﻿/* Typography */
+﻿.star {
+    font-size: 2em; /* Adjust the size of the star */
+    display: inline-block;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8); /* Add a subtle glow effect */
+    line-height: 1; /* Ensure the line height is normal */
+    transition: all 0.3s ease; /* Add transition for smoothness */
+    -webkit-font-smoothing: antialiased; /* Improve font smoothing for smoother edges */
+}
+
+#purchase-container {
+    margin-left: 200px;
+}
+/* Typography */
 body, ul, li, p, a, label, input, div {
     font-family: 'Roboto', sans-serif;
     font-size: 18px !important;
@@ -294,9 +306,14 @@ body {
 }
 
 /* Modal Header */
+
+.modal-content {
+    max-width: 1000px;
+}
+
 #modalSearch .modal-header {
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #dee2e6;
+    background-color: #28a745;
+    border-bottom: 1px solid #28a745;
     padding: 1rem;
 }
 
@@ -309,6 +326,10 @@ body {
 /* Modal Body */
 #modalSearch .modal-body {
     padding: 1rem;
+}
+
+#modalSearch .modal-body input[type="text"] {
+    
 }
 
 /* Modal Footer */
