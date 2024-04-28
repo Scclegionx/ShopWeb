@@ -1,5 +1,9 @@
 ﻿@model ShopWeb.Models.ViewModels.LikeVM.LikeProductsViewModel
 
+@{
+    ViewBag.RenderDefaultNavbar = false;
+}
+
 @await Html.PartialAsync("SideNavBar");
 
 <h1>Liked Products</h1>
