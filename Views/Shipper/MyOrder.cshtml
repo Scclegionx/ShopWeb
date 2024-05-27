@@ -10,53 +10,56 @@
 
 @await Html.PartialAsync("SideNavBar");
 
-<h1>Your Order</h1>
+<div id="shipper-order-container">
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>User</th>
-            <th>Purchase Date</th>
-            <th>Total Price</th>
-            <th>Phương thức thanh toán</th>
-            <th>Địa chỉ</th>
-            <th>Ghi chú</th>
-            <th>Trạng thái</th>
-            <th></th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var purchase in Model)
-        {
+    <h1>Your Order</h1>
+
+    <table class="table">
+        <thead>
             <tr>
-                <td>@purchase.Id</td>
-                <td>@purchase.UserId</td>
-                <td>@purchase.PurchaseDate</td>
-                <td>@purchase.TotalPrice</td>
-                <td>@purchase.PaymentMethod</td>
-                <td>@purchase.Address</td>
-                <td>@purchase.Note</td>
-                <td>@purchase.State</td>
-                @if (purchase.State == "Shipper đã nhận đơn")
-                {
-                    <td>
-                        <a class="btn btn-dark" asp-area="" asp-controller="Shipper" asp-action="UpdateState" asp-route-id="@purchase.Id">Đang giao</a>
-                    </td>
-                } else if (purchase.State == "Đang giao")
-                {
-                    <td>
-                        <a class="btn btn-dark" asp-area="" asp-controller="Shipper" asp-action="UpdateState" asp-route-id="@purchase.Id">Mark as Done</a>
-                    </td>
-                }
-                @if (purchase.State != "Done")
-                {
-                    <td>
-                        <a class="btn btn-danger" asp-area="" asp-controller="Shipper" asp-action="Delete" asp-route-id="@purchase.Id">Hủy đơn</a>
-                    </td>
-                }
+                <th>Id</th>
+                <th>User</th>
+                <th>Purchase Date</th>
+                <th>Total Price</th>
+                <th>Phương thức thanh toán</th>
+                <th>Địa chỉ</th>
+                <th>Ghi chú</th>
+                <th>Trạng thái</th>
+                <th></th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var purchase in Model)
+            {
+                <tr>
+                    <td>@purchase.Id</td>
+                    <td>@purchase.UserId</td>
+                    <td>@purchase.PurchaseDate</td>
+                    <td>@purchase.TotalPrice</td>
+                    <td>@purchase.PaymentMethod</td>
+                    <td>@purchase.Address</td>
+                    <td>@purchase.Note</td>
+                    <td>@purchase.State</td>
+                    @if (purchase.State == "Shipper đã nhận đơn")
+                    {
+                        <td>
+                            <a class="btn btn-dark" asp-area="" asp-controller="Shipper" asp-action="UpdateState" asp-route-id="@purchase.Id">Đang giao</a>
+                        </td>
+                    } else if (purchase.State == "Đang giao")
+                    {
+                        <td>
+                            <a class="btn btn-dark" asp-area="" asp-controller="Shipper" asp-action="UpdateState" asp-route-id="@purchase.Id">Mark as Done</a>
+                        </td>
+                    }
+                    @if (purchase.State != "Done")
+                    {
+                        <td>
+                            <a class="btn btn-danger" asp-area="" asp-controller="Shipper" asp-action="Delete" asp-route-id="@purchase.Id">Hủy đơn</a>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

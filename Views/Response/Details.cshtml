@@ -8,26 +8,29 @@
 @{
     
 }
+<div id="response-container">
 
-<h1>Response Details</h1>
+    <h1>Response Details</h1>
 
-<div>
-    <h4>Id: @Model.Id</h4>
-    <h4>Người gửi: @(Model?.UserName ?? "User not found")</h4>
-    <h4>Heading: @Model.Heading</h4>
-    <h4>Content: @Model.Content</h4>
-    <h4>Created At: @Model.CreatedAt</h4>
+    <div>
+        <h4>Id: @Model.Id</h4>
+        <h4>Người gửi: @(Model?.UserName ?? "User not found")</h4>
+        <h4>Heading: @Model.Heading</h4>
+        <h4>Content: @Model.Content</h4>
+        <h4>Created At: @Model.CreatedAt</h4>
+    </div>
+
+    @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+    {
+        <p>
+            <a asp-area="" asp-controller="Response" asp-action="Index">Back to List</a>
+        </p>
+    } else
+    {
+        <p>
+            <a asp-area="" asp-controller="Response" asp-action="customerIndex">Back to List</a>
+        </p>
+    }
 </div>
 
-@if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
-{
-    <p>
-        <a asp-area="" asp-controller="Response" asp-action="Index">Back to List</a>
-    </p>
-} else
-{
-    <p>
-        <a asp-area="" asp-controller="Response" asp-action="customerIndex">Back to List</a>
-    </p>
-}
 

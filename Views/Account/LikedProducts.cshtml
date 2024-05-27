@@ -6,43 +6,45 @@
 
 @await Html.PartialAsync("SideNavBar");
 
-<h1>Liked Products</h1>
 
 
 @if (Model.LikedProducts != null && Model.LikedProducts.Any())
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Tên</th>
-                <th>Ảnh</th>
-                <th>Mô tả</th>
-                <th>Giá</th>
-                <th>Số lượng</th>
-                <th>Danh mục</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var product in Model.LikedProducts)
-            {
+    <div id="liked-product-container">
+        <h1>Liked Products</h1>
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@product.Name</td>
-                    <td><img src="@product.FeaturedImageUrl" class="d-block img-fluid mb-3" style="width: 200px; height: 100px" /></td>
-                    <td><a asp-area="" asp-action="Edit" asp-controller="AdminProducts" asp-route-id="{@product.Id}">Chi Tiết</a></td>
-                    <td>@product.Price</td>
-                    <td>@product.Quantity</td>
-                    <td>
-                        <div class="d-flex">
-                            @foreach (var tag in product.Categories)
-                            {
-                                <span class="badge bg-secondary">@tag.Name</span>
-                            }
-                        </div>
-                    </td>
+                    <th>Tên</th>
+                    <th>Ảnh</th>
+                    <th>Mô tả</th>
+                    <th>Giá</th>
+                    <th>Số lượng</th>
+                    <th>Danh mục</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var product in Model.LikedProducts)
+                {
+                    <tr>
+                        <td>@product.Name</td>
+                        <td><img src="@product.FeaturedImageUrl" class="d-block img-fluid mb-3" style="width: 200px; height: 100px" /></td>
+                        <td><a asp-area="" asp-action="Edit" asp-controller="AdminProducts" asp-route-id="{@product.Id}">Chi Tiết</a></td>
+                        <td>@product.Price</td>
+                        <td>@product.Quantity</td>
+                        <td>
+                            <div class="d-flex">
+                                @foreach (var tag in product.Categories)
+                                {
+                                    <span class="badge bg-secondary">@tag.Name</span>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 }
 else
 {

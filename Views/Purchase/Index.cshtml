@@ -1,4 +1,8 @@
-﻿@model List<ShopWeb.Models.Domain.Purchase>
+﻿@using Microsoft.AspNetCore.Identity;
+@using ShopWeb.Models.Domain;
+@inject UserManager<ApplicationUser> userManager;
+
+@model List<ShopWeb.Models.Domain.Purchase>
 @{
 }
 @{
@@ -36,7 +40,7 @@
             {
                 <tr>
                     <td>@purchase.Id</td>
-                    <td>@purchase.UserId</td>
+                    <td>@(await userManager.FindByIdAsync(purchase.UserId.ToString()))</td>
                     <td>@purchase.PurchaseDate</td>
                     <td>@purchase.TotalPrice</td>
                     <td>@purchase.PaymentMethod</td>

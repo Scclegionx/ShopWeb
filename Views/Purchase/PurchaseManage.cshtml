@@ -11,113 +11,119 @@
     </div>
 }
 
-<h1>Danh sách đơn hàng đã hoàn thành</h1>
+<div id="purchase-container">
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>User Id</th>
-            <th>Purchase Date</th>
-            <th>Total Price</th>
-            <th>Phương thức thanh toán</th>
-            <th>Địa chỉ</th>
-            <th>Ghi chú</th>
-            <th>Trạng thái</th>
-            <th></th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (donePurchases is not null)
-        {
-            @foreach (var purchase in donePurchases)
+    <h1>Danh sách đơn hàng đã hoàn thành</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>User Id</th>
+                <th>Purchase Date</th>
+                <th>Total Price</th>
+                <th>Phương thức thanh toán</th>
+                <th>Địa chỉ</th>
+                <th>Ghi chú</th>
+                <th>Trạng thái</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (donePurchases is not null)
             {
-                <tr>
-                    <td>@purchase.Id</td>
-                    <td>@purchase.UserId</td>
-                    <td>@purchase.PurchaseDate</td>
-                    <td>@purchase.TotalPrice</td>
-                    <td>@purchase.PaymentMethod</td>
-                    <td>@purchase.Address</td>
-                    <td>@purchase.Note</td>
-                    @if (purchase.State == "None")
-                    {
-                        <td>Đơn hàng đang được kiểm duyệt để gửi đi</td>
-                    }
-                    else
-                    {
-                        <td>@purchase.State</td>
-                    }
-                    <td>
-                        <a asp-area="" asp-controller="Purchase" asp-action="Detail" asp-route-id="{@purchase.Id}">Chi Tiết</a>
-                    </td>
-                    <td>
-                        <form asp-action="Delete" asp-route-id="@purchase.Id" method="post">
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-            }
-        } else
-        {
-            <p>No Done Purchases Found!</p>
-        }
-    </tbody>
-</table>
-
-
-<h1>Danh sách đơn hàng đang được giao</h1>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>User Id</th>
-            <th>Purchase Date</th>
-            <th>Total Price</th>
-            <th>Phương thức thanh toán</th>
-            <th>Địa chỉ</th>
-            <th>Ghi chú</th>
-            <th>Trạng thái</th>
-            <th></th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (donePurchases is not null)
-        {
-            @foreach (var purchase in otherPurchases)
+                @foreach (var purchase in donePurchases)
+                {
+                    <tr>
+                        <td>@purchase.Id</td>
+                        <td>@purchase.UserId</td>
+                        <td>@purchase.PurchaseDate</td>
+                        <td>@purchase.TotalPrice</td>
+                        <td>@purchase.PaymentMethod</td>
+                        <td>@purchase.Address</td>
+                        <td>@purchase.Note</td>
+                        @if (purchase.State == "None")
+                        {
+                            <td>Đơn hàng đang được kiểm duyệt để gửi đi</td>
+                        }
+                        else
+                        {
+                            <td>@purchase.State</td>
+                        }
+                        <td>
+                            <a asp-area="" asp-controller="Purchase" asp-action="Detail" asp-route-id="{@purchase.Id}">Chi Tiết</a>
+                        </td>
+                        <td>
+                            <form asp-action="Delete" asp-route-id="@purchase.Id" method="post">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            } else
             {
-                <tr>
-                    <td>@purchase.Id</td>
-                    <td>@purchase.UserId</td>
-                    <td>@purchase.PurchaseDate</td>
-                    <td>@purchase.TotalPrice</td>
-                    <td>@purchase.PaymentMethod</td>
-                    <td>@purchase.Address</td>
-                    <td>@purchase.Note</td>
-                    @if (purchase.State == "None")
-                    {
-                        <td>Đơn hàng đang được kiểm duyệt để gửi đi</td>
-                    }
-                    else
-                    {
-                        <td>@purchase.State</td>
-                    }
-                    <td>
-                        <a asp-area="" asp-controller="Purchase" asp-action="Detail" asp-route-id="{@purchase.Id}">Chi Tiết</a>
-                    </td>
-                    <td>
-                        <form asp-action="Delete" asp-route-id="@purchase.Id" method="post">
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                        </form>
-                    </td>
-                </tr>
+                <p>No Done Purchases Found!</p>
             }
-        }
-        else
-        {
-            <p>No Done Purchases Found!</p>
-        }
-    </tbody>
-</table>
+        </tbody>
+    </table>
+</div>
+
+
+<div id="purchase-container">
+
+    <h1>Danh sách đơn hàng đang được giao</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>User Id</th>
+                <th>Purchase Date</th>
+                <th>Total Price</th>
+                <th>Phương thức thanh toán</th>
+                <th>Địa chỉ</th>
+                <th>Ghi chú</th>
+                <th>Trạng thái</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (donePurchases is not null)
+            {
+                @foreach (var purchase in otherPurchases)
+                {
+                    <tr>
+                        <td>@purchase.Id</td>
+                        <td>@purchase.UserId</td>
+                        <td>@purchase.PurchaseDate</td>
+                        <td>@purchase.TotalPrice</td>
+                        <td>@purchase.PaymentMethod</td>
+                        <td>@purchase.Address</td>
+                        <td>@purchase.Note</td>
+                        @if (purchase.State == "None")
+                        {
+                            <td>Đơn hàng đang được kiểm duyệt để gửi đi</td>
+                        }
+                        else
+                        {
+                            <td>@purchase.State</td>
+                        }
+                        <td>
+                            <a asp-area="" asp-controller="Purchase" asp-action="Detail" asp-route-id="{@purchase.Id}">Chi Tiết</a>
+                        </td>
+                        <td>
+                            <form asp-action="Delete" asp-route-id="@purchase.Id" method="post">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <p>No Done Purchases Found!</p>
+            }
+        </tbody>
+    </table>
+</div>

@@ -8,68 +8,71 @@
     </div>
 }
 
-<h1>Shopping Cart</h1>
+<div id="cart-container">
 
-@if (Model == null)
-{
-    <p>Your cart is empty.</p>
-} else
-{
-    @if (Model.Items != null && Model.Items.Count > 0)
-    {
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Product</th>
-                    <th>Variant</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Subtotal</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.Items)
-                {
-                    <tr>
-                        <td>@item.ProductName</td>
-                        <td>
-                            @if (item.Variants != null && item.Variants.Any())
-                            {
-                                <div class="variants-container">
-                                    @foreach (var variant in item.Variants)
-                                    {
-                                        @foreach (var attribute in variant)
-                                        {
-                                            @Html.Raw($"<p style='display: inline;'>{attribute.Value} </p>")
-                                        }
-                                    }
-                                </div>
-                            }
-                        </td>
-                        <td>@item.Price</td>
-                        <td>@item.Quantity</td>
-                        <td>@item.Subtotal</td>
-                        <td>
-                            <form asp-action="DeleteCartItem" asp-route-id="@item.Id" method="post">
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="4">Total:</td>
-                    <td>@Model.TotalPrice</td>
-                </tr>
-            </tfoot>
-        </table>
-        <a asp-area="" asp-controller="Purchase" asp-action="BuyNow"><button type="submit" class="btn btn-primary">Buy Now</button></a>
-    }
-    else
+    <h1>Shopping Cart</h1>
+
+    @if (Model == null)
     {
         <p>Your cart is empty.</p>
+    } else
+    {
+        @if (Model.Items != null && Model.Items.Count > 0)
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Variant</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Subtotal</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Items)
+                    {
+                        <tr>
+                            <td>@item.ProductName</td>
+                            <td>
+                                @if (item.Variants != null && item.Variants.Any())
+                                {
+                                    <div class="variants-container">
+                                        @foreach (var variant in item.Variants)
+                                        {
+                                            @foreach (var attribute in variant)
+                                            {
+                                                @Html.Raw($"<p style='display: inline;'>{attribute.Value} </p>")
+                                            }
+                                        }
+                                    </div>
+                                }
+                            </td>
+                            <td>@item.Price</td>
+                            <td>@item.Quantity</td>
+                            <td>@item.Subtotal</td>
+                            <td>
+                                <form asp-action="DeleteCartItem" asp-route-id="@item.Id" method="post">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4">Total:</td>
+                        <td>@Model.TotalPrice</td>
+                    </tr>
+                </tfoot>
+            </table>
+            <a asp-area="" asp-controller="Purchase" asp-action="BuyNow"><button type="submit" class="btn btn-primary">Buy Now</button></a>
+        }
+        else
+        {
+            <p>Your cart is empty.</p>
+        }
     }
-}
+</div>
 

@@ -1,40 +1,43 @@
 ﻿@model IEnumerable<ShopWeb.Models.Domain.Response>
 
-<h1>Responses</h1>
+<div id="response-container">
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>User Id</th>
-            <th>Heading</th>
-            <th>Content</th>
-            <th>Created At</th>
-            <th>State</th>
-            <th></th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var response in Model)
-        {
+    <h1>Responses</h1>
+
+    <table class="table">
+        <thead>
             <tr>
-                <td>@response.Id</td>
-                <td>@response.UserId</td>
-                <td>@response.Heading</td>
-                <td>@response.Content</td>
-                <td>@response.CreatedAt</td>
-                <td>@response.State</td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@response.Id">Details</a>
-                </td>
-                @if (response.State == "Pending")
-                {
-                    <td>
-                        <a class="btn btn-dark" asp-area="" asp-controller="Response" asp-action="UpdateState" asp-route-id="@response.Id">Mark as Done</a>
-                    </td>
-                }
+                <th>Id</th>
+                <th>User Id</th>
+                <th>Heading</th>
+                <th>Content</th>
+                <th>Created At</th>
+                <th>State</th>
+                <th></th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var response in Model)
+            {
+                <tr>
+                    <td>@response.Id</td>
+                    <td>@response.UserId</td>
+                    <td>@response.Heading</td>
+                    <td>@response.Content</td>
+                    <td>@response.CreatedAt</td>
+                    <td>@response.State</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@response.Id">Details</a>
+                    </td>
+                    @if (response.State == "Pending")
+                    {
+                        <td>
+                            <a class="btn btn-dark" asp-area="" asp-controller="Response" asp-action="UpdateState" asp-route-id="@response.Id">Reply</a>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
