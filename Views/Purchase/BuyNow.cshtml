@@ -9,17 +9,17 @@
 
 <div id="buyNow-container">
         
-    <h1>Review Your Order</h1>
+    <h1>Xác nhận đơn hàng</h1>
 
-    <h2>Order Summary</h2>
+    <h2>Tổng quan đơn hàng</h2>
     <table class="table">
         <thead>
             <tr>
-                <th>Product</th>
-                <th>Variant</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Subtotal</th>
+                <th>Sản phẩm</th>
+                <th>Loại</th>
+                <th>Giá</th>
+                <th>Số lượng</th>
+                <th>Tổng</th>
             </tr>
         </thead>
         <tbody>
@@ -41,30 +41,30 @@
                             </div>
                         }
                     </td>
-                    <td>@item.Price</td>
+                    <td><span class="vnd-symbol">đ</span>@item.Price.ToString("N0")</td>
                     <td>@item.Quantity</td>
-                    <td>@item.Subtotal</td>
+                    <td><span class="vnd-symbol">đ</span>@item.Subtotal.ToString("N0")</td>
                 </tr>
             }
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="4">Total:</td>
-                <td>@Model.TotalPrice</td>
+                <td colspan="4">Tổng tiền:</td>
+                <td><span class="vnd-symbol">đ</span>@Model.TotalPrice.ToString("N0")</td>
             </tr>
         </tfoot>
     </table>
 
     @using (Html.BeginForm("ApplyCoupon", "Purchase", FormMethod.Post))
     {
-        <h2>Apply Coupon</h2>
+        <h2>Phiếu giảm giá</h2>
         <div class="form-group">
             @Html.HiddenFor(m => m.TotalPrice)
             @Html.LabelFor(model => model.CouponCode, htmlAttributes: new { @class = "control-label" })
             @Html.TextBoxFor(model => model.CouponCode, new { @class = "form-control", id = "couponCode" })
             @Html.ValidationMessageFor(model => model.CouponCode, "", new { @class = "text-danger" }) 
         </div>
-        <button type="submit" class="btn btn-primary">Apply Coupon</button>
+        <button type="submit" class="btn btn-primary">Áp dụng</button>
     }
 
 
@@ -87,7 +87,7 @@
         @Html.LabelFor(m => m.Note, new { @class = "control-label" })
         @Html.TextBoxFor(m => m.Note, new { @class = "form-control" })
 
-        <label for="paymentMethod">Select Payment Method:</label>
+        <label for="paymentMethod">Phương thức thanh toán:</label>
         <select id="paymentMethod" name="paymentMethod">
             <option value="COD">COD</option>
             <option value="CK">Chuyển khoản</option>
@@ -95,6 +95,6 @@
         </select>
 
 
-        <button type="submit" class="btn btn-primary">Confirm Order</button>
+        <button type="submit" class="btn btn-primary">Xác nhận đơn hàng</button>
     }
 </div>
