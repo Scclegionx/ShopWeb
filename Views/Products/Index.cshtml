@@ -18,7 +18,7 @@
             <div class="row">
                 <div class="col-lg-5 mt-5">
                     <div class="card mb-3">
-                        <img class="card-img img-fluid" src="@Model.FeaturedImageUrl" alt="Card image cap" id="product-detail">
+                        <img class="card-img img-fluid" src="@Model.AdditionalImageUrls.FirstOrDefault()" alt="Card image cap" id="highlighted-image">
                     </div>
                     <div class="row">
                         <!-- Start Controls -->
@@ -41,9 +41,7 @@
                                                 @foreach (var imageUrl in Model.AdditionalImageUrls.Skip(i).Take(3))
                                                 {
                                                     <div class="col-4">
-                                                        <a href="#">
-                                                            <img class="card-img img-fluid" src="@imageUrl" alt="Additional Product Image">
-                                                        </a>
+                                                        <img class="card-img img-fluid additional-image" src="@imageUrl" alt="Additional Product Image">
                                                     </div>
                                                 }
                                             </div>
@@ -68,20 +66,15 @@
                     <div class="card">
                         <div class="card-body">
                             <h1 class="h2">@Model.Name</h1>
-                            <p class="h3 py-2">₫@Model.Price</p>
+                            <p class="h3 py-2"><span class="vnd-symbol">đ</span>@Model.Price.ToString("N0")</p>
                             @if (signInManager.IsSignedIn(User))
                             {
-                                @if (object.Equals(ViewData["Liked"], ViewData["Check"]))
-                                {
-                                    <a id="btnLike" style="cursor: pointer"><i class="bi bi-hand-thumbs-up-fill"></i></a>
-                                }
-                                else
-                                {
-                                    <a id="btnLike" style="cursor: pointer"><i class="bi bi-hand-thumbs-up"></i></a>
-                                }
+
+                                    <button id="btnLike" class="like-button" style="cursor: pointer"></button>
+
                             }
 
-                            <span id="totalLikes" class="mb-3">@ViewData["TotalLikes"]</span><span>Likes</span>
+                            <span id="totalLikes" class="mb-3">@ViewData["TotalLikes"]</span><span> Lượt yêu thích</span>
                             <p class="py-2">
                                 <div class="rating">
                                     <span class="star" data-value="1">&#9733;</span>
@@ -90,11 +83,11 @@
                                     <span class="star" data-value="4">&#9733;</span>
                                     <span class="star" data-value="5">&#9733;</span>
                                 </div>
-                                <span class="list-inline-item text-dark">Rating @ViewData["AverageRating"] | @Model.CommentsCount Comments</span>
+                                <span class="list-inline-item text-dark">Rating @ViewData["AverageRating"] | @Model.CommentsCount bình luận</span>
                             </p>
                             
 
-                            <h6>Description:</h6>
+                            <h6>Mô tả:</h6>
                             <p>@Html.Raw(Model.Description)</p>
                             
 
@@ -135,7 +128,7 @@
                                     <div class="col-auto">
                                         <ul class="list-inline pb-3">
                                             <li class="list-inline-item text-right">
-                                                Quantity
+                                                Số lượng
                                                 <input type="hidden" name="product-quantity" id="product-quantity" value="1">
                                             </li>
                                             <li class="list-inline-item"><span class="btn btn-success" id="btn-minus">-</span></li>
@@ -148,10 +141,10 @@
                                     </div>
                                     <div class="row pb-3">
                                         <div class="col d-grid">
-                                            <button type="submit" class="btn btn-success btn-lg" name="submit" value="buy">Buy</button>
+                                            <button type="submit" class="btn btn-success btn-lg" name="submit" value="buy">Mua Ngay</button>
                                         </div>
                                         <div class="col d-grid">
-                                            <button type="submit" class="btn btn-success btn-lg" name="submit" value="addtocard">Add To Cart</button>
+                                            <button type="submit" class="btn btn-success btn-lg" name="submit" value="addtocard">Thêm vào giỏ hàng</button>
                                         </div>
                                     </div>
                                 </div>
@@ -194,7 +187,6 @@
         {
             @using (Html.BeginForm("Index", "Products", FormMethod.Post))
             {
-                @Html.LabelFor(m => m.CommentDescription, new { @class = "col-md-4 control-label mb-3" })
                 @Html.TextBoxFor(m => m.CommentDescription, new { @class = "form-control mb-3" })
 
                 <button type="submit" class="btn btn-dark">Gửi</button>
@@ -273,11 +265,11 @@
         async function checkLikeStatus() {
             const hasLiked = localStorage.getItem(`liked_${productId}`);
             if (hasLiked === 'true') {
-                btnLikeElement.innerHTML = '<i class="bi bi-hand-thumbs-up-fill"></i>';
+                btnLikeElement.innerHTML = '<i class="bi bi-heart-fill"></i>';
                 btnLikeElement.removeEventListener('click', addLiketoProduct);
                 btnLikeElement.addEventListener('click', removeLikeFromProduct);
             } else {
-                btnLikeElement.innerHTML = '<i class="bi bi-hand-thumbs-up"></i>';
+                btnLikeElement.innerHTML = 'Tick as Favourite <i class="bi bi-heart"></i>';
                 btnLikeElement.removeEventListener('click', removeLikeFromProduct);
                 btnLikeElement.addEventListener('click', addLiketoProduct);
             }
@@ -296,7 +288,8 @@
                 })
             }).then(() => {
                 localStorage.setItem(`liked_${productId}`, 'true');
-                btnLikeElement.innerHTML = '<i class="bi bi-hand-thumbs-up-fill"></i>';
+                btnLikeElement.classList.add('active');
+                btnLikeElement.innerHTML = '<i class="bi bi-heart-fill"></i>';
                 btnLikeElement.removeEventListener('click', addLiketoProduct);
                 btnLikeElement.addEventListener('click', removeLikeFromProduct);
                 getTotalLikes();
@@ -316,7 +309,8 @@
                 })
             }).then(() => {
                 localStorage.removeItem(`liked_${productId}`);
-                btnLikeElement.innerHTML = '<i class="bi bi-hand-thumbs-up"></i>';
+                btnLikeElement.classList.remove('active');
+                btnLikeElement.innerHTML = 'Tick as Favourite <i class="bi bi-heart"></i>';
                 btnLikeElement.removeEventListener('click', removeLikeFromProduct);
                 btnLikeElement.addEventListener('click', addLiketoProduct);
                 getTotalLikes();
@@ -367,5 +361,83 @@
                 validateInput(quantityInput);
             });
         });
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            let currentIndex = 0;
+            const images = document.querySelectorAll('.additional-image');
+            const highlightedImageElement = document.getElementById('highlighted-image');
+            let intervalId;
+
+            if (images.length > 0) {
+                // Function to update the highlighted image
+                function updateHighlightedImage() {
+                    images.forEach((img, index) => {
+                        img.style.border = '';
+                    });
+
+                    const currentImage = images[currentIndex];
+                    currentImage.style.border = '3px solid green';
+                    highlightedImageElement.src = currentImage.src;
+
+                    currentIndex = (currentIndex + 1) % images.length;
+                }
+
+                // Function to handle manual image click
+                function handleImageClick(event) {
+                    clearInterval(intervalId);
+                    images.forEach((img, index) => {
+                        img.style.border = '';
+                    });
+
+                    const clickedImage = event.target;
+                    clickedImage.style.border = '3px solid green';
+                    highlightedImageElement.src = clickedImage.src;
+
+                    // Restart the interval after 5 seconds
+                    intervalId = setInterval(updateHighlightedImage, 10000);
+                }
+
+                // Add click event listener to all additional images
+                images.forEach((img, index) => {
+                    img.addEventListener('click', handleImageClick);
+                });
+
+                // Initial highlight
+                updateHighlightedImage();
+
+                // Update image every 5 seconds
+                intervalId = setInterval(updateHighlightedImage, 10000);
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var highlightedImage = document.getElementById('highlighted-image');
+            var modalImage = document.getElementById('modalImage');
+
+            highlightedImage.addEventListener('click', function () {
+                var imgSrc = highlightedImage.getAttribute('src');
+                modalImage.setAttribute('src', imgSrc);
+                var myModal = new bootstrap.Modal(document.getElementById('imageModal'), {
+                    keyboard: true
+                });
+                myModal.show();
+            });
+        });
+
     </script>
 }
+
+<!-- Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">Image Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img id="modalImage" src="" alt="Modal Image" class="img-fluid">
+            </div>
+        </div>
+    </div>
+</div>

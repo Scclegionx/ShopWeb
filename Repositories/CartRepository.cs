@@ -114,5 +114,12 @@ namespace ShopWeb.Repositories
             }
             return null;
         }
+
+        public async Task<int> GetItemCountInCart(Guid cartId)
+        {
+            return await shopWebDbContext.CartItems
+            .Where(item => item.CartId == cartId)
+            .CountAsync();
+        }
     }
 }

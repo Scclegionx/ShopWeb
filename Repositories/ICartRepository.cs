@@ -11,5 +11,6 @@ namespace ShopWeb.Repositories
         Task<CartItem> ClearCartItemsAsync(Guid cartId);
         Task<Cart> ClearCartAsync(Cart cart);
         Task<Cart?> DeleteCartItemAsync(Guid cartItemId);
+        Task<int> GetItemCountInCart(Guid cartId);
     }
 }

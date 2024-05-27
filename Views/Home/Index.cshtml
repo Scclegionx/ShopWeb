@@ -75,7 +75,7 @@
                                                 </a>
                                                 <div class="carousel-caption d-none d-md-block">
                                                     <h5>@product.Name</h5>
-                                                    <p>Price: @product.Price</p>
+                                                    <p>Price: <span class="vnd-symbol">đ</span>@product.Price.ToString("N0")</p>
                                                     <p>Purchase Count: @product.PurchaseCount</p>
                                                 </div>
                                             </div>
@@ -91,7 +91,7 @@
                                             <img src="@product.FeaturedImageUrl" class="img-thumbnail" style="width: 100px;" alt="@product.Name">
                                             <div class="text-right">
                                                 <h5>@product.Name</h5>
-                                                <p><span class="vnd-symbol">đ</span>@product.Price</p>
+                                                <p><span class="vnd-symbol">đ</span>@product.Price.ToString("N0")</p>
                                             </div>
                                         </li>
                                     }
@@ -130,7 +130,13 @@
                                         <div class="card h-100">
                                             @if (product.State == "Available")
                                             {
-                                                <img src="@product.FeaturedImageUrl" alt="@product.Name" class="mb-2 d-block img-fluid" />
+                                                <a class="image-link"
+                                                   asp-area=""
+                                                   asp-controller="Products"
+                                                   asp-action="Index"
+                                                   asp-route-id="{@product.Id}"><img src="@product.FeaturedImageUrl" alt="@product.Name" class="mb-2 d-block img-fluid" /></a>
+
+                                                
                                             } else
                                             {
                                                 <div class="image-container">
@@ -155,19 +161,13 @@
                                                             }
                                                         </div>
                                                     </li>
-                                                    <li class="text-muted text-right">Giá: @product.Price</li>
+                                                    <li class="text-muted text-right">Giá: <span class="vnd-symbol">đ</span>@product.Price.ToString("N0")</li>
                                                 </ul>
                                                 <h2 class="h2 text-decoration-none text-dark">@product.Name</h2>
-                                                <p class="card-text">
+                                                <!-- <p class="card-text">
                                                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt in culpa qui officia deserunt.
-                                                </p>
-                                                @if (product.CommentsCount < 2)
-                                                {
-                                                    <p class="text-muted">Review(@product.CommentsCount)</p>
-                                                } else
-                                                {
-                                                    <p class="text-muted">Reviews(@product.CommentsCount)</p>
-                                                }
+                                                </p> -->
+                                                <p class="text-muted">(@product.CommentsCount đánh giá)</p>
                                                 @if (product.State == "Available")
                                                 {
                                                     <div>

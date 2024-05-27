@@ -1,6 +1,21 @@
 ﻿@using Microsoft.AspNetCore.Identity;
 @using ShopWeb.Models.Domain;
+@using ShopWeb.Repositories;
 @inject SignInManager<ApplicationUser> signInManager;
+@inject UserManager<ApplicationUser> userManager;
+@inject ICartRepository cartRepository;
+
+@{
+    var CartNoti = 0;
+    var userId = new Guid();
+    var user = userManager.GetUserId(User);
+    if (user != null)
+    {
+        userId = Guid.Parse(user);
+        var currentUserCart = await cartRepository.GetCurrentUserCartAsync(userId);
+        CartNoti = await cartRepository.GetItemCountInCart(currentUserCart.Id);
+    }
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -88,7 +103,7 @@
                                 {
                                     <a class="nav-icon position-relative text-decoration-none" asp-area="" asp-controller="Cart" asp-action="Index">
                                         <i class="bi bi-cart-check-fill text-dark mr-1"></i>
-                                        <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">7</span>
+                                        <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">@CartNoti</span>
                                     </a>
                                 }
 

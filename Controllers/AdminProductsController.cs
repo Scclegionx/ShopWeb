@@ -32,7 +32,7 @@ namespace ShopWeb.Controllers
 
             var model = new AddProductRequest
             {
-                Categories = cates.Select(c => new SelectListItem { Text = c.Description , Value = c.Id.ToString() } ),
+                Categories = cates.Select(c => new SelectListItem { Text = c.Name , Value = c.Id.ToString() } ),
             };
 
             return View(model);

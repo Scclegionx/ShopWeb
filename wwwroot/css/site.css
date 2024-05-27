@@ -1109,4 +1109,56 @@ body {
         max-height: 500px; /* Điều chỉnh độ cao tối đa khi mở rộng */
     }
 
+.carousel-caption {
+    color: #28a745 !important;
+}
+
+.like-button {
+    background-color: #ffcccc; /* Light red background */
+    color: #ff0000; /* Red text */
+    border: 1px solid #ff6666; /* Slightly darker red border */
+    border-radius: 12px; /* Rounded corners */
+    padding: 10px 20px; /* Padding for a fluffy appearance */
+    font-size: 16px; /* Larger font size for readability */
+    font-weight: bold; /* Bold text */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+    transition: background-color 0.3s, transform 0.3s; /* Smooth transitions */
+    width: 150px;
+}
+
+    .like-button:hover {
+        background-color: #ff9999; /* Darker red on hover */
+        transform: translateY(-2px); /* Slight lift effect on hover */
+    }
+
+    .like-button:focus {
+        outline: none; /* Remove default focus outline */
+        box-shadow: 0 0 0 3px rgba(255, 204, 204, 0.75); /* Custom focus outline */
+    }
+
+    .like-button.active {
+        background-color: #ffb3b3; /* Even darker red on click */
+        transform: translateY(1px); /* Slight push effect on click */
+    }
+    .like-button.active:hover {
+        background-color: #ff9999; /* Darker red on hover */
+        transform: translateY(-2px); /* Slight lift effect on hover */
+    }
+
+.image-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+    .image-link img {
+        max-width: 100%;
+        height: auto;
+    }
+
+/*#modalImage {
+    max-width: 100%;
+    height: auto; 
+} */
+
 
