@@ -148,5 +148,35 @@
         featuredUploadElement.addEventListener('change', uploadFeaturedImage);
         document.getElementById('additionalImagesUpload').addEventListener('change', uploadAdditionalImages);
 
+        document.addEventListener('DOMContentLoaded', () => {
+            const additionalImagesUpload = document.getElementById('additionalImagesUpload');
+            const additionalImagesPreview = document.getElementById('additionalImagesPreview');
+            const additionalImagesDisplay = document.getElementById('additionalImagesDisplay');
+
+            additionalImagesUpload.addEventListener('change', () => {
+                const files = additionalImagesUpload.files;
+                additionalImagesPreview.innerHTML = ''; // Clear previous previews
+
+                if (files.length > 0) {
+                    for (const file of files) {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            img.style.display = 'block';
+                            img.style.width = '100px';
+                            additionalImagesDisplay.appendChild(img);
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                    additionalImagesPreview.style.display = 'block';
+                    additionalImagesDisplay.style.display = 'none';
+                } else {
+                    additionalImagesPreview.style.display = 'none';
+                    additionalImagesDisplay.style.display = 'block';
+                }
+            });
+        });
+
     </script>
 }

@@ -22,11 +22,11 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Product</th>
-                        <th>Variant</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Subtotal</th>
+                        <th>Sản phẩm</th>
+                        <th>Loại</th>
+                        <th>Giá</th>
+                        <th>Số lượng</th>
+                        <th>Tổng</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -49,12 +49,12 @@
                                     </div>
                                 }
                             </td>
-                            <td>@item.Price</td>
+                            <td><span class="vnd-symbol">đ</span>@item.Price.ToString("N0")</td>
                             <td>@item.Quantity</td>
-                            <td>@item.Subtotal</td>
+                            <td><span class="vnd-symbol">đ</span>@item.Subtotal.ToString("N0")</td>
                             <td>
                                 <form asp-action="DeleteCartItem" asp-route-id="@item.Id" method="post">
-                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                    <button type="submit" class="btn btn-danger">Xóa</button>
                                 </form>
                             </td>
                         </tr>
@@ -62,12 +62,12 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="4">Total:</td>
-                        <td>@Model.TotalPrice</td>
+                        <td colspan="4">Tổng tiền:</td>
+                        <td><span class="vnd-symbol">đ</span>@Model.TotalPrice.ToString("N0")</td>
                     </tr>
                 </tfoot>
             </table>
-            <a asp-area="" asp-controller="Purchase" asp-action="BuyNow"><button type="submit" class="btn btn-primary">Buy Now</button></a>
+            <a asp-area="" asp-controller="Purchase" asp-action="BuyNow"><button type="submit" class="btn btn-primary">Mua Ngay</button></a>
         }
         else
         {
