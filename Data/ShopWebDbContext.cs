@@ -21,5 +21,6 @@ namespace ShopWeb.Data
         public DbSet<ProductVariant> ProductVariants { get; set; }
         public DbSet<VariantAttribute> VariantAttributes { get; set; }
         public DbSet<ProductRating> ProductRatings { get; set; } 
+        public DbSet<ProductImage> ProductImages { get; set; }
     }
 }

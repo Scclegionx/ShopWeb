@@ -10,156 +10,217 @@
     ViewData["Check"] = true;
 }
 
-
-
-<div class="container my-5">
-    <div class="row justify-content-center">
-        <div class="col-12 col-lg-6" id="product-detail-container">
-
-            @if (Model != null)
-            {
-                <h1 class="mb-3">@Model.Name</h1>
-
-                <div class="d-flex justify-content-between mb-3">
-                    <span class="text-secondary">Giá: @Model.Price</span>
-                    <span class="text-secondary">Số lượng: @Model.Quantity</span>
-                </div>
-
-                @if (signInManager.IsSignedIn(User))
-                {
-                    @if (object.Equals(ViewData["Liked"], ViewData["Check"]))
-                    {
-                        <a id="btnLike" style="cursor: pointer"><i class="bi bi-hand-thumbs-up-fill"></i></a>
-                    }
-                    else
-                    {
-                        <a id="btnLike" style="cursor: pointer"><i class="bi bi-hand-thumbs-up"></i></a>
-                    }
-                }
-
-                <span id="totalLikes" class="mb-3">@ViewData["TotalLikes"]</span><span>Likes</span>
-
-                <div class="mb-3 d-flex">
-                    @foreach (var tag in Model.Categories)
-                    {
-                        <span class="badge bg-secondary">@tag.Name</span>
-                    }
-                </div>
-
-                <img src="@Model.FeaturedImageUrl" class="d-block img-fluid mb-3" />
-
-                <div class="mb-3 product-details-content"> 
-                    @Html.Raw(Model.Description)
-                </div>
-                
-
-
-                @using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
-                {
-                    <div class="container py-5">
-                        @if (Model.Variants != null && Model.Variants.Any())
-                        {
-                            <div class="variants-container">
-                                <h5>Phiên bản:</h5>
-                                <select name="chosenVariant" id="chosenVariantSelect">
-                                    @foreach (var variant in Model.Variants)
-                                    {
-                                        @if (variant.FirstOrDefault() != null)
-                                        {
-                                            <option value=@variant.FirstOrDefault().ProductVariantId>
-                                                @foreach (var attribute in variant)
-                                                {
-                                                    @Html.Raw($"<p>{attribute.Value} </p>")
-                                                }
-                                            </option>
-                                        } else
-                                        {
-                                            <option>
-                                                No Variant
-                                            </option>
-                                        }
-                                    }
-                                </select>
-                            </div>
-                        }
-                        <input type="hidden" name="productId" value="@Model.Id" />
-                        <input type="number" name="quantity" value="1" min="1" class="form-control mb-3" max="@Model.Quantity" oninput="validateInput(this)" />
-                        <button type="submit" class="btn btn-dark">Thêm vào giỏ hàng</button>
+<!-- Open Content -->
+@if (Model != null)
+{
+    <section class="bg-light">
+        <div class="container pb-5">
+            <div class="row">
+                <div class="col-lg-5 mt-5">
+                    <div class="card mb-3">
+                        <img class="card-img img-fluid" src="@Model.FeaturedImageUrl" alt="Card image cap" id="product-detail">
                     </div>
-                }
-
-                <div class="container py-5" id="rating-container">
-                    @using (Html.BeginForm("RateProduct", "Products", FormMethod.Post))
-                    {
-
-                        @Html.HiddenFor(m => m.Id)
-                        <h5>Bạn đánh giá sản phẩm này chất lượng như nào?</h5>
-                        <div class="form-group">
-                            <select class="form-control" asp-for="Rating">
-                                <option value="1">1 Star</option>
-                                <option value="2">2 Stars</option>
-                                <option value="3">3 Stars</option>
-                                <option value="4">4 Stars</option>
-                                <option value="5">5 Stars</option>
-                            </select>
+                    <div class="row">
+                        <!-- Start Controls -->
+                        <div class="col-1 align-self-center">
+                            <a href="#" id="carousel-prev" role="button">
+                                <i class="bi bi-caret-left-fill"></i>
+                            </a>
                         </div>
-                        <button type="submit" class="btn btn-dark">Đánh giá</button>
-                    }
-                </div>
-
-                <div class="rating">
-                    <span class="star" data-value="1">&#9733;</span>
-                    <span class="star" data-value="2">&#9733;</span>
-                    <span class="star" data-value="3">&#9733;</span>
-                    <span class="star" data-value="4">&#9733;</span>
-                    <span class="star" data-value="5">&#9733;</span>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <h5>Bình luận</h5>
-                        @if (signInManager.IsSignedIn(User))
-                        {
-                            @using (Html.BeginForm("Index", "Products", FormMethod.Post))
-                            {
-                                //@Html.LabelFor(m => m.CommentDescription, new { @class = "col-md-4 control-label mb-3" })
-                                @Html.TextBoxFor(m => m.CommentDescription , new { @class = "form-control mb-3" })
-
-                                <button type ="submit" class="btn btn-dark">Gửi</button>
-                                <input type="hidden" asp-for="Id" />
-                            }
-                        }
-
-                    </div>
-                    <div class="card-body">
-                        @if (Model.Comments != null)
-                        {
-                            @foreach (var comment in Model.Comments)
-                            {
-                                <div class="card mb-3">
-                                    <div class="card-body">
-                                        <div>
-                                            @comment.Description
+                        <!-- End Controls -->
+                        <!-- Start Carousel Wrapper -->
+                        <div id="multi-item-example" class="col-10 carousel slide carousel-multi-item" data-bs-ride="carousel">
+                            <!-- Start Slides -->
+                            <div class="carousel-inner product-links-wap" role="listbox">
+                                @if (Model.AdditionalImageUrls != null && Model.AdditionalImageUrls.Any())
+                                {
+                                    @for (int i = 0; i < Model.AdditionalImageUrls.Count(); i += 3)
+                                    {
+                                        <div class="carousel-item @(i == 0 ? "active" : "")">
+                                            <div class="row">
+                                                @foreach (var imageUrl in Model.AdditionalImageUrls.Skip(i).Take(3))
+                                                {
+                                                    <div class="col-4">
+                                                        <a href="#">
+                                                            <img class="card-img img-fluid" src="@imageUrl" alt="Additional Product Image">
+                                                        </a>
+                                                    </div>
+                                                }
+                                            </div>
                                         </div>
-                                        <div class="d-flex justify-content-between">
-                                            <span class="text-secondary">@comment.Username</span>
-                                            <span class="text-secondary">@comment.TimeAdd.ToShortDateString()</span>
+                                    }
+                                }
+                            </div>
+                            <!-- End Slides -->
+                        </div>
+                        <!-- End Carousel Wrapper -->
+                        <!-- Start Controls -->
+                        <div class="col-1 align-self-center">
+                            <a href="#" id="carousel-next" role="button">
+                                <i class="bi bi-caret-right-fill"></i>
+                            </a>
+                        </div>
+                        <!-- End Controls -->
+                    </div>
+                </div>
+                <!-- col end -->
+                <div class="col-lg-7 mt-5">
+                    <div class="card">
+                        <div class="card-body">
+                            <h1 class="h2">@Model.Name</h1>
+                            <p class="h3 py-2">₫@Model.Price</p>
+                            @if (signInManager.IsSignedIn(User))
+                            {
+                                @if (object.Equals(ViewData["Liked"], ViewData["Check"]))
+                                {
+                                    <a id="btnLike" style="cursor: pointer"><i class="bi bi-hand-thumbs-up-fill"></i></a>
+                                }
+                                else
+                                {
+                                    <a id="btnLike" style="cursor: pointer"><i class="bi bi-hand-thumbs-up"></i></a>
+                                }
+                            }
+
+                            <span id="totalLikes" class="mb-3">@ViewData["TotalLikes"]</span><span>Likes</span>
+                            <p class="py-2">
+                                <div class="rating">
+                                    <span class="star" data-value="1">&#9733;</span>
+                                    <span class="star" data-value="2">&#9733;</span>
+                                    <span class="star" data-value="3">&#9733;</span>
+                                    <span class="star" data-value="4">&#9733;</span>
+                                    <span class="star" data-value="5">&#9733;</span>
+                                </div>
+                                <span class="list-inline-item text-dark">Rating @ViewData["AverageRating"] | @Model.CommentsCount Comments</span>
+                            </p>
+                            
+
+                            <h6>Description:</h6>
+                            <p>@Html.Raw(Model.Description)</p>
+                            
+
+                            
+
+                            
+
+                            @using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
+                            {
+                                <div class="container py-5">
+                                    @if (Model.Variants != null && Model.Variants.Any())
+                                    {
+                                        <div class="variants-container">
+                                            <h5>Phiên bản:</h5>
+                                            <select name="chosenVariant" id="chosenVariantSelect">
+                                                @foreach (var variant in Model.Variants)
+                                                {
+                                                    @if (variant.FirstOrDefault() != null)
+                                                    {
+                                                        <option value=@variant.FirstOrDefault().ProductVariantId>
+                                                            @foreach (var attribute in variant)
+                                                            {
+                                                                @Html.Raw($"<p>{attribute.Value} </p>")
+                                                            }
+                                                        </option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option>
+                                                            No Variant
+                                                        </option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                    }
+                                    <input type="hidden" name="productId" value="@Model.Id" />
+                                    <div class="col-auto">
+                                        <ul class="list-inline pb-3">
+                                            <li class="list-inline-item text-right">
+                                                Quantity
+                                                <input type="hidden" name="product-quantity" id="product-quantity" value="1">
+                                            </li>
+                                            <li class="list-inline-item"><span class="btn btn-success" id="btn-minus">-</span></li>
+                                            <li class="list-inline-item">
+                                                <input type="number" name="quantity" id="quantity-input" class="form-control mb-3"
+                                                       value="1" min="1" max="@Model.Quantity" oninput="validateInput(this)" style="width: 60px; text-align: center;">
+                                            </li>
+                                            <li class="list-inline-item"><span class="btn btn-success" id="btn-plus">+</span></li>
+                                        </ul>
+                                    </div>
+                                    <div class="row pb-3">
+                                        <div class="col d-grid">
+                                            <button type="submit" class="btn btn-success btn-lg" name="submit" value="buy">Buy</button>
+                                        </div>
+                                        <div class="col d-grid">
+                                            <button type="submit" class="btn btn-success btn-lg" name="submit" value="addtocard">Add To Cart</button>
                                         </div>
                                     </div>
                                 </div>
                             }
-                        }
+
+                        </div>
                     </div>
                 </div>
-
-
-
-            } else
-            {
-                <p>No Products Found!</p>
-            }
-
+            </div>
         </div>
+    </section>
+}
+<!-- Close Content -->
+<!-- Start Article -->
+
+<!-- End Article -->
+<div class="container py-5" id="rating-container">
+    @using (Html.BeginForm("RateProduct", "Products", FormMethod.Post))
+    {
+
+        @Html.HiddenFor(m => m.Id)
+        <h5>Bạn đánh giá sản phẩm này chất lượng như nào?</h5>
+        <div class="form-group">
+            <select class="form-control" asp-for="Rating">
+                <option value="1">1 Star</option>
+                <option value="2">2 Stars</option>
+                <option value="3">3 Stars</option>
+                <option value="4">4 Stars</option>
+                <option value="5">5 Stars</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-dark">Đánh giá</button>
+    }
+</div>
+
+<div class="card" id="comment-container">
+    <div class="card-header">
+        <h5>Bình luận</h5>
+        @if (signInManager.IsSignedIn(User))
+        {
+            @using (Html.BeginForm("Index", "Products", FormMethod.Post))
+            {
+                @Html.LabelFor(m => m.CommentDescription, new { @class = "col-md-4 control-label mb-3" })
+                @Html.TextBoxFor(m => m.CommentDescription, new { @class = "form-control mb-3" })
+
+                <button type="submit" class="btn btn-dark">Gửi</button>
+                <input type="hidden" asp-for="Id" />
+            }
+        }
+
+    </div>
+    <div class="card-body">
+        @if (Model.Comments != null)
+        {
+            @foreach (var comment in Model.Comments)
+            {
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div>
+                            @comment.Description
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span class="text-secondary">@comment.Username</span>
+                            <span class="text-secondary">@comment.TimeAdd.ToShortDateString()</span>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
     </div>
 </div>
 
@@ -168,6 +229,17 @@
         const btnLikeElement = document.getElementById("btnLike");
         const totalLikesElement = document.getElementById("totalLikes");
         const productId = "@Model.Id";
+
+        $(document).ready(function () {
+            $('#carousel-prev').click(function (e) {
+                e.preventDefault();
+                $('#multi-item-example').carousel('prev');
+            });
+            $('#carousel-next').click(function (e) {
+                e.preventDefault();
+                $('#multi-item-example').carousel('next');
+            });
+        });
 
         $(document).ready(function () {
 
@@ -183,25 +255,7 @@
             });
         });
 
-        function validateInput(input) {
-            var min = parseInt(input.getAttribute('min'));
-            var max = parseInt(input.getAttribute('max'));
-
-            // Parse the current value of the input field
-            var value = parseInt(input.value);
-
-            // Check if the parsed value is less than the minimum allowed value
-            if (value < min) {
-                // If the value is less than the minimum, set the value to the minimum allowed value
-                input.value = min;
-            }
-
-            // Check if the parsed value is greater than the maximum allowed value
-            if (value > max) {
-                // If the value is greater than the maximum, set the value to the maximum allowed value
-                input.value = max;
-            }
-        }
+        
 
 
         async function getTotalLikes() {
@@ -272,5 +326,46 @@
         btnLikeElement.addEventListener('click', addLiketoProduct);
         checkLikeStatus();
         getTotalLikes();
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var quantityInput = document.getElementById('quantity-input');
+            var btnMinus = document.getElementById('btn-minus');
+            var btnPlus = document.getElementById('btn-plus');
+
+            function validateInput(input) {
+                var min = parseInt(input.getAttribute('min'));
+                var max = parseInt(input.getAttribute('max'));
+                var value = parseInt(input.value);
+
+                if (value < min) {
+                    input.value = min;
+                }
+
+                if (value > max) {
+                    input.value = max;
+                }
+            }
+
+            btnMinus.addEventListener('click', function () {
+                var currentValue = parseInt(quantityInput.value);
+                if (currentValue > parseInt(quantityInput.getAttribute('min'))) {
+                    quantityInput.value = currentValue - 1;
+                    validateInput(quantityInput);
+                }
+            });
+
+            btnPlus.addEventListener('click', function () {
+                var currentValue = parseInt(quantityInput.value);
+                if (currentValue < parseInt(quantityInput.getAttribute('max'))) {
+                    quantityInput.value = currentValue + 1;
+                    validateInput(quantityInput);
+                }
+            });
+
+            quantityInput.addEventListener('input', function () {
+                validateInput(quantityInput);
+            });
+        });
     </script>
 }

@@ -17,7 +17,6 @@
     </div>
     <div class="col-md-8 mb-3">
         <label class="form-label">Featured Image Upload</label>
-        <input type="file" id="featuredImageUpload" class="form-control" readonly />
 
         @if (Model.FeaturedImageUrl != null)
         {
@@ -31,6 +30,19 @@
     <div class="col-md-8 mb-3">
         @Html.LabelFor(m => m.FeaturedImageUrl, new { @class = "col-md-4 control-label" })
         @Html.TextBoxFor(m => m.FeaturedImageUrl, new { @class = "form-control", id = "featuredImageUrl", @readonly = true })
+    </div>
+    <div class="col-md-8 mb-3">
+        <label class="form-label">Additional Images Upload</label>
+        <div id="additionalImagesPreview"></div>
+        <div id="additionalImagesDisplay" class="mt-2">
+            @if (Model.AdditionalImageUrls != null && Model.AdditionalImageUrls.Any())
+            {
+                foreach (var imageUrl in Model.AdditionalImageUrls)
+                {
+                    <img src="@imageUrl" style="display:block;width: 100px;" />
+                }
+            }
+        </div>
     </div>
     <div class="col-md-8 mb-3">
         @Html.LabelFor(m => m.Price, new { @class = "col-md-4 control-label" })

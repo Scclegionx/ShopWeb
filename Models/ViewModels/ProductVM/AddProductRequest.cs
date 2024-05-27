@@ -23,6 +23,8 @@ namespace ShopWeb.Models.ViewModels.ProductVM
         //Collect Cates
         public string[] SelectedCategory { get; set; } = Array.Empty<string>();
         public List<VariantAttributeRequest> VariantAttributes { get; set; }
+        public List<IFormFile> AdditionalImages { get; set; }
+        public List<string> AdditionalImageUrls { get; set; } = new List<string>();
 
     }
 

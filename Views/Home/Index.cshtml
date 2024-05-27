@@ -6,29 +6,6 @@
 }
 
 <div id="home-page-container">
-    <!-- <div class="container" id="category-container">
-        <div class="row justify-content-center">
-            <div class="col-6 " >
-                @if (Model != null && Model.Categories.Any())
-                {
-                    foreach (var cate in Model.Categories)
-                    {
-                        <div style="display: block;">
-                            <span class="badge bg-dark me-1 category-tag">
-                                @cate.Name
-                            </span>
-                        </div>
-                        <hr />
-                    }
-                } else
-                {
-                    <p>No Categories Found!</p>
-                }
-            </div>
-        </div>
-    </div> -->
-
-
     <div id="index-container">
         <div class="row justify-content-center" id="template-mo-zay-hero-carousel">
             <div class="row text-center py-3">
@@ -40,38 +17,95 @@
                     </p>
                 </div>
             </div>
-            @if (Model.bestSellingProducts != null && Model.bestSellingProducts.Any())
-            {
-                <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                        @foreach (var product in Model.bestSellingProducts)
-                        {
-                            <div class="carousel-item @(product == Model.bestSellingProducts.First() ? "active" : "")">
-                                <a asp-area="" asp-action="Index" asp-controller="Products" asp-route-id="{@product.Id}">
-                                    <img src="@product.FeaturedImageUrl" class="d-block w-100" alt="@product.Name">
-                                </a>
-                                <div class="carousel-caption d-none d-md-block">
-                                    <h5>@product.Name</h5>
-                                    <p>Price: @product.Price</p>
-                                    <p>Purchase Count: @product.PurchaseCount</p>
+            <div id="best-selling-and-sort-container">
+                <div id="sort-container">
+                    <div class="container" id="category-container">
+                        <div class="justify-content-center">
+                            <div class="text-center">
+                                <button id="category-title" class="btn sort-title"><i class="bi bi-arrow-down-circle-fill"></i> Danh mục sản phẩm</button>
+                                <div id="category-list" class="category-list">
+                                    @if (Model != null && Model.Categories.Any())
+                                    {
+                                        foreach (var cate in Model.Categories)
+                                        {
+                                            <div>
+                                                <button class="btn btn-sort-item category-tag">
+                                                    @cate.Name
+                                                </button>
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <p>Không tìm thấy danh mục!</p>
+                                    }
+                                </div>
+                                <button id="price-title" class="btn sort-title"><i class="bi bi-arrow-down-circle-fill"></i> Giá</button>
+                                <div id="price-list" class="category-list">
+                                    <div>
+                                        <button class="btn btn-sort-item category-tag">Dưới 50.000 đồng</button>
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-sort-item category-tag">Từ 50.000 đến 100.000 đồng</button>
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-sort-item category-tag">Trên 100.000 đồng</button>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div id="best-selling-container">
+                    @if (Model.bestSellingProducts != null && Model.bestSellingProducts.Any())
+                    {
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                                    <div class="carousel-inner">
+                                        @foreach (var product in Model.bestSellingProducts)
+                                        {
+                                            <div class="carousel-item @(product == Model.bestSellingProducts.First() ? "active" : "")">
+                                                <a asp-area="" asp-action="Index" asp-controller="Products" asp-route-id="{@product.Id}">
+                                                    <img src="@product.FeaturedImageUrl" class="d-block w-100" alt="@product.Name">
+                                                </a>
+                                                <div class="carousel-caption d-none d-md-block">
+                                                    <h5>@product.Name</h5>
+                                                    <p>Price: @product.Price</p>
+                                                    <p>Purchase Count: @product.PurchaseCount</p>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
                                 </div>
                             </div>
-                        }
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
+                            <div class="col-md-4">
+                                <ul id="best-selling-list" class="list-group">
+                                    @foreach (var product in Model.bestSellingProducts)
+                                    {
+                                        <li class="list-group-item d-flex justify-content-between align-items-center best-selling-item" data-product-id="@product.Id">
+                                            <img src="@product.FeaturedImageUrl" class="img-thumbnail" style="width: 100px;" alt="@product.Name">
+                                            <div class="text-right">
+                                                <h5>@product.Name</h5>
+                                                <p><span class="vnd-symbol">đ</span>@product.Price</p>
+                                            </div>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+
+                    }
+                    else
+                    {
+                        <p>No best-selling products found.</p>
+                    }
                 </div>
-            }
-            else
-            {
-                <p>No best-selling products found.</p>
-            }
+            </div>
         </div>
         <div id="search-allProducts-container">
             
@@ -210,6 +244,64 @@
                 }
             });
         }
+        document.addEventListener('DOMContentLoaded', function () {
+            const bestSellingList = document.getElementById('best-selling-list');
+            const bestSellingItems = bestSellingList.querySelectorAll('.best-selling-item');
+            const carousel = new bootstrap.Carousel(document.getElementById('carouselExampleControls'), {
+                interval: 5000
+            });
+            let currentIndex = 0;
+
+            function highlightProduct(index) {
+                bestSellingItems.forEach(item => item.classList.remove('active'));
+                bestSellingItems[index].classList.add('active');
+
+                // Move the carousel to the correct slide
+                carousel.to(index);
+            }
+
+            function autoHighlight() {
+                highlightProduct(currentIndex);
+                currentIndex = (currentIndex + 1) % bestSellingItems.length;
+            }
+
+            setInterval(autoHighlight, 5000);
+
+            bestSellingItems.forEach((item, index) => {
+                item.addEventListener('click', () => {
+                    currentIndex = index;
+                    highlightProduct(currentIndex);
+                });
+            });
+
+            // Initialize the first product
+            highlightProduct(currentIndex);
+        });
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const categoryTitle = document.querySelector('#category-title');
+            const categoryList = document.querySelector('#category-list');
+            const priceTitle = document.querySelector('#price-title');
+            const priceList = document.querySelector('#price-list');
+            const nameTitle = document.querySelector('#name-title');
+            const nameList = document.querySelector('#name-list');
+
+            categoryTitle.addEventListener('click', function () {
+                const isExpanded = categoryList.classList.contains('expanded');
+                categoryList.classList.toggle('expanded', !isExpanded);
+            });
+
+            priceTitle.addEventListener('click', function () {
+                const isExpanded = priceList.classList.contains('expanded');
+                priceList.classList.toggle('expanded', !isExpanded);
+            });
+
+            nameTitle.addEventListener('click', function () {
+                const isExpanded = nameList.classList.contains('expanded');
+                nameList.classList.toggle('expanded', !isExpanded);
+            });
+        });
     </script>
 
 }

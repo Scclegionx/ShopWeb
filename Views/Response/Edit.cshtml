@@ -1,25 +1,31 @@
-﻿@model ShopWeb.Models.ViewModels.ResponseVM.ResponseViewModel
+﻿@using Microsoft.AspNetCore.Identity;
+@using ShopWeb.Models.Domain;
+@inject UserManager<ApplicationUser> userManager;
+@model ShopWeb.Models.ViewModels.ResponseVM.ResponseViewModel
 
-<h1>Edit Response</h1>
 
-<form asp-action="Edit">
-    <input type="hidden" asp-for="Id" />
-    <div class="form-group">
-        <label asp-for="UserId"></label>
-        <input asp-for="UserId" class="form-control" readonly />
-    </div>
-    <div class="form-group">
-        <label asp-for="Heading"></label>
-        <input asp-for="Heading" class="form-control" />
-        <span asp-validation-for="Heading" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Content"></label>
-        <input asp-for="Content" class="form-control" />
-        <span asp-validation-for="Content" class="text-danger"></span>
-    </div>
-    <input type="hidden" asp-for="CreatedAt" value="@DateTime.Now" />
-    <button type="submit" class="btn btn-primary">Save</button>
-</form>
+<div id="response-container">
+    <h1>Edit Response</h1>
 
-<a asp-action="customerIndex">Back to List</a>
+    <form asp-action="Edit">
+        <input type="hidden" asp-for="Id" />
+        <div class="form-group">
+            <label asp-for="UserId"></label>
+            <input asp-for="UserId" class="form-control" value="@(await userManager.FindByIdAsync(Model.UserId.ToString()))" readonly />
+        </div>
+        <div class="form-group">
+            <label asp-for="Heading"></label>
+            <input asp-for="Heading" class="form-control" />
+            <span asp-validation-for="Heading" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Content"></label>
+            <input asp-for="Content" class="form-control" />
+            <span asp-validation-for="Content" class="text-danger"></span>
+        </div>
+        <input type="hidden" asp-for="CreatedAt" value="@DateTime.Now" />
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+
+    <a asp-action="customerIndex">Back to List</a>
+</div>

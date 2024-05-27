@@ -1,9 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShopWeb.Data;
 using ShopWeb.Models.Domain;
-using PagedList;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using Microsoft.Ajax.Utilities;
 
 namespace ShopWeb.Repositories
 {
@@ -56,12 +53,12 @@ namespace ShopWeb.Repositories
 
         public async Task<Product?> GetAsync(Guid id)
         {
-            return await shopWebDbContext.Products.Include(x => x.Categories).FirstOrDefaultAsync(x => x.Id == id);    
+            return await shopWebDbContext.Products.Include(x => x.ProductImages).Include(x => x.Categories).FirstOrDefaultAsync(x => x.Id == id);    
         }
 
         public async Task<Product?> UpdateAsync(Product product)
         {
-            var existingProd = await shopWebDbContext.Products.Include(x => x.Categories).FirstOrDefaultAsync(x => x.Id == product.Id);
+            var existingProd = await shopWebDbContext.Products.Include(x => x.Categories).Include(x => x.ProductImages).FirstOrDefaultAsync(x => x.Id == product.Id);
             if (existingProd != null)
             {
                 existingProd.Id = product.Id;
@@ -159,5 +156,26 @@ namespace ShopWeb.Repositories
             }
         }
 
+        public async Task AddImageAsync(ProductImage productImage)
+        {
+            await shopWebDbContext.ProductImages.AddAsync(productImage);
+            await shopWebDbContext.SaveChangesAsync();
+        }
+
+        public async Task<List<ProductImage>> GetAdditionalImagesAsync(Guid productId)
+        {
+            return await shopWebDbContext.ProductImages.Where(pi => pi.ProductId == productId).ToListAsync();
+        }
+
+        public async Task<List<ProductImage>> GetAdditionalImagesByProductIdAsync(Guid productId)
+        {
+            return await shopWebDbContext.ProductImages.Where(pi => pi.ProductId == productId).ToListAsync();
+        }
+
+        public async Task DeleteImageAsync(ProductImage productImage)
+        {
+            shopWebDbContext.ProductImages.Remove(productImage);
+            await shopWebDbContext.SaveChangesAsync();
+        }
     }
 }

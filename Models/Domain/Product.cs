@@ -15,5 +15,6 @@
         public string State { get; set; }
         public int Rating { get; set; }
         public int CommentsCount { get; set; }
+        public ICollection<ProductImage> ProductImages { get; set; }
     }
 }

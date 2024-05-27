@@ -8,45 +8,48 @@
     </div>
 }
 
-<h1>Your Order</h1>
+<div id="shipper-order-container">
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>User</th>
-            <th>Purchase Date</th>
-            <th>Total Price</th>
-            <th>Phương thức thanh toán</th>
-            <th>Địa chỉ</th>
-            <th>Ghi chú</th>
-            <th></th>
-            <th></th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var purchase in Model.Purchases)
-        {
+    <h1>Your Order</h1>
+
+    <table class="table">
+        <thead>
             <tr>
-                <td>@purchase.Id</td>
-                <td>@purchase.UserId</td>
-                <td>@purchase.PurchaseDate</td>
-                <td>@purchase.TotalPrice</td>
-                <td>@purchase.PaymentMethod</td>
-                <td>@purchase.Address</td>
-                <td>@purchase.Note</td>
-                @if (purchase.State == "None")
-                {
-                    <td>
-                        <a asp-area="" asp-controller="Shipper" asp-action="AcceptPurchase" asp-route-id="{@purchase.Id}">Nhận đơn</a>
-                    </td>
-                } else
-                {
-                    <td>@purchase.State</td>
-                }
-                
+                <th>Id</th>
+                <th>User</th>
+                <th>Purchase Date</th>
+                <th>Total Price</th>
+                <th>Phương thức thanh toán</th>
+                <th>Địa chỉ</th>
+                <th>Ghi chú</th>
+                <th></th>
+                <th></th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var purchase in Model.Purchases)
+            {
+                <tr>
+                    <td>@purchase.Id</td>
+                    <td>@purchase.UserId</td>
+                    <td>@purchase.PurchaseDate</td>
+                    <td>@purchase.TotalPrice</td>
+                    <td>@purchase.PaymentMethod</td>
+                    <td>@purchase.Address</td>
+                    <td>@purchase.Note</td>
+                    @if (purchase.State == "None")
+                    {
+                        <td>
+                            <a asp-area="" asp-controller="Shipper" asp-action="AcceptPurchase" asp-route-id="{@purchase.Id}">Nhận đơn</a>
+                        </td>
+                    } else
+                    {
+                        <td>@purchase.State</td>
+                    }
+                
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

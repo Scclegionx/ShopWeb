@@ -17,5 +17,9 @@ namespace ShopWeb.Repositories
         Task CheckProductAvailability(Guid productId);
         Task<Product?> UpdateRatingAsync(Guid id);
         Task<Product?> UpdateCommentCountAsync(Guid id, int totalComments);
+        Task AddImageAsync(ProductImage productImage);
+        Task<List<ProductImage>> GetAdditionalImagesAsync(Guid productId);
+        Task<List<ProductImage>> GetAdditionalImagesByProductIdAsync(Guid productId);
+        Task DeleteImageAsync(ProductImage productImage);
     }
 }

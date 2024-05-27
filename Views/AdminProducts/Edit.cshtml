@@ -39,6 +39,21 @@
             @Html.LabelFor(m => m.FeaturedImageUrl, new { @class = "col-md-4 control-label" })
             @Html.TextBoxFor(m => m.FeaturedImageUrl, new { @class = "form-control", id = "featuredImageUrl" })
         </div>
+
+        <div class="col-md-8 mb-3">
+            <label class="form-label">Additional Images Upload</label>
+            <input type="file" multiple id="additionalImagesUpload" name="AdditionalImages" class="form-control" />
+            <div id="additionalImagesPreview"></div>
+            <div id="additionalImagesDisplay" class="mt-2">
+                @if (Model.AdditionalImageUrls != null && Model.AdditionalImageUrls.Any())
+                {
+                    foreach (var imageUrl in Model.AdditionalImageUrls)
+                    {
+                        <img src="@imageUrl" style="display:block;width: 100px;" />
+                    }
+                }
+            </div>
+        </div>
         <div class="col-md-8 mb-3">
             @Html.LabelFor(m => m.Price, new { @class = "col-md-4 control-label" })
             @Html.TextBoxFor(m => m.Price, new { @class = "form-control" })
@@ -99,8 +114,39 @@
                 });
 
         }
+        async function uploadAdditionalImages(e) {
+            let files = e.target.files;
+            let previewContainer = document.getElementById('additionalImagesPreview');
+            previewContainer.innerHTML = ''; // Clear existing previews
+
+            for (let i = 0; i < files.length; i++) {
+                let data = new FormData();
+                data.append('file', files[i]);
+
+                let response = await fetch('/api/images', {
+                    method: 'POST',
+                    headers: { 'Accept': '*/*' },
+                    body: data
+                });
+                let result = await response.json();
+
+                let img = document.createElement('img');
+                img.src = result.link;
+                img.classList.add('img-thumbnail');
+                img.style.width = '100px';
+                previewContainer.appendChild(img);
+
+                // Store URLs in hidden inputs for form submission
+                let hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = 'AdditionalImageUrls';
+                hiddenInput.value = result.link;
+                previewContainer.appendChild(hiddenInput);
+            }
+        }
 
         featuredUploadElement.addEventListener('change', uploadFeaturedImage);
+        document.getElementById('additionalImagesUpload').addEventListener('change', uploadAdditionalImages);
 
     </script>
 }

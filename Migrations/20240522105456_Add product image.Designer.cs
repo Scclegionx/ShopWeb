@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShopWeb.Data;
 
@@ -11,9 +12,11 @@ using ShopWeb.Data;
 namespace ShopWeb.Migrations
 {
     [DbContext(typeof(ShopWebDbContext))]
-    partial class ShopWebDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240522105456_Add product image")]
+    partial class Addproductimage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -203,7 +206,7 @@ namespace ShopWeb.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductImages");
+                    b.ToTable("ProductImage");
                 });
 
             modelBuilder.Entity("ShopWeb.Models.Domain.ProductLike", b =>

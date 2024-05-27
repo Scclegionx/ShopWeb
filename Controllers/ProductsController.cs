@@ -99,6 +99,10 @@ namespace ShopWeb.Controllers
                     }
                 }
 
+                var additionalImages = await productRepository.GetAdditionalImagesAsync(id);
+
+                var additionalImageUrls = additionalImages.Select(img => img.ImageUrl).ToList();
+
                 var model = new ProductDetailViewModel
                 {
                     Id = product.Id,
@@ -110,7 +114,9 @@ namespace ShopWeb.Controllers
                     Categories = product.Categories,
                     ProductLike = product.ProductLike,
                     Comments = productCommentForView,
-                    Variants = listForView
+                    Variants = listForView,
+                    CommentsCount = product.CommentsCount,
+                    AdditionalImageUrls = additionalImageUrls
                 };
                 ViewData["Liked"] = liked;
                 ViewData["AverageRating"] = averageRating;

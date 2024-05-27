@@ -6,11 +6,11 @@
 
 @await Html.PartialAsync("SideNavBar")
 
-<h1>Purchase Tracking</h1>
 
 @if (Model != null && Model.Any())
 {
     <div id="tracking-container">
+        <h1>Purchase Tracking</h1>
         <table class="table">
             <thead>
                 <tr>

@@ -7,91 +7,94 @@
     ViewData["Title"] = "Purchase";
 }
 
-<h1>Review Your Order</h1>
+<div id="buyNow-container">
+        
+    <h1>Review Your Order</h1>
 
-<h2>Order Summary</h2>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Product</th>
-            <th>Variant</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Subtotal</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Items)
-        {
+    <h2>Order Summary</h2>
+    <table class="table">
+        <thead>
             <tr>
-                <td>@item.ProductName</td>
-                <td>
-                    @if (item.Variants != null && item.Variants.Any())
-                    {
-                        <div class="variants-container">
-                            @foreach (var variant in item.Variants)
-                            {
-                                @foreach (var attribute in variant)
-                                {
-                                    @Html.Raw($"<p style='display: inline;'>{attribute.Value} </p>")
-                                }
-                            }
-                        </div>
-                    }
-                </td>
-                <td>@item.Price</td>
-                <td>@item.Quantity</td>
-                <td>@item.Subtotal</td>
+                <th>Product</th>
+                <th>Variant</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
             </tr>
-        }
-    </tbody>
-    <tfoot>
-        <tr>
-            <td colspan="4">Total:</td>
-            <td>@Model.TotalPrice</td>
-        </tr>
-    </tfoot>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>@item.ProductName</td>
+                    <td>
+                        @if (item.Variants != null && item.Variants.Any())
+                        {
+                            <div class="variants-container">
+                                @foreach (var variant in item.Variants)
+                                {
+                                    @foreach (var attribute in variant)
+                                    {
+                                        @Html.Raw($"<p style='display: inline;'>{attribute.Value} </p>")
+                                    }
+                                }
+                            </div>
+                        }
+                    </td>
+                    <td>@item.Price</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.Subtotal</td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4">Total:</td>
+                <td>@Model.TotalPrice</td>
+            </tr>
+        </tfoot>
+    </table>
 
-@using (Html.BeginForm("ApplyCoupon", "Purchase", FormMethod.Post))
-{
-    <h2>Apply Coupon</h2>
-    <div class="form-group">
-        @Html.HiddenFor(m => m.TotalPrice)
-        @Html.LabelFor(model => model.CouponCode, htmlAttributes: new { @class = "control-label" })
-        @Html.TextBoxFor(model => model.CouponCode, new { @class = "form-control", id = "couponCode" })
-        @Html.ValidationMessageFor(model => model.CouponCode, "", new { @class = "text-danger" }) 
-    </div>
-    <button type="submit" class="btn btn-primary">Apply Coupon</button>
-}
-
-
-@using (Html.BeginForm("Confirm", "Purchase", FormMethod.Post))
-{
-    @Html.HiddenFor(model => model.TotalPrice)
-
-    @for (int i = 0; i < Model.Items.Count(); i++)
+    @using (Html.BeginForm("ApplyCoupon", "Purchase", FormMethod.Post))
     {
-        <input type="hidden" name="ProductId[@i]" value="@Model.Items[i].ProductId" />
-        <input type="hidden" name="Quantity[@i]" value="@Model.Items[i].Quantity" />
+        <h2>Apply Coupon</h2>
+        <div class="form-group">
+            @Html.HiddenFor(m => m.TotalPrice)
+            @Html.LabelFor(model => model.CouponCode, htmlAttributes: new { @class = "control-label" })
+            @Html.TextBoxFor(model => model.CouponCode, new { @class = "form-control", id = "couponCode" })
+            @Html.ValidationMessageFor(model => model.CouponCode, "", new { @class = "text-danger" }) 
+        </div>
+        <button type="submit" class="btn btn-primary">Apply Coupon</button>
     }
 
 
+    @using (Html.BeginForm("Confirm", "Purchase", FormMethod.Post))
+    {
+        @Html.HiddenFor(model => model.TotalPrice)
+
+        @for (int i = 0; i < Model.Items.Count(); i++)
+        {
+            <input type="hidden" name="ProductId[@i]" value="@Model.Items[i].ProductId" />
+            <input type="hidden" name="Quantity[@i]" value="@Model.Items[i].Quantity" />
+        }
 
 
-    @Html.LabelFor(m => m.Address, new {@class="control-label"})
-    @Html.TextBoxFor(m => m.Address, new { @class="form-control"})
-
-    @Html.LabelFor(m => m.Note, new { @class = "control-label" })
-    @Html.TextBoxFor(m => m.Note, new { @class = "form-control" })
-
-    <label for="paymentMethod">Select Payment Method:</label>
-    <select id="paymentMethod" name="paymentMethod">
-        <option value="COD">COD</option>
-        <option value="CK">Chuyển khoản</option>
-        <!-- Add more payment methods as needed -->
-    </select>
 
 
-    <button type="submit" class="btn btn-primary">Confirm Order</button>
-}
+        @Html.LabelFor(m => m.Address, new {@class="control-label"})
+        @Html.TextBoxFor(m => m.Address, new { @class="form-control"})
+
+        @Html.LabelFor(m => m.Note, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.Note, new { @class = "form-control" })
+
+        <label for="paymentMethod">Select Payment Method:</label>
+        <select id="paymentMethod" name="paymentMethod">
+            <option value="COD">COD</option>
+            <option value="CK">Chuyển khoản</option>
+            <!-- Add more payment methods as needed -->
+        </select>
+
+
+        <button type="submit" class="btn btn-primary">Confirm Order</button>
+    }
+</div>

@@ -13,13 +13,17 @@ namespace ShopWeb.Controllers
         private readonly IProductRepository productRepository;
         private readonly IVariantAttributesRepository variantAttributesRepository;
         private readonly IProductVariantRepository productVariantRepository;
+        private readonly IImageRepository imageRepository;
 
-        public AdminProductsController(ICateRepository cateRepository, IProductRepository productRepository, IVariantAttributesRepository variantAttributesRepository, IProductVariantRepository productVariantRepository) 
+        public AdminProductsController(ICateRepository cateRepository, IProductRepository productRepository, 
+            IVariantAttributesRepository variantAttributesRepository, IProductVariantRepository productVariantRepository,
+            IImageRepository imageRepository) 
         {
             this.cateRepository = cateRepository;
             this.productRepository = productRepository;
             this.variantAttributesRepository = variantAttributesRepository;
             this.productVariantRepository = productVariantRepository;
+            this.imageRepository = imageRepository;
         }
         [HttpGet]
         public async Task<IActionResult> Add()
@@ -36,8 +40,6 @@ namespace ShopWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(AddProductRequest addProductRequest)
         {
-            
-
             var model = new Product
             {
                 Name = addProductRequest.Name,
@@ -45,8 +47,9 @@ namespace ShopWeb.Controllers
                 FeaturedImageUrl = addProductRequest.FeaturedImageUrl,
                 Price = addProductRequest.Price,
                 Quantity = addProductRequest.Quantity,
-                State = "Available"
+                State = "Available",
             };
+
             var selectedCates = new List<Category>();
             foreach (var selectedCateId in addProductRequest.SelectedCategory)
             {
@@ -60,6 +63,22 @@ namespace ShopWeb.Controllers
             model.Categories = selectedCates;
             await productRepository.AddAsync(model);
 
+            // Handle additional image URLs
+            if (addProductRequest.AdditionalImageUrls != null && addProductRequest.AdditionalImageUrls.Any())
+            {
+                foreach (var imageUrl in addProductRequest.AdditionalImageUrls)
+                {
+                    if (!string.IsNullOrEmpty(imageUrl))
+                    {
+                        var productImage = new ProductImage
+                        {
+                            ImageUrl = imageUrl,
+                            ProductId = model.Id
+                        };
+                        await productRepository.AddImageAsync(productImage);
+                    }
+                }
+            }
 
             // Add variant attributes to the database
             if (addProductRequest.VariantAttributes != null && addProductRequest.VariantAttributes.Any())
@@ -79,8 +98,6 @@ namespace ShopWeb.Controllers
                     // Add product variant to the database
                     await productVariantRepository.AddAsync(productVariant);
 
-                    
-
                     // Add variant attributes for the product variant
                     for (int i = 0; i < numAttributes; i++)
                     {
@@ -92,11 +109,8 @@ namespace ShopWeb.Controllers
                         };
                         await variantAttributesRepository.AddAsync(variantAttribute);
                     }
-
-                    
                 }
             }
-
 
             return RedirectToAction("List", "AdminProducts");
         }
@@ -155,7 +169,8 @@ namespace ShopWeb.Controllers
                         Value = x.Id.ToString(),
                     }),
                     SelectedCategory = product.Categories.Select(x => x.Id.ToString()).ToArray(), 
-                    VariantAttributes = listVAForView
+                    VariantAttributes = listVAForView,
+                    AdditionalImageUrls = product.ProductImages.Select(pi => pi.ImageUrl).ToList()
                 };
                 return View(model);
             }
@@ -171,7 +186,7 @@ namespace ShopWeb.Controllers
                 Description = editProductRequest.Description,
                 FeaturedImageUrl = editProductRequest.FeaturedImageUrl,
                 Price = editProductRequest.Price,
-                Quantity = editProductRequest.Quantity,
+                Quantity = editProductRequest.Quantity
             };
             var selectedCates = new List<Category>();
             foreach(var selectedCate in editProductRequest.SelectedCategory)
@@ -185,6 +200,33 @@ namespace ShopWeb.Controllers
                     }
                 }
             }
+
+            // Handle additional image URLs
+            if (editProductRequest.AdditionalImageUrls != null && editProductRequest.AdditionalImageUrls.Any())
+            {
+                // Get existing additional images for the product
+                var existingAdditionalImages = await productRepository.GetAdditionalImagesByProductIdAsync(editProductRequest.Id);
+
+                // Update existing additional images with the new list
+                foreach (var existingImage in existingAdditionalImages)
+                {
+                    // Remove existing image from the database
+                    await productRepository.DeleteImageAsync(existingImage);
+                }
+                foreach (var imageUrl in editProductRequest.AdditionalImageUrls)
+                {
+                    if (!string.IsNullOrEmpty(imageUrl))
+                    {
+                        var productImage = new ProductImage
+                        {
+                            ImageUrl = imageUrl,
+                            ProductId = model.Id
+                        };
+                        await productRepository.AddImageAsync(productImage);
+                    }
+                }
+            }
+
             model.Categories = selectedCates;
             var updated = await productRepository.UpdateAsync(model);
             if (updated != null)
@@ -275,6 +317,7 @@ namespace ShopWeb.Controllers
                     }),
                     SelectedCategory = product.Categories.Select(x => x.Id.ToString()).ToArray(),
                     VariantAttributes = listVAForView,
+                    AdditionalImageUrls = product.ProductImages.Select(pi => pi.ImageUrl).ToList()
                 };
                 return View(model);
             }

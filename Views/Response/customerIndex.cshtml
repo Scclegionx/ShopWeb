@@ -1,4 +1,7 @@
-﻿@model List<ShopWeb.Models.Domain.Response>
+﻿@using Microsoft.AspNetCore.Identity;
+@using ShopWeb.Models.Domain;
+@inject UserManager<ApplicationUser> userManager;
+@model List<ShopWeb.Models.Domain.Response>
 
 @{
     ViewBag.RenderDefaultNavbar = false;
@@ -29,7 +32,7 @@
             {
                 <tr>
                     <td>@response.Id</td>
-                    <td>@response.UserId</td>
+                    <td>@(await userManager.FindByIdAsync(response.UserId.ToString()))</td>
                     <td>@response.Heading</td>
                     <td>@response.Content</td>
                     <td>@response.CreatedAt</td>
