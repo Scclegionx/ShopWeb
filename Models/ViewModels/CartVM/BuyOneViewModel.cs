@@ -17,5 +17,7 @@ namespace ShopWeb.Models.ViewModels.CartVM
         [Display(Name = "Ghi chú")]
         public string Note { get; set; }
         public ProductVariant ProductVariant { get; set; }
+        public Guid ProductId { get; set; }
+        public Guid ProductVariantId { get; set; }
     }
 }

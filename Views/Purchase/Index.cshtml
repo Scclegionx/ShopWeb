@@ -24,10 +24,10 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>User Id</th>
-                <th>Purchase Date</th>
-                <th>Total Price</th>
+                <th>Mã đơn hàng</th>
+                <th>Khách hàng</th>
+                <th>Ngày tạo hóa đơn</th>
+                <th>Tổng tiền</th>
                 <th>Phương thức thanh toán</th>
                 <th>Địa chỉ</th>
                 <th>Ghi chú</th>
@@ -42,14 +42,14 @@
                     <td>@purchase.Id</td>
                     <td>@(await userManager.FindByIdAsync(purchase.UserId.ToString()))</td>
                     <td>@purchase.PurchaseDate</td>
-                    <td>@purchase.TotalPrice</td>
+                    <td><span class="vnd-symbol">đ</span>@purchase.TotalPrice.ToString("N0")</td>
                     <td>@purchase.PaymentMethod</td>
                     <td>@purchase.Address</td>
                     <td>@purchase.Note</td>
                     <td><a asp-area="" asp-controller="Purchase" asp-action="Detail" asp-route-id="{@purchase.Id}">Chi Tiết</a></td>
                     <td>
                         <form asp-action="Delete" asp-route-id="@purchase.Id" method="post">
-                            <button type="submit" class="btn btn-danger">Delete</button>
+                            <button type="submit" class="btn btn-danger">Xóa</button>
                         </form>
                     </td>
                 </tr>

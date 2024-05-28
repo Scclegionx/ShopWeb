@@ -347,6 +347,8 @@ namespace ShopWeb.Controllers
             // Return the view with the updated model
             return View("BuyNow", model);
         }
+
+        
         [HttpGet]
         public async Task<IActionResult> PurchaseManage()
         {

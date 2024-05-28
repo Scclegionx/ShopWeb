@@ -15,15 +15,19 @@ namespace ShopWeb.Controllers
         private readonly IProductRepository productRepository;
         private readonly IVariantAttributesRepository variantAttributesRepository;
         private readonly IProductVariantRepository productVariantRepository;
+        private readonly ICouponRepository couponRepository;
+        private readonly IPurchaseRepository purchaseRepository;
 
         public CartController(ICartRepository cartRepository, UserManager<ApplicationUser> userManager, IProductRepository productRepository, IVariantAttributesRepository variantAttributesRepository,
-            IProductVariantRepository productVariantRepository)
+            IProductVariantRepository productVariantRepository, ICouponRepository couponRepository, IPurchaseRepository purchaseRepository)
         {
             _cartRepository = cartRepository;
             this.userManager = userManager;
             this.productRepository = productRepository;
             this.variantAttributesRepository = variantAttributesRepository;
             this.productVariantRepository = productVariantRepository;
+            this.couponRepository = couponRepository;
+            this.purchaseRepository = purchaseRepository;
         }
         [HttpGet]
         public async Task<IActionResult> Index()
@@ -143,6 +147,69 @@ namespace ShopWeb.Controllers
                 TempData["SuccessMessage"] = "Product successfully added to cart!";
                 return Json(new { success = true });
             }
+        }
+        [HttpPost("ConfirmOne")]
+        public async Task<IActionResult> ConfirmOne(BuyOneViewModel buyOneViewModel, string paymentMethod)
+        {
+            var PM = "";
+            if (paymentMethod == "CK")
+            {
+                PM = "Chuyển khoản";
+            }
+            else if (paymentMethod == "COD")
+            {
+                PM = "COD";
+            }
+
+            var purchase = new Purchase
+            {
+                UserId = Guid.Parse(userManager.GetUserId(User)),
+                PurchaseDate = DateTime.Now,
+                TotalPrice = buyOneViewModel.TotalPrice,
+                PaymentMethod = PM,
+                Address = buyOneViewModel.Address,
+                Note = buyOneViewModel.Note,
+                State = "None",
+                ShipperID = null
+            };
+
+
+            await purchaseRepository.UpdatePurchaseCount(buyOneViewModel.ProductId, buyOneViewModel.Quantity);
+            await productRepository.UpdateProductQuantity(buyOneViewModel.ProductId, buyOneViewModel.Quantity);
+
+
+
+            await purchaseRepository.SavePurchaseAsync(purchase);
+
+
+
+            // Redirect the user to the "Thank You" page
+            return RedirectToAction("Index","Purchase");
+        }
+
+        [HttpPost("ApplyCouponOne")]
+        public async Task<IActionResult> ApplyCouponOne(BuyOneViewModel model)
+        {
+            var discountAmount = await couponRepository.GetDiscountAmountByCodeAsync(model.CouponCode);
+            var product = await productRepository.GetAsync(model.ProductId);
+            var listForView = new List<List<VariantAttribute>>();
+            var mdls = await variantAttributesRepository.GetAllVariantsAttributeByVariantAsync(model.ProductVariantId);
+            listForView.Add(mdls);
+            var productVariant = await productVariantRepository.GetAsync(model.ProductVariantId);
+
+            var mdl = new BuyOneViewModel
+            {
+                Quantity = model.Quantity,
+                Product = product,
+                TotalPrice = model.TotalPrice,
+                Variants = listForView,
+                ProductVariant = productVariant,
+            };
+
+            mdl.TotalPrice = mdl.TotalPrice - (mdl.TotalPrice * discountAmount);
+            ModelState.Remove("TotalPrice");
+            // Return the view with the updated model
+            return View("AddToCart", mdl);
         }
 
         [HttpPost]

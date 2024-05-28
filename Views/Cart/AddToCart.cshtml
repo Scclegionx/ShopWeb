@@ -58,11 +58,16 @@
         </tfoot>
     </table>
 
-    @using (Html.BeginForm("ApplyCoupon", "Purchase", FormMethod.Post))
+    @using (Html.BeginForm("ApplyCouponOne", "Cart", FormMethod.Post))
     {
         <h2>Phiếu giảm giá</h2>
         <div class="form-group">
             @Html.HiddenFor(m => m.TotalPrice)
+            @if(@Model.ProductVariant != null) {
+                <input type="hidden" asp-for="ProductVariantId" value="@Model.ProductVariant.Id" />
+            }
+            <input type="hidden" asp-for="ProductId" value="@Model.Product.Id" />
+            <input type="hidden" asp-for="Quantity" value="@Model.Quantity" />
             @Html.LabelFor(model => model.CouponCode, htmlAttributes: new { @class = "control-label" })
             @Html.TextBoxFor(model => model.CouponCode, new { @class = "form-control", id = "couponCode" })
             @Html.ValidationMessageFor(model => model.CouponCode, "", new { @class = "text-danger" })
@@ -71,13 +76,12 @@
     }
 
 
-    @using (Html.BeginForm("ConfirmOne", "Purchase", FormMethod.Post))
+    @using (Html.BeginForm("ConfirmOne", "Cart", FormMethod.Post))
     {
         @Html.HiddenFor(model => model.TotalPrice)
 
         <input type="hidden" name="ProductId" value="@Model.Product.Id" />
         <input type="hidden" name="Quantity" value="@Model.Quantity" />
-
 
         @Html.LabelFor(m => m.Address, new { @class = "control-label" })
         @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
@@ -91,8 +95,34 @@
             <option value="CK">Chuyển khoản</option>
             <!-- Add more payment methods as needed -->
         </select>
+        <div id="paymentImageContainer"></div>
 
 
         <button type="submit" class="btn btn-primary">Xác nhận đơn hàng</button>
     }
 </div>
+
+@section Scripts {
+    <script>
+        document.getElementById('paymentMethod').addEventListener('change', function () {
+            var paymentMethod = this.value;
+            var paymentImageContainer = document.getElementById('paymentImageContainer');
+
+            // Clear any existing images
+            paymentImageContainer.innerHTML = '';
+
+            // Check the selected value
+            if (paymentMethod === 'CK') {
+                // Create an img element
+                var img = document.createElement('img');
+                img.src = '/Assets/qrcode-default.png'; // Update this with the actual path to your image
+                img.alt = 'Chuyển khoản Image'; // Add appropriate alt text
+                img.style.maxWidth = '30%'; // Optional: Adjust the image styling
+
+                // Append the image to the container
+                paymentImageContainer.appendChild(img);
+            }
+        });
+    </script>
+
+}
