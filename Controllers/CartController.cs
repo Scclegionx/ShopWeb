@@ -2,10 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using ShopWeb.Models.Domain;
 using ShopWeb.Models.ViewModels.CartVM;
+using ShopWeb.Models.ViewModels.PurchaseVM;
 using ShopWeb.Repositories;
 
 namespace ShopWeb.Controllers
 {
+    [Route("Cart")]
     public class CartController : Controller
     {
         private readonly ICartRepository _cartRepository;
@@ -96,9 +98,34 @@ namespace ShopWeb.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddToCart(Guid productId, int quantity, Guid chosenVariant)
+        [HttpPost("AddToCart")]
+        public async Task<IActionResult> AddToCart(Guid productId, int quantity, Guid chosenVariant, string additionalParameter)
         {
+            if (additionalParameter != null)
+            {
+                var totalPrice = 0;
+                var product = await productRepository.GetAsync(productId);
+                var listForView = new List<List<VariantAttribute>>();
+                var mdls = await variantAttributesRepository.GetAllVariantsAttributeByVariantAsync(chosenVariant);
+                listForView.Add(mdls);
+                var productVariant = await productVariantRepository.GetAsync(chosenVariant);
+                if (productVariant != null)
+                {
+                    totalPrice = quantity * productVariant.Price;
+                } else
+                {
+                    totalPrice = quantity * product.Price;
+                }
+                var model = new BuyOneViewModel
+                {
+                    Quantity = quantity,
+                    Product = product,
+                    TotalPrice = totalPrice,
+                    Variants= listForView,
+                    ProductVariant = productVariant
+                };
+                return View(model);
+            }
             if (chosenVariant == Guid.Empty)
             {
                 var userId = Guid.Parse(userManager.GetUserId(User)); // Implement this method to get the current user's ID
@@ -106,7 +133,7 @@ namespace ShopWeb.Controllers
                 await _cartRepository.AddProductWithNoVariantToCartAsync(currentUserCart, productId, quantity, userId);
 
                 TempData["SuccessMessage"] = "Product successfully added to cart!";
-                return RedirectToAction("Index");
+                return Json(new { success = true });
             } else
             {
                 var userId = Guid.Parse(userManager.GetUserId(User)); // Implement this method to get the current user's ID
@@ -114,7 +141,7 @@ namespace ShopWeb.Controllers
                 await _cartRepository.AddProductToCartAsync(currentUserCart, productId, quantity, chosenVariant, userId);
 
                 TempData["SuccessMessage"] = "Product successfully added to cart!";
-                return RedirectToAction("Index");
+                return Json(new { success = true });
             }
         }
 
@@ -123,6 +150,21 @@ namespace ShopWeb.Controllers
         {
             await _cartRepository.DeleteCartItemAsync(id);
             return RedirectToAction("Index");
+        }
+        [HttpGet("GetCartItemCount")]
+        public async Task<IActionResult> GetCartItemCount()
+        {
+            var user = await userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                var userId = Guid.Parse(user.Id);
+                var currentUserCart = await _cartRepository.GetCurrentUserCartAsync(userId);
+                var cartNoti = await _cartRepository.GetItemCountInCart(currentUserCart.Id);
+
+                return Json(new { itemCount = cartNoti });
+            }
+
+            return Json(new { itemCount = 0 });
         }
     }
 }

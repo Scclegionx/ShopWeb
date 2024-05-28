@@ -17,9 +17,17 @@
         <div class="container pb-5">
             <div class="row">
                 <div class="col-lg-5 mt-5">
-                    <div class="card mb-3">
-                        <img class="card-img img-fluid" src="@Model.AdditionalImageUrls.FirstOrDefault()" alt="Card image cap" id="highlighted-image">
-                    </div>
+                    @if (Model.AdditionalImageUrls.FirstOrDefault() == null)
+                    {
+                        <div class="card mb-3">
+                            <img class="card-img img-fluid" src="@Model.FeaturedImageUrl" alt="Card image cap" id="highlighted-image">
+                        </div>
+                    } else
+                    {
+                        <div class="card mb-3">
+                            <img class="card-img img-fluid" src="@Model.AdditionalImageUrls.FirstOrDefault()" alt="Card image cap" id="highlighted-image">
+                        </div>
+                    }
                     <div class="row">
                         <!-- Start Controls -->
                         <div class="col-1 align-self-center">
@@ -89,13 +97,13 @@
 
                             <h6>Mô tả:</h6>
                             <p>@Html.Raw(Model.Description)</p>
-                            
 
-                            
 
-                            
 
-                            @using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
+
+
+
+                            @using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post, new { id = "add-to-cart-form" }))
                             {
                                 <div class="container py-5">
                                     @if (Model.Variants != null && Model.Variants.Any())
@@ -139,9 +147,10 @@
                                             <li class="list-inline-item"><span class="btn btn-success" id="btn-plus">+</span></li>
                                         </ul>
                                     </div>
+                                    <input type="hidden" id="additionalParameter" name="additionalParameter" value="" />
                                     <div class="row pb-3">
                                         <div class="col d-grid">
-                                            <button type="submit" class="btn btn-success btn-lg" name="submit" value="buy">Mua Ngay</button>
+                                            <button type="submit" class="btn btn-success btn-lg" name="submit" value="buy" onclick="setAdditionalParameter('valueForBuy')">Mua Ngay</button>
                                         </div>
                                         <div class="col d-grid">
                                             <button type="submit" class="btn btn-success btn-lg" name="submit" value="addtocard">Thêm vào giỏ hàng</button>
@@ -221,6 +230,133 @@
         const btnLikeElement = document.getElementById("btnLike");
         const totalLikesElement = document.getElementById("totalLikes");
         const productId = "@Model.Id";
+
+        function setAdditionalParameter(value) {
+            document.getElementById('additionalParameter').value = value;
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const addToCartButton = document.querySelector('button[name="submit"][value="addtocard"]');
+            const cartAnimationModal = new bootstrap.Modal(document.getElementById('cartAnimationModal'), {
+                keyboard: false,
+                backdrop: 'static'
+            });
+
+            addToCartButton.addEventListener('click', function (event) {
+                event.preventDefault();
+
+                // Show animation
+                cartAnimationModal.show();
+
+                // Collect form data
+                var form = document.getElementById('add-to-cart-form');
+                var formData = new FormData(form);
+
+                // Perform AJAX request
+                $.ajax({
+                    type: "POST",
+                    url: form.action,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (response.success) {
+                            // Hide animation after 1 second
+                            setTimeout(function () {
+                                cartAnimationModal.hide();
+                                updateCartItemCount();
+                            }, 1000);
+                            console.log(response);
+                            console.log("Success");
+                        } else {
+                            console.error("Error adding to cart:", response.message);
+                            // Optionally handle the error, e.g., display an error message to the user
+                            alert(response.message);
+                            cartAnimationModal.hide();
+                        }
+                    },
+                    error: function (error) {
+                        // Handle error
+                        console.error("There was an error with the AJAX request:", error);
+                    }
+                });
+            });
+            function updateCartItemCount() {
+                $.ajax({
+                    type: "GET",
+                    url: "/Cart/GetCartItemCount",
+                    success: function (response) {
+                        document.getElementById('cartItemCount').innerText = response.itemCount;
+                        console.log(response);
+                    },
+                    error: function (error) {
+                        console.error("There was an error updating the cart item count:", error);
+                    }
+                });
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            let currentIndex = 0;
+            const images = document.querySelectorAll('.additional-image');
+            const highlightedImageElement = document.getElementById('highlighted-image');
+            let intervalId;
+
+            if (images.length > 0) {
+                // Function to update the highlighted image
+                function updateHighlightedImage() {
+                    images.forEach((img, index) => {
+                        img.style.border = '';
+                    });
+
+                    const currentImage = images[currentIndex];
+                    currentImage.style.border = '3px solid green';
+                    highlightedImageElement.src = currentImage.src;
+
+                    currentIndex = (currentIndex + 1) % images.length;
+                }
+
+                // Function to handle manual image click
+                function handleImageClick(event) {
+                    clearInterval(intervalId);
+                    images.forEach((img, index) => {
+                        img.style.border = '';
+                    });
+
+                    const clickedImage = event.target;
+                    clickedImage.style.border = '3px solid green';
+                    highlightedImageElement.src = clickedImage.src;
+
+                    // Restart the interval after 5 seconds
+                    intervalId = setInterval(updateHighlightedImage, 10000);
+                }
+
+                // Add click event listener to all additional images
+                images.forEach((img, index) => {
+                    img.addEventListener('click', handleImageClick);
+                });
+
+                // Initial highlight
+                updateHighlightedImage();
+
+                // Update image every 5 seconds
+                intervalId = setInterval(updateHighlightedImage, 10000);
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var highlightedImage = document.getElementById('highlighted-image');
+            var modalImage = document.getElementById('modalImage');
+
+            highlightedImage.addEventListener('click', function () {
+                var imgSrc = highlightedImage.getAttribute('src');
+                modalImage.setAttribute('src', imgSrc);
+                var myModal = new bootstrap.Modal(document.getElementById('imageModal'), {
+                    keyboard: true
+                });
+                myModal.show();
+            });
+        });
 
         $(document).ready(function () {
             $('#carousel-prev').click(function (e) {
@@ -362,67 +498,7 @@
             });
         });
 
-        document.addEventListener('DOMContentLoaded', (event) => {
-            let currentIndex = 0;
-            const images = document.querySelectorAll('.additional-image');
-            const highlightedImageElement = document.getElementById('highlighted-image');
-            let intervalId;
-
-            if (images.length > 0) {
-                // Function to update the highlighted image
-                function updateHighlightedImage() {
-                    images.forEach((img, index) => {
-                        img.style.border = '';
-                    });
-
-                    const currentImage = images[currentIndex];
-                    currentImage.style.border = '3px solid green';
-                    highlightedImageElement.src = currentImage.src;
-
-                    currentIndex = (currentIndex + 1) % images.length;
-                }
-
-                // Function to handle manual image click
-                function handleImageClick(event) {
-                    clearInterval(intervalId);
-                    images.forEach((img, index) => {
-                        img.style.border = '';
-                    });
-
-                    const clickedImage = event.target;
-                    clickedImage.style.border = '3px solid green';
-                    highlightedImageElement.src = clickedImage.src;
-
-                    // Restart the interval after 5 seconds
-                    intervalId = setInterval(updateHighlightedImage, 10000);
-                }
-
-                // Add click event listener to all additional images
-                images.forEach((img, index) => {
-                    img.addEventListener('click', handleImageClick);
-                });
-
-                // Initial highlight
-                updateHighlightedImage();
-
-                // Update image every 5 seconds
-                intervalId = setInterval(updateHighlightedImage, 10000);
-            }
-        });
-
-        document.addEventListener('DOMContentLoaded', function () {
-            var highlightedImage = document.getElementById('highlighted-image');
-            var modalImage = document.getElementById('modalImage');
-
-            highlightedImage.addEventListener('click', function () {
-                var imgSrc = highlightedImage.getAttribute('src');
-                modalImage.setAttribute('src', imgSrc);
-                var myModal = new bootstrap.Modal(document.getElementById('imageModal'), {
-                    keyboard: true
-                });
-                myModal.show();
-            });
-        });
+        
 
     </script>
 }
@@ -437,6 +513,24 @@
             </div>
             <div class="modal-body">
                 <img id="modalImage" src="" alt="Modal Image" class="img-fluid">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Cart Animation Modal -->
+<div class="modal fade" id="cartAnimationModal" tabindex="-1" aria-labelledby="cartAnimationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <div class="cart-animation">
+                    <div class="cart-icon">
+                        <i class="bi bi-cart"></i>
+                    </div>
+                    <div class="tick-icon">
+                        <i class="bi bi-check-circle-fill"></i>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

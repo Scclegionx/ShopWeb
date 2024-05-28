@@ -1161,4 +1161,57 @@ body {
     height: auto; 
 } */
 
+.cart-animation {
+    position: relative;
+    display: inline-block;
+}
+
+.cart-icon, .tick-icon {
+    font-size: 3rem;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.cart-icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    animation: cartMove 1s ease-in-out forwards;
+}
+
+.tick-icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    animation: tickAppear 1s 0.5s ease-in-out forwards;
+}
+
+@keyframes cartMove {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    50% {
+        transform: translateY(-20px);
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 0;
+    }
+}
+
+@keyframes tickAppear {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+
 
