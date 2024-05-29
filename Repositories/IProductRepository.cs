@@ -21,5 +21,6 @@ namespace ShopWeb.Repositories
         Task<List<ProductImage>> GetAdditionalImagesAsync(Guid productId);
         Task<List<ProductImage>> GetAdditionalImagesByProductIdAsync(Guid productId);
         Task DeleteImageAsync(ProductImage productImage);
+        Task<List<Product>> GetProductsByCategoryForHomeAsync(string category);
     }
 }

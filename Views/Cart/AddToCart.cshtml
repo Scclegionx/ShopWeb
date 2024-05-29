@@ -1,0 +1,128 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using ShopWeb.Models.Domain;
+@inject UserManager<ApplicationUser> userManager;
+
+@model ShopWeb.Models.ViewModels.CartVM.BuyOneViewModel;
+@{
+    ViewData["Title"] = "Purchase";
+}
+
+<div id="buyNow-container">
+
+    <h1>Xác nhận đơn hàng</h1>
+
+    <h2>Tổng quan đơn hàng</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Sản phẩm</th>
+                <th>Loại</th>
+                <th>Giá</th>
+                <th>Số lượng</th>
+                <th>Tổng</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.Product.Name</td>
+                <td>
+                    @if (Model.Variants != null && Model.Variants.Any())
+                    {
+                        <div class="variants-container">
+                            @foreach (var variant in Model.Variants)
+                            {
+                                @foreach (var attribute in variant)
+                                {
+                                    @Html.Raw($"<p style='display: inline;'>{attribute.Value} </p>")
+                                }
+                            }
+                        </div>
+                    }
+                </td>
+                @if (Model.ProductVariant != null)
+                {
+                    <td><span class="vnd-symbol">đ</span>@Model.ProductVariant.Price.ToString("N0")</td>
+                } else
+                {
+                    <td><span class="vnd-symbol">đ</span>@Model.Product.Price.ToString("N0")</td>
+                }
+                <td>@Model.Quantity</td>
+                <td><span class="vnd-symbol">đ</span>@Model.TotalPrice.ToString("N0")</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4">Tổng tiền:</td>
+                <td><span class="vnd-symbol">đ</span>@Model.TotalPrice.ToString("N0")</td>
+            </tr>
+        </tfoot>
+    </table>
+
+    @using (Html.BeginForm("ApplyCouponOne", "Cart", FormMethod.Post))
+    {
+        <h2>Phiếu giảm giá</h2>
+        <div class="form-group">
+            @Html.HiddenFor(m => m.TotalPrice)
+            @if(@Model.ProductVariant != null) {
+                <input type="hidden" asp-for="ProductVariantId" value="@Model.ProductVariant.Id" />
+            }
+            <input type="hidden" asp-for="ProductId" value="@Model.Product.Id" />
+            <input type="hidden" asp-for="Quantity" value="@Model.Quantity" />
+            @Html.LabelFor(model => model.CouponCode, htmlAttributes: new { @class = "control-label" })
+            @Html.TextBoxFor(model => model.CouponCode, new { @class = "form-control", id = "couponCode" })
+            @Html.ValidationMessageFor(model => model.CouponCode, "", new { @class = "text-danger" })
+        </div>
+        <button type="submit" class="btn btn-primary">Áp dụng</button>
+    }
+
+
+    @using (Html.BeginForm("ConfirmOne", "Cart", FormMethod.Post))
+    {
+        @Html.HiddenFor(model => model.TotalPrice)
+
+        <input type="hidden" name="ProductId" value="@Model.Product.Id" />
+        <input type="hidden" name="Quantity" value="@Model.Quantity" />
+
+        @Html.LabelFor(m => m.Address, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
+
+        @Html.LabelFor(m => m.Note, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.Note, new { @class = "form-control" })
+
+        <label for="paymentMethod">Phương thức thanh toán:</label>
+        <select id="paymentMethod" name="paymentMethod">
+            <option value="COD">COD</option>
+            <option value="CK">Chuyển khoản</option>
+            <!-- Add more payment methods as needed -->
+        </select>
+        <div id="paymentImageContainer"></div>
+
+
+        <button type="submit" class="btn btn-primary">Xác nhận đơn hàng</button>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('paymentMethod').addEventListener('change', function () {
+            var paymentMethod = this.value;
+            var paymentImageContainer = document.getElementById('paymentImageContainer');
+
+            // Clear any existing images
+            paymentImageContainer.innerHTML = '';
+
+            // Check the selected value
+            if (paymentMethod === 'CK') {
+                // Create an img element
+                var img = document.createElement('img');
+                img.src = '/Assets/qrcode-default.png'; // Update this with the actual path to your image
+                img.alt = 'Chuyển khoản Image'; // Add appropriate alt text
+                img.style.maxWidth = '30%'; // Optional: Adjust the image styling
+
+                // Append the image to the container
+                paymentImageContainer.appendChild(img);
+            }
+        });
+    </script>
+
+}

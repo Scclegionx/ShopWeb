@@ -22,16 +22,15 @@
                     <div class="container" id="category-container">
                         <div class="justify-content-center">
                             <div class="text-center">
-                                <button id="category-title" class="btn sort-title"><i class="bi bi-arrow-down-circle-fill"></i> Danh mục sản phẩm</button>
                                 <div id="category-list" class="category-list">
                                     @if (Model != null && Model.Categories.Any())
                                     {
                                         foreach (var cate in Model.Categories)
                                         {
                                             <div>
-                                                <button class="btn btn-sort-item category-tag">
+                                                <a href="@Url.Action("Shop", "Home", new { category = cate.Name })" class="btn btn-sort-item category-tag">
                                                     @cate.Name
-                                                </button>
+                                                </a>
                                             </div>
                                         }
                                     }
@@ -40,19 +39,6 @@
                                         <p>Không tìm thấy danh mục!</p>
                                     }
                                 </div>
-                                <button id="price-title" class="btn sort-title"><i class="bi bi-arrow-down-circle-fill"></i> Giá</button>
-                                <div id="price-list" class="category-list">
-                                    <div>
-                                        <button class="btn btn-sort-item category-tag">Dưới 50.000 đồng</button>
-                                    </div>
-                                    <div>
-                                        <button class="btn btn-sort-item category-tag">Từ 50.000 đến 100.000 đồng</button>
-                                    </div>
-                                    <div>
-                                        <button class="btn btn-sort-item category-tag">Trên 100.000 đồng</button>
-                                    </div>
-                                </div>
-                                
                             </div>
                         </div>
                     </div>
@@ -110,7 +96,7 @@
         <div id="search-allProducts-container">
             
             <div id="product-list-container">
-                @if (Model != null && Model.Products.Any())
+                @if (Model.ProductsByCategory.ContainsKey("Case") && Model.ProductsByCategory["Case"].Any())
                 {
                     <section class="bg-light">
                         <div class="container py-5">
@@ -124,7 +110,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                @foreach (var product in Model.Products)
+                                @foreach (var product in Model.ProductsByCategory["Case"])
                                 {
                                     <div class="col-12 col-md-4 mb-4">
                                         <div class="card h-100">
@@ -186,6 +172,90 @@
                         </div>
                     </section>
                 } else
+                {
+                    <p>No Products Found!</p>
+                }
+
+            </div>
+            <div id="product-list-container">
+                @if (Model.ProductsByCategory.ContainsKey("Quần Áo") && Model.ProductsByCategory["Quần Áo"].Any())
+                {
+                    <section class="bg-light">
+                        <div class="container py-5">
+                            <div class="row text-center py-3">
+                                <div class="col-lg-6 m-auto">
+                                    <h1 style="color: #28a745" class="h1">Featured Product</h1>
+                                    <p>
+                                        Reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                        Excepteur sint occaecat cupidatat non proident.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                @foreach (var product in Model.ProductsByCategory["Quần Áo"])
+                                {
+                                    <div class="col-12 col-md-4 mb-4">
+                                        <div class="card h-100">
+                                            @if (product.State == "Available")
+                                            {
+                                                <a class="image-link"
+                                                   asp-area=""
+                                                   asp-controller="Products"
+                                                   asp-action="Index"
+                                                   asp-route-id="{@product.Id}"><img src="@product.FeaturedImageUrl" alt="@product.Name" class="mb-2 d-block img-fluid" /></a>
+
+
+                                            }
+                                            else
+                                            {
+                                                <div class="image-container">
+                                                    <img src="@product.FeaturedImageUrl" alt="@product.Name" class="mb-2 d-block img-fluid first-layer" />
+                                                    <img src="/Assets/ood.jpg" class="second-layer" />
+                                                </div>
+                                            }
+                                            <div class="card-body">
+                                                <ul class="list-unstyled d-flex justify-content-between">
+                                                    <li>
+                                                        <div class="rating">
+                                                            @for (int i = 1; i <= 5; i++)
+                                                            {
+                                                                if (i <= product.Rating)
+                                                                {
+                                                                    <span class="star text-warning" data-value="@i">&#9733;</span>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span class="star text-muted" data-value="@i">&#9734;</span>
+                                                                }
+                                                            }
+                                                        </div>
+                                                    </li>
+                                                    <li class="text-muted text-right">Giá: <span class="vnd-symbol">đ</span>@product.Price.ToString("N0")</li>
+                                                </ul>
+                                                <h2 class="h2 text-decoration-none text-dark">@product.Name</h2>
+                                                <!-- <p class="card-text">
+                                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt in culpa qui officia deserunt.
+                                                </p> -->
+                                                <p class="text-muted">(@product.CommentsCount đánh giá)</p>
+                                                @if (product.State == "Available")
+                                                {
+                                                    <div>
+                                                        <a class="btn btn-dark"
+                                                           asp-area=""
+                                                           asp-controller="Products"
+                                                           asp-action="Index"
+                                                           asp-route-id="{@product.Id}">Chi Tiết</a>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </section>
+                }
+                else
                 {
                     <p>No Products Found!</p>
                 }
@@ -279,29 +349,7 @@
         });
 
 
-        document.addEventListener('DOMContentLoaded', function () {
-            const categoryTitle = document.querySelector('#category-title');
-            const categoryList = document.querySelector('#category-list');
-            const priceTitle = document.querySelector('#price-title');
-            const priceList = document.querySelector('#price-list');
-            const nameTitle = document.querySelector('#name-title');
-            const nameList = document.querySelector('#name-list');
-
-            categoryTitle.addEventListener('click', function () {
-                const isExpanded = categoryList.classList.contains('expanded');
-                categoryList.classList.toggle('expanded', !isExpanded);
-            });
-
-            priceTitle.addEventListener('click', function () {
-                const isExpanded = priceList.classList.contains('expanded');
-                priceList.classList.toggle('expanded', !isExpanded);
-            });
-
-            nameTitle.addEventListener('click', function () {
-                const isExpanded = nameList.classList.contains('expanded');
-                nameList.classList.toggle('expanded', !isExpanded);
-            });
-        });
+        
     </script>
 
 }

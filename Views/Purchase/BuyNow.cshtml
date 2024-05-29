@@ -93,8 +93,33 @@
             <option value="CK">Chuyển khoản</option>
             <!-- Add more payment methods as needed -->
         </select>
-
+        <div id="paymentImageContainer"></div>
 
         <button type="submit" class="btn btn-primary">Xác nhận đơn hàng</button>
     }
 </div>
+
+@section Scripts {
+    <script>
+        document.getElementById('paymentMethod').addEventListener('change', function () {
+            var paymentMethod = this.value;
+            var paymentImageContainer = document.getElementById('paymentImageContainer');
+
+            // Clear any existing images
+            paymentImageContainer.innerHTML = '';
+
+            // Check the selected value
+            if (paymentMethod === 'CK') {
+                // Create an img element
+                var img = document.createElement('img');
+                img.src = '/Assets/qrcode-default.png'; // Update this with the actual path to your image
+                img.alt = 'Chuyển khoản Image'; // Add appropriate alt text
+                img.style.maxWidth = '30%'; // Optional: Adjust the image styling
+
+                // Append the image to the container
+                paymentImageContainer.appendChild(img);
+            }
+        });
+    </script>
+
+}

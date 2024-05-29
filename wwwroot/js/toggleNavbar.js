@@ -8,3 +8,4 @@ document.getElementById('hideButton').addEventListener('click', function () {
     sidebar.style.left = '-250px'; // Hide the navbar
 });
 
+

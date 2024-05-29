@@ -1,0 +1,83 @@
+﻿@model IEnumerable<ShopWeb.Models.Domain.Notification>
+
+<div id="notification-popup" class="notification-popup">
+    <div class="notification-header">
+        <h4>Thông báo</h4>
+    </div>
+    <div class="notification-content">
+        @if (Model != null && Model.Any())
+        {
+            <ul>
+                @foreach (var notification in Model)
+                {
+                    <li class="notification-item @(notification.IsRead ? "read" : "unread")">
+                        <strong>@notification.Title</strong>
+                        <p>@notification.Message</p>
+                        <small>@notification.CreatedAt.ToString("dd/MM/yyyy HH:mm")</small>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>Không có thông báo nào.</p>
+        }
+    </div>
+</div>
+
+<style>
+    .notification-popup {
+        position: absolute;
+        top: 50px;
+        right: 20px;
+        width: 300px;
+        background-color: white;
+        border: 1px solid #ddd;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        z-index: 1000;
+    }
+
+    .notification-header {
+        padding: 10px;
+        background-color: #f5f5f5;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .notification-content {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+
+    .notification-item {
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+    }
+
+        .notification-item.unread {
+            background-color: #e6f7ff;
+        }
+
+    .notification-popup {
+        display: none;
+        position: absolute;
+        right: 0;
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        width: 300px;
+        max-height: 400px;
+        overflow-y: auto;
+    }
+
+        .notification-popup .notification-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+            .notification-popup .notification-item:last-child {
+                border-bottom: none;
+            }
+
+</style>

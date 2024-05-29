@@ -35,7 +35,7 @@ namespace ShopWeb.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(string productName, string category, int page = 1)
+        public async Task<IActionResult> Index(string category, int page = 1)
         {
             
 
@@ -45,6 +45,85 @@ namespace ShopWeb.Controllers
             }
             var bestSellingProducts = await purchaseRepository.GetBestSellingProducts();
 
+            const int pageSize = 10;
+
+            // Get products based on category or all products if no category is provided
+            IEnumerable<Product> products = string.IsNullOrEmpty(category)
+                ? await productRepository.GetAllAsync(page, pageSize)
+                : await productRepository.GetProductsByCategoryAsync(category);
+
+            // Get total count for pagination
+            var totalProductsCount = await productRepository.GetTotalProductsCount();
+
+            // Calculate page count
+            var pageCount = (int)Math.Ceiling((double)totalProductsCount / pageSize);
+
+
+            products = await productRepository.GetAllAsync(page, pageSize);
+
+            
+
+            // Get categories for display
+            var categories = await cateRepository.GetAllAsync();
+
+            foreach (var product in products) 
+            {
+                await productRepository.CheckProductAvailability(product.Id);
+                
+            }
+
+            var productsByCategory = new Dictionary<string, List<Product>>();
+            foreach (var categorys in categories)
+            {
+                var productsInCategory = await productRepository.GetProductsByCategoryForHomeAsync(categorys.Name);
+                productsByCategory[categorys.Name] = productsInCategory;
+            }
+
+            var model = new HomeViewModel
+            {
+                Products = products,
+                Categories = categories,
+                PageNumber = page,
+                PageCount = pageCount,
+                bestSellingProducts = bestSellingProducts,
+                ProductsByCategory = productsByCategory
+            };
+            return View(model);
+        }
+
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SortByCategory(string category)
+        {
+            var products = await productRepository.GetProductsByCategoryAsync(category);
+
+
+            return PartialView("_ProductList", products);
+        }
+
+        [HttpGet]
+        public IActionResult About()
+        {
+            return View();
+        }
+        [HttpGet]
+        public IActionResult Contact()
+        {
+            return View();
+        }
+        [HttpGet]
+        public async Task<IActionResult> Shop(string productName, string category, int page = 1)
+        {
             const int pageSize = 10;
 
             // Get total count for pagination
@@ -82,48 +161,20 @@ namespace ShopWeb.Controllers
             // Get categories for display
             var categories = await cateRepository.GetAllAsync();
 
-            foreach (var product in products) 
+            foreach (var product in products)
             {
                 await productRepository.CheckProductAvailability(product.Id);
-                
-            }
 
+            }
             var model = new HomeViewModel
             {
                 Products = products,
                 Categories = categories,
                 PageNumber = page,
                 PageCount = pageCount,
-                bestSellingProducts = bestSellingProducts,
             };
             return View(model);
         }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> SortByCategory(string category)
-        {
-            var products = await productRepository.GetProductsByCategoryAsync(category);
-
-            var model = new HomeViewModel
-            {
-                Products = products,
-                Categories = await cateRepository.GetAllAsync()
-            };
-
-            return PartialView("_ProductList", model);
-        }
-
 
     }
 }

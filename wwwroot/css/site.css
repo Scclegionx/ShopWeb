@@ -1001,45 +1001,14 @@ body {
 }
 
 
-
-.sort-title {
-    font-size: 2rem !important;
-    background-color: transparent;
-    color: #28a745;
-    font-weight: bold;
-    text-decoration: none;
-    cursor: pointer;
-    padding: 10px;
-    text-align: center;
-    width: 100%;
-    border: 2px solid #28a745;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    transition: color 0.3s;
-    outline: none !important;
-}
-
-    .sort-title:hover {
-        color: #28a745 !important;
-        background-color: #ffffff;
-    }
-    .sort-title:focus, .sort-title:active {
-        outline: none !important; /* Remove focus outline */
-        box-shadow: none !important; /* Remove focus shadow */
-    }
-
 .btn-sort-item {
+    font-size: 2rem !important;
     background-color: #28a745;
     color: #ffffff;
     border: 2px solid #28a745;
     border-radius: 5px;
     text-align: left;
     width: 100%;
-    padding: 10px 20px;
-    margin-bottom: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1086,15 +1055,7 @@ body {
 }
 
 
-.category-list {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.5s ease-out;
-}
 
-    .category-list.expanded {
-        max-height: 500px; /* Điều chỉnh độ cao tối đa khi mở rộng */
-    }
 
 
 #price-list,
@@ -1160,5 +1121,127 @@ body {
     max-width: 100%;
     height: auto; 
 } */
+
+.cart-animation {
+    position: relative;
+    display: inline-block;
+}
+
+.cart-icon, .tick-icon {
+    font-size: 3rem;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.cart-icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    animation: cartMove 1s ease-in-out forwards;
+}
+
+.tick-icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    animation: tickAppear 1s 0.5s ease-in-out forwards;
+}
+
+@keyframes cartMove {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    50% {
+        transform: translateY(-20px);
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 0;
+    }
+}
+
+@keyframes tickAppear {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+
+.notification-popup {
+    display: none;
+    position: absolute;
+    top: 50px; /* Adjust as needed */
+    right: 0;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    width: 300px;
+    max-height: 400px;
+    overflow-y: auto;
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+    transform: translateY(-20px);
+    opacity: 0;
+}
+
+    .notification-popup.fade-in {
+        transform: translateY(0);
+        opacity: 1;
+        display: block;
+    }
+
+    .notification-popup.fade-out {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+
+.notification-item {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.3s ease;
+}
+
+    .notification-item:hover {
+        background-color: #f9f9f9;
+    }
+
+.notification-title {
+    font-weight: bold;
+    color: #28a745;
+}
+
+.notification-message {
+    margin-top: 5px;
+    color: #333;
+}
+
+.notification-time {
+    margin-top: 5px;
+    font-size: 0.8em;
+    color: #888;
+}
+
+.notification-popup .notification-item:last-child {
+    border-bottom: none;
+}
+
+.no-notification {
+    padding: 10px;
+    text-align: center;
+    color: #888;
+    font-style: italic;
+}
+
+
+
 
 

@@ -40,6 +40,7 @@ builder.Services.AddScoped<IResponseRepository, ResponseRepository>();
 builder.Services.AddScoped<IVariantAttributesRepository, VariantAttributesRepository>();
 builder.Services.AddScoped<IProductVariantRepository, ProductVariantRepository>(); 
 builder.Services.AddScoped<IProductRatingRepository, ProductRatingRepository>();
+builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 
 var app = builder.Build();
 
