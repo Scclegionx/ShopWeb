@@ -17,9 +17,10 @@ namespace ShopWeb.Controllers
         private readonly IProductVariantRepository productVariantRepository;
         private readonly ICouponRepository couponRepository;
         private readonly IPurchaseRepository purchaseRepository;
+        private readonly INotificationRepository notificationRepository;
 
         public CartController(ICartRepository cartRepository, UserManager<ApplicationUser> userManager, IProductRepository productRepository, IVariantAttributesRepository variantAttributesRepository,
-            IProductVariantRepository productVariantRepository, ICouponRepository couponRepository, IPurchaseRepository purchaseRepository)
+            IProductVariantRepository productVariantRepository, ICouponRepository couponRepository, IPurchaseRepository purchaseRepository, INotificationRepository notificationRepository)
         {
             _cartRepository = cartRepository;
             this.userManager = userManager;
@@ -28,6 +29,7 @@ namespace ShopWeb.Controllers
             this.productVariantRepository = productVariantRepository;
             this.couponRepository = couponRepository;
             this.purchaseRepository = purchaseRepository;
+            this.notificationRepository = notificationRepository;
         }
         [HttpGet]
         public async Task<IActionResult> Index()
@@ -181,7 +183,15 @@ namespace ShopWeb.Controllers
 
             await purchaseRepository.SavePurchaseAsync(purchase);
 
-
+            var notification = new Notification
+            {
+                Title = "Đặt hàng thành công!",
+                Message = "Đơn hàng của bạn đang được người gửi chuẩn bị.",
+                CreatedAt = DateTime.Now,
+                IsRead = false,
+                UserId = Guid.Parse(userManager.GetUserId(User))
+            };
+            await notificationRepository.AddNotificationAsync(notification);
 
             // Redirect the user to the "Thank You" page
             return RedirectToAction("Index","Purchase");

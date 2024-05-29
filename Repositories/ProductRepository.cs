@@ -121,6 +121,16 @@ namespace ShopWeb.Repositories
 
             return products;
         }
+        public async Task<List<Product>> GetProductsByCategoryForHomeAsync(string category)
+        {
+            var products = await shopWebDbContext.Products
+                .Where(p => p.Categories.Any(c => c.Name == category))
+                .OrderByDescending(p => p.PurchaseCount)
+                .Take(3)
+                .ToListAsync();
+
+            return products;
+        }
 
         public async Task<IEnumerable<Product>> FindByNameAndCategoryAsync(string productName, string category)
         {

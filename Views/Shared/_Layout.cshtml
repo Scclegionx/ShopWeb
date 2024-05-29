@@ -4,11 +4,13 @@
 @inject SignInManager<ApplicationUser> signInManager;
 @inject UserManager<ApplicationUser> userManager;
 @inject ICartRepository cartRepository;
+@inject INotificationRepository notificationRepository;
 
 @{
     var CartNoti = 0;
     var userId = new Guid();
     var user = userManager.GetUserId(User);
+    var Noti = 0;
     if (user != null)
     {
         userId = Guid.Parse(user);
@@ -17,6 +19,7 @@
         {
             CartNoti = await cartRepository.GetItemCountInCart(currentUserCart.Id);
         }
+        Noti = await notificationRepository.GetNotificationCountByUserIdAsync(userId);
     }
 }
 
@@ -30,6 +33,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ShopWeb.styles.css" asp-append-version="true" />
     <link href="~/Scripts/datatable-js/dataTables.bootstrap.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBntMpr1j1x4e3frdFbjp8L8jJ5lJFPDh7x0I1rX5O9BuGRt5HtuJoVm8K1VxAgfO5t9fSLeFZweUlG5MRw==" crossorigin="" />
 
     <link rel="apple-touch-icon" href="assets/img/apple-icon.png">
     <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
@@ -67,19 +71,19 @@
                                     <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="../Views/Shared/about.cshtml">About</a>
+                                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="About">About</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="shop.html">Shop</a>
+                                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Shop">Shop</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="contact.html">Contact</a>
+                                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Contact">Contact</a>
                                 </li>
                             </ul>
                         </div>
                         <div class="navbar align-self-center d-flex">
                             <div class="d-lg-none flex-sm-fill mt-3 mb-4 col-7 col-sm-auto pr-3">
-                                @using (Html.BeginForm("Index", "Home", FormMethod.Get))
+                                @using (Html.BeginForm("Shop", "Home", FormMethod.Get))
                                 {
                                     <div class="input-group">
                                         <input name="productName" type="text" class="form-control" id="inputMobileSearch" placeholder="Search ...">
@@ -95,10 +99,13 @@
                             </a>
                             @if (signInManager.IsSignedIn(User))
                             {
-                                <a class="nav-icon position-relative text-decoration-none" asp-area="" asp-controller="Account" asp-action="UserDetail">
+                                <a id="notification-icon" class="nav-icon position-relative text-decoration-none" href="javascript:void(0);">
                                     <i class="bi bi-person-fill text-dark mr-3"></i>
-                                    <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">+99</span>
+                                    <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">@Noti</span>
                                 </a>
+                                <div id="notification-popup-container" class="notification-popup">
+                                    <!-- Notifications will be loaded here -->
+                                </div>
                                 <div class="me-3 text-light">
                                     <a style="text-decoration: none; color: #28a745" asp-area="" asp-controller="Account" asp-action="UserDetail">@User?.Identity?.Name</a>
                                 </div>
@@ -268,6 +275,7 @@
         </div>
     </footer>
     <script src="/js/toggleNavbar.js"></script>
+    <script src="/js/Noti.js"></script>
     <script src="/js//toggleDropDown.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -277,7 +285,7 @@
 </html>
 
 
-@using (Html.BeginForm("Index", "Home", FormMethod.Get))
+@using (Html.BeginForm("Shop", "Home", FormMethod.Get))
 {
     <div class="modal fade" id="modalSearch" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">

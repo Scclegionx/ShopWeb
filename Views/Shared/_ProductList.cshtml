@@ -1,35 +1,79 @@
-﻿@model ShopWeb.Models.ViewModels.HomeViewModel;
+﻿@using Microsoft.AspNetCore.Identity;
+@using ShopWeb.Models.Domain;
 
-@if (Model != null && Model.Products.Any())
-{
-    foreach (var product in Model.Products)
+@inject SignInManager<ApplicationUser> signInManager;
+@inject UserManager<ApplicationUser> userManager;
+@model List<ShopWeb.Models.Domain.Product>
+
+<div class="row">
+    @if (Model != null && Model.Any())
     {
-        <div class="mb-5 bg-light box-shadow p-5" id="product-container">
-            <div>
-                <img src="@product.FeaturedImageUrl" alt="@product.Name" class="mb-2 d-block img-fluid" />
-
-                <h2 class="mb-4" style="text-align: center;">@product.Name</h2>
-            </div>
-            <div id="product-p2-container">
-                <div id="price-container">
-                    <span class="mark">Giá: @product.Price</span>
+        @foreach (var product in Model)
+        {
+            <div class="col-md-4">
+                <div class="card mb-4 product-wap rounded-0">
+                    <div class="card rounded-0">
+                        <img class="card-img rounded-0 img-fluid" src="@product.FeaturedImageUrl">
+                        <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                            <ul class="list-unstyled">
+                                @if (signInManager.IsSignedIn(User))
+                                {
+                                    <li>
+                                        <a id="btnLike-@product.Id" class="btn btn-success text-white" data-product-id="@product.Id" style="cursor: pointer">
+                                            <i class="bi bi-heart"></i>
+                                        </a>
+                                    </li>
+                                }
+                                <li>
+                                    <a class="btn btn-success text-white mt-2" asp-area=""
+                                       asp-controller="Products"
+                                       asp-action="Index"
+                                       asp-route-id="@product.Id">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <a asp-area=""
+                           asp-controller="Products"
+                           asp-action="Index"
+                           asp-route-id="@product.Id" class="h3 text-decoration-none">@product.Name</a>
+                        <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
+                            <li>M/L/X/XL</li>
+                            <li class="pt-2">
+                                <span class="product-color-dot color-dot-red float-left rounded-circle ml-1"></span>
+                                <span class="product-color-dot color-dot-blue float-left rounded-circle ml-1"></span>
+                                <span class="product-color-dot color-dot-black float-left rounded-circle ml-1"></span>
+                                <span class="product-color-dot color-dot-light float-left rounded-circle ml-1"></span>
+                                <span class="product-color-dot color-dot-green float-left rounded-circle ml-1"></span>
+                            </li>
+                        </ul>
+                        <ul class="list-unstyled d-flex justify-content-center mb-1">
+                            <li>
+                                <div class="rating">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        if (i <= product.Rating)
+                                        {
+                                            <span class="star text-warning" data-value="@i">&#9733;</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="star text-muted" data-value="@i">&#9734;</span>
+                                        }
+                                    }
+                                </div>
+                            </li>
+                        </ul>
+                        <p class="text-center mb-0"><span class="vnd-symbol">đ</span>@product.Price.ToString("N0")</p>
+                    </div>
                 </div>
-                <div id="quantity-container">
-                    <span>Số lượng: @product.Quantity</span>
-                </div>
             </div>
-
-            <div>
-                <a class="btn btn-dark"
-                   asp-area=""
-                   asp-controller="Products"
-                   asp-action="Index"
-                   asp-route-id="{@product.Id}">Chi Tiết</a>
-            </div>
-        </div>
+        }
+    } else
+    {
+        <p>Không có sản phẩm!</p>
     }
-}
-else
-{
-    <p>No Products Found!</p>
-}
+</div>

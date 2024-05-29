@@ -9,6 +9,9 @@
 </div>
 
 <div class="container py-5" id="productAdmin-container">
+    <p>
+        <a asp-area="" asp-controller="AdminProducts" asp-action="Add" class="btn btn-primary">Create New</a>
+    </p>
     @if (Model != null && Model.Any())
     {
         <table class="table">

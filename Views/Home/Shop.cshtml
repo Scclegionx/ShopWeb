@@ -1,0 +1,178 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using ShopWeb.Models.Domain;
+
+@inject SignInManager<ApplicationUser> signInManager;
+@inject UserManager<ApplicationUser> userManager;
+@model ShopWeb.Models.ViewModels.HomeViewModel;
+
+<div class="container py-5">
+    <div class="row">
+
+        <div class="col-lg-3">
+            <h1 class="h2 pb-4" style="color: #28a745;">Danh mục</h1>
+            <ul class="list-unstyled templatemo-accordion">
+                <li class="pb-3">
+                    <a class="collapsed d-flex justify-content-between h3 text-decoration-none" asp-area="" asp-controller="Home" asp-action="Shop" >
+                        Tất cả
+                    </a>
+                    @if (Model != null && Model.Categories.Any())
+                    {
+                        foreach (var cate in Model.Categories)
+                        {
+                            <a class="collapsed d-flex justify-content-between h3 text-decoration-none category-link" href="#" data-category="@cate.Name">
+                                @cate.Name
+                            </a>
+                        }
+                    }
+                    else
+                    {
+                        <p>Không tìm thấy danh mục!</p>
+                    }
+                </li>
+            </ul>
+        </div>
+
+        <div class="col-lg-9">
+            <div class="row">
+                <div class="col-md-6">
+                    <ul class="list-inline shop-top-menu pb-3 pt-1">
+                        <!-- <li class="list-inline-item">
+                            <a class="h3 text-dark text-decoration-none mr-3" href="#">All</a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a class="h3 text-dark text-decoration-none mr-3" href="#">Men's</a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a class="h3 text-dark text-decoration-none" href="#">Women's</a>
+                        </li>-->
+                    </ul>
+                </div>
+                <div class="col-md-6 pb-4">
+                    <div class="d-flex">
+                        <select class="form-control">
+                            <option>A to Z</option>
+                            <option>Giá thấp đến cao</option>
+                            <option>Giá cao đến thấp</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div id="product-list-container">
+                    @await Html.PartialAsync("_ProductList", Model.Products)
+                </div>
+            </div>
+            <div div="row">
+                <ul class="pagination pagination-lg justify-content-end">
+                    <li class="page-item disabled">
+                        <a class="page-link active rounded-0 mr-3 shadow-sm border-top-0 border-left-0" href="#" tabindex="-1">1</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link rounded-0 mr-3 shadow-sm border-top-0 border-left-0 text-dark" href="#">2</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link rounded-0 shadow-sm border-top-0 border-left-0 text-dark" href="#">3</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- End Content -->
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const categoryLinks = document.querySelectorAll('.category-link');
+
+            categoryLinks.forEach(link => {
+                link.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    const category = this.getAttribute('data-category');
+                    sortByCategory(category);
+                });
+            });
+
+            function sortByCategory(category) {
+                fetch(`/Home/SortByCategory?category=${encodeURIComponent(category)}`)
+                    .then(response => response.text())
+                    .then(data => {
+                        const productListContainer = document.getElementById('product-list-container');
+                        if (productListContainer) {
+                            productListContainer.innerHTML = data;
+                        } else {
+                            console.error('Product list container not found.');
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const likeButtons = document.querySelectorAll("[data-product-id]");
+
+            likeButtons.forEach(button => {
+                button.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    const productId = this.getAttribute('data-product-id');
+                    const userId = '@userManager.GetUserId(User)';
+                    const isLiked = localStorage.getItem(`liked_${productId}`) === 'true';
+
+                    if (isLiked) {
+                        removeLikeFromProduct(productId, userId, this);
+                    } else {
+                        addLiketoProduct(productId, userId, this);
+                    }
+                });
+
+                // Initialize like status
+                const productId = button.getAttribute('data-product-id');
+                if (localStorage.getItem(`liked_${productId}`) === 'true') {
+                    button.innerHTML = '<i class="bi bi-heart-fill"></i>';
+                    button.classList.add('active');
+                } else {
+                    button.innerHTML = '<i class="bi bi-heart"></i>';
+                    button.classList.remove('active');
+                }
+            });
+
+            async function addLiketoProduct(productId, userId, button) {
+                fetch('/api/ProductLike/Add', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': '*/*'
+                    },
+                    body: JSON.stringify({ productId, userId })
+                }).then(() => {
+                    localStorage.setItem(`liked_${productId}`, 'true');
+                    button.classList.add('active');
+                    button.innerHTML = '<i class="bi bi-heart-fill"></i>';
+                    getTotalLikes();
+                }).catch((error) => {
+                    console.error('Error:', error);
+                });
+            }
+
+            async function removeLikeFromProduct(productId, userId, button) {
+                fetch('/api/ProductLike/Remove', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': '*/*'
+                    },
+                    body: JSON.stringify({ productId, userId })
+                }).then(() => {
+                    localStorage.removeItem(`liked_${productId}`);
+                    button.classList.remove('active');
+                    button.innerHTML = '<i class="bi bi-heart"></i>';
+                    getTotalLikes();
+                }).catch((error) => {
+                    console.error('Error:', error);
+                });
+            }
+        });
+
+    </script>
+}
