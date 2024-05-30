@@ -28,7 +28,7 @@ namespace ShopWeb.Controllers
         [HttpGet]
         public async Task<IActionResult> Add()
         {
-            var cates = await cateRepository.GetAllAsync(1, 10);
+            var cates = await cateRepository.GetAllAsync(1, 100);
 
             var model = new AddProductRequest
             {
@@ -131,7 +131,7 @@ namespace ShopWeb.Controllers
         public async Task<IActionResult> Edit(Guid id)
         {
             var product = await productRepository.GetAsync(id);
-            var categoriesDomainModel = await cateRepository.GetAllAsync(1,10);
+            var categoriesDomainModel = await cateRepository.GetAllAsync(1,100);
             var allVariantProducts = await productVariantRepository.GetVariantsByProductIdAsync(id);
             var listVAForView = new List<VariantAttributeRequest>();
             foreach (var variant in allVariantProducts)

@@ -52,7 +52,7 @@
         @Html.LabelFor(m => m.Quantity, new { @class = "col-md-4 control-label" })
         @Html.TextBoxFor(m => m.Quantity, new { @class = "form-control", @readonly = true })
     </div>
-    <div class="mb-3">
+    <!-- <div class="mb-3">
         @Html.LabelFor(m => m.Categories, new { @class = "col-md-4 control-label" })
         @if (Model != null && Model.Categories.Any())
         {
@@ -70,7 +70,7 @@
         {
             <p>No Categories Found!</p>
         }
-    </div>
+    </div> -->
 
     @if(Model.VariantAttributes != null && Model.VariantAttributes.Any())
     {

@@ -22,7 +22,7 @@
             <textarea class="form-control" id="Description" asp-for="Description"></textarea>
         </div>
         <div class="col-md-8 mb-3">
-            <label class="form-label">Featured Image Upload</label>
+            <label class="form-label">Ảnh chính</label>
             <input type="file" id="featuredImageUpload" class="form-control"/>
             <img src="" id="featuredImageDisplay" style="display:none;width: 300px" />
         </div>
@@ -31,7 +31,7 @@
             @Html.TextBoxFor(m => m.FeaturedImageUrl, new { @class = "form-control", id="featuredImageUrl" })
         </div>
         <div class="col-md-8 mb-3">
-            <label class="form-label">Additional Images</label>
+            <label class="form-label">Ảnh phụ</label>
             <input type="file" id="additionalImagesUpload" class="form-control" name="AdditionalImages" multiple />
             <div id="additionalImagesPreview"></div>
         </div>
