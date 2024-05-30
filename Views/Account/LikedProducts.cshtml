@@ -10,7 +10,7 @@
 
 @if (Model.LikedProducts != null && Model.LikedProducts.Any())
 {
-    <div id="liked-product-container">
+    <div id="liked-product-container" style="margin-left: 200px;">
         <h1>Liked Products</h1>
         <table class="table">
             <thead>
@@ -48,5 +48,8 @@
 }
 else
 {
-    <p>No liked products found.</p>
+    <div id="liked-product-container" style="margin-left: 200px;">
+
+        <p>No liked products found.</p>
+    </div>
 }

@@ -9,7 +9,7 @@
 
 @if (Model != null && Model.Any())
 {
-    <div id="history-container">
+    <div id="history-container" style="margin-left: 200px;">
         <h1>Purchase History</h1>
         <table class="table">
             <thead>
@@ -38,5 +38,7 @@
 }
 else
 {
-    <p>No purchase history available.</p>
+    <div id="history-container" style="margin-left: 200px;">
+        <p>No purchase history available.</p>
+    </div>
 }
