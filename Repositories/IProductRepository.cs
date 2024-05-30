@@ -22,5 +22,10 @@ namespace ShopWeb.Repositories
         Task<List<ProductImage>> GetAdditionalImagesByProductIdAsync(Guid productId);
         Task DeleteImageAsync(ProductImage productImage);
         Task<List<Product>> GetProductsByCategoryForHomeAsync(string category);
+        Task<IEnumerable<Product>> GetSaleProductsAsync();
+        Task SetSaleAsync(Guid productId, decimal salePrice, DateTime saleEndDate);
+        Task RemoveSaleAsync(Guid productId);
+        Task<IEnumerable<Product>> GetAllBySortAsync(int page, int pageSize, string sortBy, bool sortDescending, string category);
+        Task<int> GetTotalProductsCountAfterSort(string category);
     }
 }

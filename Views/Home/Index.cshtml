@@ -27,11 +27,13 @@
                                     {
                                         foreach (var cate in Model.Categories)
                                         {
-                                            <div>
+                                            <div style="text-align: left;">
                                                 <a href="@Url.Action("Shop", "Home", new { category = cate.Name })" class="btn btn-sort-item category-tag">
-                                                    @cate.Name
+                                                    <span>@cate.Name</span> 
+                                                    <i class="bi bi-caret-right-fill"></i>
                                                 </a>
                                             </div>
+
                                         }
                                     }
                                     else
@@ -59,11 +61,11 @@
                                                 <a asp-area="" asp-action="Index" asp-controller="Products" asp-route-id="{@product.Id}">
                                                     <img src="@product.FeaturedImageUrl" class="d-block w-100" alt="@product.Name">
                                                 </a>
-                                                <div class="carousel-caption d-none d-md-block">
+                                                <!-- <div class="carousel-caption d-none d-md-block">
                                                     <h5>@product.Name</h5>
                                                     <p>Price: <span class="vnd-symbol">đ</span>@product.Price.ToString("N0")</p>
                                                     <p>Purchase Count: @product.PurchaseCount</p>
-                                                </div>
+                                                </div> -->
                                             </div>
                                         }
                                     </div>
@@ -77,7 +79,14 @@
                                             <img src="@product.FeaturedImageUrl" class="img-thumbnail" style="width: 100px;" alt="@product.Name">
                                             <div class="text-right">
                                                 <h5>@product.Name</h5>
-                                                <p><span class="vnd-symbol">đ</span>@product.Price.ToString("N0")</p>
+                                                @if (product.IsSale && product.SaleEndDate > DateTime.Now)
+                                                {
+                                                    <p>Giá: <span class="vnd-symbol">đ</span>@product.SalePrice.Value.ToString("N0") <del><span class="vnd-symbol">đ</span>@product.Price.ToString("N0")</del></p>
+                                                }
+                                                else
+                                                {
+                                                    <p>Giá: <span class="vnd-symbol">đ</span>@product.Price.ToString("N0")</p>
+                                                }
                                             </div>
                                         </li>
                                     }
@@ -147,7 +156,14 @@
                                                             }
                                                         </div>
                                                     </li>
-                                                    <li class="text-muted text-right">Giá: <span class="vnd-symbol">đ</span>@product.Price.ToString("N0")</li>
+                                                    @if (product.IsSale && product.SaleEndDate > DateTime.Now)
+                                                    {
+                                                        <li class="text-muted text-right">Giá: <span class="vnd-symbol">đ</span>@product.SalePrice.Value.ToString("N0") <del><span class="vnd-symbol">đ</span>@product.Price.ToString("N0")</del></li>
+                                                    }
+                                                    else
+                                                    {
+                                                        <li class="text-muted text-right">Giá: <span class="vnd-symbol">đ</span>@product.Price.ToString("N0")</li>
+                                                    }
                                                 </ul>
                                                 <h2 class="h2 text-decoration-none text-dark">@product.Name</h2>
                                                 <!-- <p class="card-text">
@@ -230,7 +246,14 @@
                                                             }
                                                         </div>
                                                     </li>
-                                                    <li class="text-muted text-right">Giá: <span class="vnd-symbol">đ</span>@product.Price.ToString("N0")</li>
+                                                    @if (product.IsSale && product.SaleEndDate > DateTime.Now)
+                                                    {
+                                                        <li class="text-muted text-right">Giá: <span class="vnd-symbol">đ</span>@product.SalePrice.Value.ToString("N0") <del><span class="vnd-symbol">đ</span>@product.Price.ToString("N0")</del></li>
+                                                    }
+                                                    else
+                                                    {
+                                                        <li class="text-muted text-right">Giá: <span class="vnd-symbol">đ</span>@product.Price.ToString("N0")</li>
+                                                    }
                                                 </ul>
                                                 <h2 class="h2 text-decoration-none text-dark">@product.Name</h2>
                                                 <!-- <p class="card-text">
@@ -264,21 +287,6 @@
         </div>
     </div>
 
-    <div id="paging-bar">
-        <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-center">
-                @if (Model != null && Model.PageCount > 1)
-                {
-                    for (int i = 1; i <= Model.PageCount; i++)
-                    {
-                        <li class="page-item @(Model.PageNumber == i ? "active" : "")">
-                            <a class="page-link" href="?page=@i">@i</a>
-                        </li>
-                    }
-                }
-            </ul>
-        </nav>
-    </div>
 
     
 </div>

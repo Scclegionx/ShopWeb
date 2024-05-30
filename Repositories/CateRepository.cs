@@ -31,14 +31,25 @@ namespace ShopWeb.Repositories
             return null;
         }
 
-        public async Task<IEnumerable<Category>> GetAllAsync()
+        public async Task<IEnumerable<Category>> GetAllAsync(int? page, int? pageSize)
         {
+            
+            if (page.HasValue && pageSize.HasValue)
+            {
+                int skip = (page.Value - 1) * pageSize.Value;
+                return await shopWebDbContext.Categories.Skip(skip).Take(pageSize.Value).ToListAsync();
+            }
             return await shopWebDbContext.Categories.ToListAsync();
         }
 
         public Task<Category?> GetAsync(Guid id)
         {
             return shopWebDbContext.Categories.FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<int> GetTotalCategoryCount()
+        {
+            return await shopWebDbContext.Categories.CountAsync();
         }
 
         public async Task<Category?> UpdateAsync(Category category)

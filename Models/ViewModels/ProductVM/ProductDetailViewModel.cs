@@ -18,5 +18,8 @@ namespace ShopWeb.Models.ViewModels.ProductVM
         public IEnumerable<ProductCommentViewModel> Comments { get; set; }
         public int Rating { get; set; }
         public List<string> AdditionalImageUrls { get; set; }
+        public bool IsSale { get; set; } // Indicates if the product is on sale
+        public decimal? SalePrice { get; set; } // The sale price of the product
+        public DateTime? SaleEndDate { get; set; }
     }
 }

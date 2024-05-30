@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Ajax.Utilities;
+using Microsoft.EntityFrameworkCore;
 using ShopWeb.Data;
 using ShopWeb.Models.Domain;
 
@@ -186,6 +187,73 @@ namespace ShopWeb.Repositories
         {
             shopWebDbContext.ProductImages.Remove(productImage);
             await shopWebDbContext.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Product>> GetSaleProductsAsync()
+        {
+            return await shopWebDbContext.Products.Where(p => p.IsSale && p.SaleEndDate > DateTime.Now).ToListAsync();
+        }
+
+        public async Task SetSaleAsync(Guid productId, decimal salePrice, DateTime saleEndDate)
+        {
+            var product = await shopWebDbContext.Products.FindAsync(productId);
+            if (product != null)
+            {
+                product.IsSale = true;
+                product.SalePrice = salePrice;
+                product.SaleEndDate = saleEndDate;
+                await shopWebDbContext.SaveChangesAsync();
+            }
+        }
+
+        public async Task RemoveSaleAsync(Guid productId)
+        {
+            var product = await shopWebDbContext.Products.FindAsync(productId);
+            if (product != null)
+            {
+                product.IsSale = false;
+                product.SalePrice = null;
+                product.SaleEndDate = null;
+                await shopWebDbContext.SaveChangesAsync();
+            }
+        }
+
+
+        public async Task<IEnumerable<Product>> GetAllBySortAsync(int page, int pageSize, string sortBy, bool sortDescending, string category = null)
+        {
+            var query = shopWebDbContext.Products.AsQueryable();
+
+            if (!string.IsNullOrEmpty(category))
+            {
+                query = query.Where(p => p.Categories.Any(c => c.Name == category));
+            }
+
+            switch (sortBy)
+            {
+                case "Sales":
+                    query = query.Where(p => p.IsSale);
+                    break;
+                case "AtoZ":
+                    query = sortDescending ? query.OrderByDescending(p => p.Name) : query.OrderBy(p => p.Name);
+                    break;
+                case "Price":
+                    query = sortDescending ? query.OrderByDescending(p => p.Price) : query.OrderBy(p => p.Price);
+                    break;
+            }
+
+            return await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+        }
+
+        public async Task<int> GetTotalProductsCountAfterSort(string category = null)
+        {
+            var query = shopWebDbContext.Products.AsQueryable();
+
+            if (!string.IsNullOrEmpty(category))
+            {
+                query = query.Where(p => p.Categories.Any(c => c.Name == category));
+            }
+
+            return await query.CountAsync();
         }
     }
 }

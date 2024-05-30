@@ -16,5 +16,8 @@
         public int Rating { get; set; }
         public int CommentsCount { get; set; }
         public ICollection<ProductImage> ProductImages { get; set; }
+        public bool IsSale { get; set; } // Indicates if the product is on sale
+        public decimal? SalePrice { get; set; } // The sale price of the product
+        public DateTime? SaleEndDate { get; set; }
     }
 }

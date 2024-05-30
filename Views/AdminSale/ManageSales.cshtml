@@ -1,0 +1,38 @@
+﻿@model IEnumerable<ShopWeb.Models.ViewModels.SaleVM.SaleViewModel>
+
+
+<div id="sale-container">
+
+    <h2>Manage Sales</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Original Price</th>
+                <th>Sale Price</th>
+                <th>Sale End Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+                <tr>
+                    <td>@product.ProductName</td>
+                    <td>@product.OriginalPrice</td>
+                    <td>@product.SalePrice</td>
+                    <td>@product.SaleEndDate.ToString("yyyy-MM-dd")</td>
+                    <td>
+                        <form asp-action="RemoveSale" asp-controller="AdminSale" method="post" class="d-inline">
+                            <input type="hidden" name="productId" value="@product.ProductId" />
+                            <button type="submit" class="btn btn-danger">Remove Sale</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <a href="@Url.Action("SetSale", "AdminSale")" class="btn btn-primary">Add New Sale</a>
+</div>
