@@ -43,9 +43,15 @@ namespace ShopWeb.Controllers
             return RedirectToAction("List");
         }
         [HttpGet]
-        public async Task<IActionResult> List() 
+        public async Task<IActionResult> List(int page = 1) 
         {
-            var models = await cateRepository.GetAllAsync();
+            const int pageSize = 10;
+            var totalProductsCount = await cateRepository.GetTotalCategoryCount();
+            var pageCount = (int)Math.Ceiling((double)totalProductsCount / pageSize);
+
+            ViewBag.page = page;
+            ViewBag.pageCount = pageCount;
+            var models = await cateRepository.GetAllAsync(page, pageSize);
             return View(models);
         }
         [HttpGet]

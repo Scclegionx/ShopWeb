@@ -72,15 +72,20 @@ body, ul, li, p, a, label, input, div {
 }
 
 .pagination .page-link:hover {
-    color: #000;
+    color: #fff !important;
+    background-color: #28a745;
 }
 
-.pagination .page-link:hover, .pagination .page-link.active {
-    background-color: #69bb7e;
-    color: #fff;
+.pagination .page-link.active {
+    background-color: #28a745 !important;
+    color: #fff !important;
 }
 
-
+.page-item.active .page-link {
+    background-color: #28a745 !important;
+    color: #fff !important;
+    border-color: #28a745 !important;
+}
 /* Hero Carousel */
 #template-mo-zay-hero-carousel {
     background: #efefef !important;
@@ -849,7 +854,7 @@ body {
 
 #history-container, #tracking-container, #liked-product-container, #response-container, #purchase-container,
 #cart-container, #buyNow-container, #shipper-order-container, #rating-container, 
-#comment-container, #userAdmin-container, #login-container, #register-container, #product-detail-container {
+#comment-container, #userAdmin-container, #login-container, #register-container, #product-detail-container, #sale-container {
     max-width: 1200px;
     margin: 50px auto; /* Adjust margin to create space between navbar and content */
     padding: 20px;
@@ -861,7 +866,7 @@ body {
 
     #history-container, #tracking-container, #liked-product-container, #response-container,
     #purchase-container, #cart-container, #buyNow-container, #shipper-order-container, #rating-container,
-    #comment-containerl, #userAdmin-container, #login-container, #register-container, #product-detail-container h1 {
+    #comment-containerl, #userAdmin-container, #login-container, #register-container, #product-detail-container, #sale-container h1 {
         font-weight: bold;
         color: #343a40; /* Heading text color */
         margin-bottom: 20px;
@@ -991,41 +996,44 @@ body {
 }
 
 #sort-container {
-    display:flex;
+    display: flex;
     margin-right: 25px;
     background-color: #FFFFFF;
-    border-radius: 3px;
-    justify-content: center;
-    align-items: center;
-    overflow-y: scroll;
+    border-radius: 5px;
+    
+    overflow: hidden; /* Tránh việc hiển thị nội dung vượt ra ngoài */
 }
 
-
 .btn-sort-item {
-    font-size: 2rem !important;
+    font-size: 1.6rem; /* Giảm kích thước font lại một chút */
+    padding: 10px 15px; /* Thêm padding cho nút */
     background-color: #28a745;
-    color: #ffffff;
-    border: 2px solid #28a745;
+    color: #ffffff ;
+    border: none; /* Loại bỏ border */
     border-radius: 5px;
-    text-align: left;
+    text-align: center;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    transition: color 0.3s;
-    outline: none;
+    transition: background-color 0.3s, transform 0.2s, color 0.3s; /* Thêm hiệu ứng transition cho màu chữ */
+    cursor: pointer; /* Thêm cursor pointer */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Chọn một font chữ có đường nét mượt mà */
 }
 
     .btn-sort-item:hover {
-        color: #28a745 !important;
-        background-color: #ffffff;
+        background-color: #218838; /* Tạo hiệu ứng tăng cường màu sắc khi hover */
+        transform: translateY(-2px); /* Tạo hiệu ứng nút nhấn xuống */
+        color: #FFFFFF !important; /* Đổi màu chữ thành trắng khi hover */
     }
 
     .btn-sort-item:focus, .btn-sort-item:active {
         outline: none; /* Remove focus outline */
-        box-shadow: none; /* Remove focus shadow */
+        transform: translateY(0); /* Reset transform */
     }
+
+
 
 
 #best-selling-container {
@@ -1240,6 +1248,24 @@ body {
     color: #888;
     font-style: italic;
 }
+
+.category-link:hover {
+    color: #28a745 !important;
+}
+.category-link {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+}
+
+    .category-link span {
+        margin-right: auto; 
+    }
+
+    .category-link i {
+        margin-left: auto; 
+    }
+
 
 
 

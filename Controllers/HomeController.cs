@@ -64,7 +64,7 @@ namespace ShopWeb.Controllers
             
 
             // Get categories for display
-            var categories = await cateRepository.GetAllAsync();
+            var categories = await cateRepository.GetAllAsync(page, pageSize);
 
             foreach (var product in products) 
             {
@@ -112,6 +112,23 @@ namespace ShopWeb.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> SortByFeature(int page = 1, string sortBy = "Sales", bool sortDescending = false, string category = null)
+        {
+            const int pageSize = 9;
+            // Get total count for pagination
+            var totalProductsCount = await productRepository.GetTotalProductsCountAfterSort(category);
+
+            // Calculate page count
+            var pageCount = (int)Math.Ceiling((double)totalProductsCount / pageSize);
+            ViewBag.page = page;
+            ViewBag.pageCount = pageCount;
+            var products = await productRepository.GetAllBySortAsync(page, pageSize, sortBy, sortDescending, category);
+
+            return PartialView("_ProductList", products);
+        }
+
+
+        [HttpGet]
         public IActionResult About()
         {
             return View();
@@ -124,13 +141,15 @@ namespace ShopWeb.Controllers
         [HttpGet]
         public async Task<IActionResult> Shop(string productName, string category, int page = 1)
         {
-            const int pageSize = 10;
+            const int pageSize = 9;
 
             // Get total count for pagination
             var totalProductsCount = await productRepository.GetTotalProductsCount();
 
             // Calculate page count
             var pageCount = (int)Math.Ceiling((double)totalProductsCount / pageSize);
+            ViewBag.page = page;
+            ViewBag.pageCount = pageCount;
 
             IEnumerable<Product> products;
 
@@ -159,7 +178,7 @@ namespace ShopWeb.Controllers
             }
 
             // Get categories for display
-            var categories = await cateRepository.GetAllAsync();
+            var categories = await cateRepository.GetAllAsync(page, 100);
 
             foreach (var product in products)
             {

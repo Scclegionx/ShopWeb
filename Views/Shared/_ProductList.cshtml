@@ -67,7 +67,15 @@
                                 </div>
                             </li>
                         </ul>
-                        <p class="text-center mb-0"><span class="vnd-symbol">đ</span>@product.Price.ToString("N0")</p>
+                        @if (product.IsSale && product.SaleEndDate > DateTime.Now)
+                        {
+                            <p class="text-center mb-0">Giá: <span class="vnd-symbol">đ</span>@product.SalePrice.Value.ToString("N0") <del><span class="vnd-symbol">đ</span>@product.Price.ToString("N0")</del></p>
+                        }
+                        else
+                        {
+                            <p class="text-center mb-0">Giá: <span class="vnd-symbol">đ</span>@product.Price.ToString("N0")</p>
+                        }
+                        
                     </div>
                 </div>
             </div>
@@ -77,3 +85,72 @@
         <p>Không có sản phẩm!</p>
     }
 </div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const likeButtons = document.querySelectorAll("[data-product-id]");
+
+            likeButtons.forEach(button => {
+                button.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    const productId = this.getAttribute('data-product-id');
+                    const userId = '@userManager.GetUserId(User)';
+                    const isLiked = localStorage.getItem(`liked_${productId}`) === 'true';
+
+                    if (isLiked) {
+                        removeLikeFromProduct(productId, userId, this);
+                    } else {
+                        addLiketoProduct(productId, userId, this);
+                    }
+                });
+
+                // Initialize like status
+                const productId = button.getAttribute('data-product-id');
+                if (localStorage.getItem(`liked_${productId}`) === 'true') {
+                    button.innerHTML = '<i class="bi bi-heart-fill"></i>';
+                    button.classList.add('active');
+                } else {
+                    button.innerHTML = '<i class="bi bi-heart"></i>';
+                    button.classList.remove('active');
+                }
+            });
+
+            async function addLiketoProduct(productId, userId, button) {
+                fetch('/api/ProductLike/Add', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': '*/*'
+                    },
+                    body: JSON.stringify({ productId, userId })
+                }).then(() => {
+                    localStorage.setItem(`liked_${productId}`, 'true');
+                    button.classList.add('active');
+                    button.innerHTML = '<i class="bi bi-heart-fill"></i>';
+                    getTotalLikes();
+                }).catch((error) => {
+                    console.error('Error:', error);
+                });
+            }
+
+            async function removeLikeFromProduct(productId, userId, button) {
+                fetch('/api/ProductLike/Remove', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': '*/*'
+                    },
+                    body: JSON.stringify({ productId, userId })
+                }).then(() => {
+                    localStorage.removeItem(`liked_${productId}`);
+                    button.classList.remove('active');
+                    button.innerHTML = '<i class="bi bi-heart"></i>';
+                    getTotalLikes();
+                }).catch((error) => {
+                    console.error('Error:', error);
+                });
+            }
+        });
+    </script>
+}

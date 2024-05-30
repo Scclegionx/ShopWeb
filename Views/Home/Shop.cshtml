@@ -49,10 +49,12 @@
                 </div>
                 <div class="col-md-6 pb-4">
                     <div class="d-flex">
-                        <select class="form-control">
-                            <option>A to Z</option>
-                            <option>Giá thấp đến cao</option>
-                            <option>Giá cao đến thấp</option>
+                        <select class="form-control" id="sort-options">
+                            <option value="All">Tất cả</option>
+                            <option value="Sales">Sales</option>
+                            <option value="AtoZ">A to Z</option>
+                            <option value="PriceAsc">Giá thấp đến cao</option>
+                            <option value="PriceDesc">Giá cao đến thấp</option>
                         </select>
                     </div>
                 </div>
@@ -64,15 +66,15 @@
             </div>
             <div div="row">
                 <ul class="pagination pagination-lg justify-content-end">
-                    <li class="page-item disabled">
-                        <a class="page-link active rounded-0 mr-3 shadow-sm border-top-0 border-left-0" href="#" tabindex="-1">1</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link rounded-0 mr-3 shadow-sm border-top-0 border-left-0 text-dark" href="#">2</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link rounded-0 shadow-sm border-top-0 border-left-0 text-dark" href="#">3</a>
-                    </li>
+                    @if (Model != null && ViewBag.pageCount > 1)
+                    {
+                        for (int i = 1; i <= ViewBag.pageCount; i++)
+                        {
+                            <li class="page-item @(ViewBag.page == i ? "active" : "")">
+                                <a class="page-link rounded-0 mr-3 shadow-sm border-top-0 border-left-0 text-dark" data-page="@i" href="?page=@i">@i</a>
+                            </li>
+                        }
+                    }
                 </ul>
             </div>
         </div>
@@ -81,18 +83,80 @@
 </div>
 <!-- End Content -->
 
+
 @section Scripts {
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const categoryLinks = document.querySelectorAll('.category-link');
+            const sortOptions = document.getElementById('sort-options');
+            let currentSortBy = sortOptions.value;
+            let currentSortDescending = false;
+            let currentCategory = null;
+            const likeButtons = document.querySelectorAll("[data-product-id]");
 
-            categoryLinks.forEach(link => {
-                link.addEventListener('click', function (event) {
-                    event.preventDefault();
-                    const category = this.getAttribute('data-category');
-                    sortByCategory(category);
-                });
+            sortOptions.addEventListener('change', function () {
+                currentSortBy = this.value;
+                currentSortDescending = false;
+
+                if (currentSortBy === "PriceDesc") {
+                    currentSortBy = "Price";
+                    currentSortDescending = true;
+                } else if (currentSortBy === "PriceAsc") {
+                    currentSortBy = "Price";
+                }
+                sortProducts(currentSortBy, currentSortDescending, currentCategory, 1);
             });
+
+            function sortProducts(sortBy, sortDescending, category, page = 1) {
+                fetch(`/Home/SortByFeature?page=${page}&sortBy=${sortBy}&sortDescending=${sortDescending}&category=${encodeURIComponent(category || '')}`)
+                    .then(response => response.text())
+                    .then(data => {
+                        const productListContainer = document.getElementById('product-list-container');
+                        if (productListContainer) {
+                            productListContainer.innerHTML = data;
+                            handlePagination();
+                            updateActivePage(page);
+                            updateLikeButtons(); // Cập nhật trạng thái nút like sau khi tải lại nội dung
+                        } else {
+                            console.error('Product list container not found.');
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+
+            function handlePagination() {
+                const paginationLinks = document.querySelectorAll('.page-link');
+                paginationLinks.forEach(link => {
+                    link.addEventListener('click', function (event) {
+                        event.preventDefault();
+                        const page = this.getAttribute('data-page');
+                        sortProducts(currentSortBy, currentSortDescending, currentCategory, page);
+                    });
+                });
+            }
+
+            function updateActivePage(page) {
+                const paginationItems = document.querySelectorAll('.page-item');
+                paginationItems.forEach(item => {
+                    const link = item.querySelector('.page-link');
+                    if (link && link.getAttribute('data-page') == page) {
+                        item.classList.add('active');
+                    } else {
+                        item.classList.remove('active');
+                    }
+                });
+            }
+
+            function handleCategoryFilter() {
+                const categoryLinks = document.querySelectorAll('.category-link');
+                categoryLinks.forEach(link => {
+                    link.addEventListener('click', function (event) {
+                        event.preventDefault();
+                        currentCategory = this.getAttribute('data-category');
+                        sortProducts(currentSortBy, currentSortDescending, currentCategory, 1);
+                    });
+                });
+            }
+
 
             function sortByCategory(category) {
                 fetch(`/Home/SortByCategory?category=${encodeURIComponent(category)}`)
@@ -107,35 +171,35 @@
                     })
                     .catch(error => console.error('Error:', error));
             }
-        });
 
-        document.addEventListener("DOMContentLoaded", function () {
-            const likeButtons = document.querySelectorAll("[data-product-id]");
 
-            likeButtons.forEach(button => {
-                button.addEventListener('click', function (event) {
-                    event.preventDefault();
-                    const productId = this.getAttribute('data-product-id');
-                    const userId = '@userManager.GetUserId(User)';
-                    const isLiked = localStorage.getItem(`liked_${productId}`) === 'true';
+            function updateLikeButtons() {
+                const likeButtons = document.querySelectorAll("[data-product-id]");
+                likeButtons.forEach(button => {
+                    button.addEventListener('click', function (event) {
+                        event.preventDefault();
+                        const productId = this.getAttribute('data-product-id');
+                        const userId = '@userManager.GetUserId(User)';
+                        const isLiked = localStorage.getItem(`liked_${productId}`) === 'true';
 
-                    if (isLiked) {
-                        removeLikeFromProduct(productId, userId, this);
+                        if (isLiked) {
+                            removeLikeFromProduct(productId, userId, this);
+                        } else {
+                            addLiketoProduct(productId, userId, this);
+                        }
+                    });
+
+                    // Initialize like status
+                    const productId = button.getAttribute('data-product-id');
+                    if (localStorage.getItem(`liked_${productId}`) === 'true') {
+                        button.innerHTML = '<i class="bi bi-heart-fill"></i>';
+                        button.classList.add('active');
                     } else {
-                        addLiketoProduct(productId, userId, this);
+                        button.innerHTML = '<i class="bi bi-heart"></i>';
+                        button.classList.remove('active');
                     }
                 });
-
-                // Initialize like status
-                const productId = button.getAttribute('data-product-id');
-                if (localStorage.getItem(`liked_${productId}`) === 'true') {
-                    button.innerHTML = '<i class="bi bi-heart-fill"></i>';
-                    button.classList.add('active');
-                } else {
-                    button.innerHTML = '<i class="bi bi-heart"></i>';
-                    button.classList.remove('active');
-                }
-            });
+            }
 
             async function addLiketoProduct(productId, userId, button) {
                 fetch('/api/ProductLike/Add', {
@@ -172,7 +236,15 @@
                     console.error('Error:', error);
                 });
             }
+            handlePagination();
+            handleCategoryFilter();
+            updateLikeButtons();
+            
+
         });
+        
+
+        
 
     </script>
 }

@@ -74,7 +74,15 @@
                     <div class="card">
                         <div class="card-body">
                             <h1 class="h2">@Model.Name</h1>
-                            <p class="h3 py-2"><span class="vnd-symbol">đ</span>@Model.Price.ToString("N0")</p>
+                            @if (Model.IsSale && Model.SaleEndDate > DateTime.Now)
+                            {
+                                <p class="h3 py-2">Giá: <span class="vnd-symbol">đ</span>@Model.SalePrice.Value.ToString("N0") <del><span class="vnd-symbol">đ</span>@Model.Price.ToString("N0")</del></p>
+                            }
+                            else
+                            {
+                                <p class="h3 py-2">Giá: <span class="vnd-symbol">đ</span>@Model.Price.ToString("N0")</p>
+                            }
+                            
                             @if (signInManager.IsSignedIn(User))
                             {
 

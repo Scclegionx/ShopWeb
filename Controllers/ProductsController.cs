@@ -116,7 +116,10 @@ namespace ShopWeb.Controllers
                     Comments = productCommentForView,
                     Variants = listForView,
                     CommentsCount = product.CommentsCount,
-                    AdditionalImageUrls = additionalImageUrls
+                    AdditionalImageUrls = additionalImageUrls,
+                    IsSale = product.IsSale,
+                    SalePrice = product.SalePrice,
+                    SaleEndDate = product.SaleEndDate,
                 };
                 ViewData["Liked"] = liked;
                 ViewData["AverageRating"] = averageRating;
