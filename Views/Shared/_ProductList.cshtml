@@ -39,17 +39,8 @@
                         <a asp-area=""
                            asp-controller="Products"
                            asp-action="Index"
-                           asp-route-id="@product.Id" class="h3 text-decoration-none">@product.Name</a>
-                        <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
+                           asp-route-id="@product.Id" class="h3 text-decoration-none productNameLink">@product.Name</a>
 
-                            <li class="pt-2">
-                                <span class="product-color-dot color-dot-red float-left rounded-circle ml-1"></span>
-                                <span class="product-color-dot color-dot-blue float-left rounded-circle ml-1"></span>
-                                <span class="product-color-dot color-dot-black float-left rounded-circle ml-1"></span>
-                                <span class="product-color-dot color-dot-light float-left rounded-circle ml-1"></span>
-                                <span class="product-color-dot color-dot-green float-left rounded-circle ml-1"></span>
-                            </li>
-                        </ul>
                         <ul class="list-unstyled d-flex justify-content-center mb-1">
                             <li>
                                 <div class="rating">
@@ -88,69 +79,7 @@
 
 @section Scripts {
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const likeButtons = document.querySelectorAll("[data-product-id]");
 
-            likeButtons.forEach(button => {
-                button.addEventListener('click', function (event) {
-                    event.preventDefault();
-                    const productId = this.getAttribute('data-product-id');
-                    const userId = '@userManager.GetUserId(User)';
-                    const isLiked = localStorage.getItem(`liked_${productId}`) === 'true';
-
-                    if (isLiked) {
-                        removeLikeFromProduct(productId, userId, this);
-                    } else {
-                        addLiketoProduct(productId, userId, this);
-                    }
-                });
-
-                // Initialize like status
-                const productId = button.getAttribute('data-product-id');
-                if (localStorage.getItem(`liked_${productId}`) === 'true') {
-                    button.innerHTML = '<i class="bi bi-heart-fill"></i>';
-                    button.classList.add('active');
-                } else {
-                    button.innerHTML = '<i class="bi bi-heart"></i>';
-                    button.classList.remove('active');
-                }
-            });
-
-            async function addLiketoProduct(productId, userId, button) {
-                fetch('/api/ProductLike/Add', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': '*/*'
-                    },
-                    body: JSON.stringify({ productId, userId })
-                }).then(() => {
-                    localStorage.setItem(`liked_${productId}`, 'true');
-                    button.classList.add('active');
-                    button.innerHTML = '<i class="bi bi-heart-fill"></i>';
-                    getTotalLikes();
-                }).catch((error) => {
-                    console.error('Error:', error);
-                });
-            }
-
-            async function removeLikeFromProduct(productId, userId, button) {
-                fetch('/api/ProductLike/Remove', {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': '*/*'
-                    },
-                    body: JSON.stringify({ productId, userId })
-                }).then(() => {
-                    localStorage.removeItem(`liked_${productId}`);
-                    button.classList.remove('active');
-                    button.innerHTML = '<i class="bi bi-heart"></i>';
-                    getTotalLikes();
-                }).catch((error) => {
-                    console.error('Error:', error);
-                });
-            }
-        });
+        
     </script>
 }

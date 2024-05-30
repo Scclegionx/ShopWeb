@@ -37,7 +37,7 @@ namespace ShopWeb.Repositories
             if (page.HasValue && pageSize.HasValue)
             {
                 int skip = (page.Value - 1) * pageSize.Value;
-                return await shopWebDbContext.Categories.Skip(skip).Take(pageSize.Value).ToListAsync();
+                return await shopWebDbContext.Categories.Skip(skip).Take(pageSize.Value).OrderBy(c => c.Name).ToListAsync();
             }
             return await shopWebDbContext.Categories.ToListAsync();
         }

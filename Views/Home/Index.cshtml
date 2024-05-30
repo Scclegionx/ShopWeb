@@ -60,6 +60,9 @@
                                             <div class="carousel-item @(product == Model.bestSellingProducts.First() ? "active" : "")">
                                                 <a asp-area="" asp-action="Index" asp-controller="Products" asp-route-id="{@product.Id}">
                                                     <img src="@product.FeaturedImageUrl" class="d-block w-100" alt="@product.Name">
+                                                    <div class="purchase-count-ribbon">
+                                                        Số lượt bán: @product.PurchaseCount
+                                                    </div>
                                                 </a>
                                                 <!-- <div class="carousel-caption d-none d-md-block">
                                                     <h5>@product.Name</h5>
