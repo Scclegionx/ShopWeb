@@ -79,9 +79,9 @@
                                     @foreach (var product in Model.bestSellingProducts)
                                     {
                                         <li class="list-group-item d-flex justify-content-between align-items-center best-selling-item" data-product-id="@product.Id">
-                                            <img src="@product.FeaturedImageUrl" class="img-thumbnail" style="width: 100px;" alt="@product.Name">
+                                            <img src="@product.FeaturedImageUrl" class="img-thumbnail" style="width: 90px;" alt="@product.Name">
                                             <div class="text-right">
-                                                <h5>@product.Name</h5>
+                                                <h5 style="    padding-top: 15px !important;">@product.Name</h5>
                                                 @if (product.IsSale && product.SaleEndDate > DateTime.Now)
                                                 {
                                                     <p>Giá: <span class="vnd-symbol">đ</span>@product.SalePrice.Value.ToString("N0") <del><span class="vnd-symbol">đ</span>@product.Price.ToString("N0")</del></p>
