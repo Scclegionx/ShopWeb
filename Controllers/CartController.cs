@@ -105,11 +105,12 @@ namespace ShopWeb.Controllers
         }
 
         [HttpPost("AddToCart")]
-        public async Task<IActionResult> AddToCart(Guid productId, int quantity, Guid chosenVariant, string additionalParameter)
+        public async Task<IActionResult> AddToCart(Guid productId, int quantity, string selectedVariants, string additionalParameter)
         {
             if (additionalParameter != null)
             {
                 var totalPrice = 0;
+                Guid chosenVariant = await variantAttributesRepository.GetProductVariantIdByKeyAValue(selectedVariants);
                 var product = await productRepository.GetAsync(productId);
                 var listForView = new List<List<VariantAttribute>>();
                 var mdls = await variantAttributesRepository.GetAllVariantsAttributeByVariantAsync(chosenVariant);
@@ -132,7 +133,7 @@ namespace ShopWeb.Controllers
                 };
                 return View(model);
             }
-            if (chosenVariant == Guid.Empty)
+            if (selectedVariants == null)
             {
                 var userId = Guid.Parse(userManager.GetUserId(User)); // Implement this method to get the current user's ID
                 var currentUserCart = await _cartRepository.GetCurrentUserCartAsync(userId);
@@ -142,6 +143,7 @@ namespace ShopWeb.Controllers
                 return Json(new { success = true });
             } else
             {
+                Guid chosenVariant = await variantAttributesRepository.GetProductVariantIdByKeyAValue(selectedVariants);
                 var userId = Guid.Parse(userManager.GetUserId(User)); // Implement this method to get the current user's ID
                 var currentUserCart = await _cartRepository.GetCurrentUserCartAsync(userId);
                 await _cartRepository.AddProductToCartAsync(currentUserCart, productId, quantity, chosenVariant, userId);
@@ -178,6 +180,7 @@ namespace ShopWeb.Controllers
 
             await purchaseRepository.UpdatePurchaseCount(buyOneViewModel.ProductId, buyOneViewModel.Quantity);
             await productRepository.UpdateProductQuantity(buyOneViewModel.ProductId, buyOneViewModel.Quantity);
+            await variantAttributesRepository.UpdateProductVariantQuantity(buyOneViewModel.ProductVariantId, buyOneViewModel.Quantity);
 
 
 

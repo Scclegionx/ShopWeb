@@ -1,0 +1,19 @@
+{
+  "dependencies": {
+    "mssql2": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:ShopWebDbConnectionString",
+      "dynamicId": null
+    },
+    "mssql3": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:ShopWebDbConnectionString",
+      "dynamicId": null
+    },
+    "mssql1": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:ShopWebAuthDbConnectionString",
+      "dynamicId": null
+    }
+  }
+}

@@ -190,6 +190,7 @@ namespace ShopWeb.Controllers
                             Quantity = item.Quantity,
                             Variants = listForView,
                             ProductId = productInCart.Id,
+                            ProductVariantId = item.ProductVariantId,
                         });
                     } else
                     {
@@ -200,6 +201,7 @@ namespace ShopWeb.Controllers
                             Quantity = item.Quantity,
                             Variants = listForView,
                             ProductId = productInCart.Id,
+                            ProductVariantId = item.ProductVariantId,
                         });
                     }
                 }
@@ -252,10 +254,16 @@ namespace ShopWeb.Controllers
 
             var listProductId = new List<Guid>();
             var listQuantity = new List<int>();
+            var listProductVariantId = new List<Guid>();
 
             foreach (var id in purchaseViewModel.ProductId)
             {
                 listProductId.Add(id);
+            }
+
+            foreach (var id in purchaseViewModel.ProductVariantId)
+            {
+                listProductVariantId.Add(id);
             }
 
             foreach (var quan in purchaseViewModel.Quantity) { listQuantity.Add(quan); }
@@ -264,6 +272,7 @@ namespace ShopWeb.Controllers
             {
                 await purchaseRepository.UpdatePurchaseCount(listProductId[i], listQuantity[i]);
                 await productRepository.UpdateProductQuantity(listProductId[i], listQuantity[i]);
+                await variantAttributesRepository.UpdateProductVariantQuantity(listProductVariantId[i], listQuantity[i]);
             }
 
 
@@ -289,6 +298,10 @@ namespace ShopWeb.Controllers
             // Clear the cart and cart items associated with the current user
             await cartRepository.ClearCartItemsAsync(currentUserCart.Id);
             await cartRepository.ClearCartAsync(currentUserCart);
+
+            
+
+
 
             // Redirect the user to the "Thank You" page
             return RedirectToAction("Index");

@@ -1290,6 +1290,21 @@ body {
     text-overflow: ellipsis; /* Thêm dấu '...' vào cuối nếu nội dung quá dài */
 }
 
+.variant-button {
+    background: white;
+    color: black;
+    border: 1px solid #28a745;
+    padding: 8px 16px;
+    margin: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+    .variant-button.highlight {
+        background: #28a745;
+        color: white;
+    }
+
 
 
 

@@ -21,5 +21,6 @@ namespace ShopWeb.Models.ViewModels.PurchaseVM
         public string Note { get; set; }
         public List<Guid> ProductId { get; set; }
         public List<int> Quantity { get; set; }
+        public List<Guid> ProductVariantId { get; set; }
     }
 }
