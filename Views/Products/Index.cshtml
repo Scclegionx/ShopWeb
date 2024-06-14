@@ -117,30 +117,25 @@
                                     @if (Model.Variants != null && Model.Variants.Any())
                                     {
                                         <div class="variants-container">
-                                            <h5>Phiên bản:</h5>
-                                            <select name="chosenVariant" id="chosenVariantSelect">
-                                                @foreach (var variant in Model.Variants)
+                                            @foreach (var variantList in Model.Variants)
+                                            {
+                                                @foreach (var key in variantList.Keys)
                                                 {
-                                                    @if (variant.FirstOrDefault() != null)
-                                                    {
-                                                        <option value=@variant.FirstOrDefault().ProductVariantId>
-                                                            @foreach (var attribute in variant)
+                                                    <div class="variant-category" data-category="@key">
+                                                        <h5>@key</h5>
+                                                        <div class="variant-values">
+                                                            @foreach (var value in variantList[key])
                                                             {
-                                                                @Html.Raw($"<p>{attribute.Value} </p>")
+                                                                <button class="variant-button" data-category="@key">@value</button>
                                                             }
-                                                        </option>
-                                                    }
-                                                    else
-                                                    {
-                                                        <option>
-                                                            No Variant
-                                                        </option>
-                                                    }
+                                                        </div>
+                                                    </div>
                                                 }
-                                            </select>
+                                            }
                                         </div>
                                     }
                                     <input type="hidden" name="productId" value="@Model.Id" />
+                                    <input type="hidden" id="selectedVariants" name="selectedVariants" value="" />
                                     <div class="col-auto">
                                         <ul class="list-inline pb-3">
                                             <li class="list-inline-item text-right">
@@ -238,6 +233,49 @@
         const btnLikeElement = document.getElementById("btnLike");
         const totalLikesElement = document.getElementById("totalLikes");
         const productId = "@Model.Id";
+
+        function handleVariantButtons() {
+            const variantCategories = document.querySelectorAll('.variant-category');
+            variantCategories.forEach(function (category) {
+                const variantButtons = category.querySelectorAll('.variant-button');
+                variantButtons.forEach(function (button) {
+                    button.addEventListener('click', function (event) {
+                        event.preventDefault(); // Ngăn chặn hành vi mặc định của nút button
+                        highlightButton(button, category);
+                        updateHiddenInput();
+                    });
+                });
+            });
+        }
+
+        function highlightButton(button, category) {
+            // Lấy giá trị của thuộc tính data-category
+            const categoryAttribute = button.getAttribute('data-category');
+
+            // Kiểm tra xem categoryAttribute có hợp lệ không
+            if (!categoryAttribute) {
+                console.error('data-category attribute is missing on the button.');
+                return;
+            }
+
+            // Loại bỏ highlight từ tất cả các nút trong cùng một variant-category
+            const variantButtons = document.querySelectorAll(`.variant-button[data-category="${categoryAttribute}"]`);
+            variantButtons.forEach(function (btn) {
+                btn.classList.remove('highlight');
+            });
+
+            // Thêm highlight vào nút được click
+            button.classList.add('highlight');
+        }
+
+        function updateHiddenInput() {
+            const highlightedButtons = document.querySelectorAll('.variant-button.highlight');
+            const selectedValues = Array.from(highlightedButtons).map(button => button.textContent.trim()).join(' ');
+            const hiddenInput = document.getElementById('selectedVariants');
+            hiddenInput.value = selectedValues;
+        }
+        handleVariantButtons();
+
 
         function setAdditionalParameter(value) {
             document.getElementById('additionalParameter').value = value;

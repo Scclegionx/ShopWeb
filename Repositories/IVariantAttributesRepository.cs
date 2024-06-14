@@ -9,5 +9,7 @@ namespace ShopWeb.Repositories
         Task<List<VariantAttribute>> GetByProductVariantIdAsync(Guid productVariantId);
         Task UpdateAsync(VariantAttribute variantAttribute);
         Task DeleteAsync(Guid id);
+        Task<Guid> GetProductVariantIdByKeyAValue(string KnV);
+        Task UpdateProductVariantQuantity(Guid productVariantId, int quantity);
     }
 }

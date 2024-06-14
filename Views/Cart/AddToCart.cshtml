@@ -97,7 +97,10 @@
         </select>
         <div id="paymentImageContainer"></div>
 
-
+        @if (Model.ProductVariant != null)
+        {
+            <input type="hidden" asp-for="@Model.ProductVariantId" value="@Model.ProductVariant.Id" />
+        }
         <button type="submit" class="btn btn-primary">Xác nhận đơn hàng</button>
     }
 </div>

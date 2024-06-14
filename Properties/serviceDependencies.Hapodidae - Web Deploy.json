@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "mssql3": {
+      "serviceConnectorResourceId": "",
+      "secretStore": "AzureAppSettings",
+      "type": "mssql.onprem",
+      "connectionId": "ConnectionStrings:ShopWebDbConnectionString",
+      "dynamicId": null
+    },
+    "mssql1": {
+      "serviceConnectorResourceId": "",
+      "secretStore": "AzureAppSettings",
+      "type": "mssql.onprem",
+      "connectionId": "ConnectionStrings:ShopWebAuthDbConnectionString",
+      "dynamicId": null
+    }
+  }
+}

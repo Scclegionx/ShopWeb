@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using ShopWeb.Models.Domain;
 using ShopWeb.Models.ViewModels.ProductVM;
 using ShopWeb.Repositories;
+using System.Collections.Generic;
 
 namespace ShopWeb.Controllers
 {
@@ -62,16 +64,37 @@ namespace ShopWeb.Controllers
 
                 var productVariants = await productVariantRepository.GetVariantsByProductIdAsync(id);
 
-
-                var listForView = new List<List<VariantAttribute>>();
+                List<Dictionary<string , HashSet<string>>> variants = new List<Dictionary<string, HashSet<string>>>();
 
                 if (productVariants is not null)
                 {
+                    Dictionary<string, HashSet<string>> dictionary = new Dictionary<string, HashSet<string>>();
                     foreach (var productVariant in productVariants)
                     {
+
                         var mdls = await variantAttributesRepository.GetAllVariantsAttributeByVariantAsync(productVariant.Id);
-                        listForView.Add(mdls);
+                        if (mdls != null)
+                        {
+                            foreach (var variant in mdls)
+                            {
+                                string variantKey = variant.Key;
+                                string variantValue = variant.Value;
+
+                                // If the key already exists, add the value to the existing HashSet
+                                if (dictionary.ContainsKey(variantKey))
+                                {
+                                    dictionary[variantKey].Add(variantValue);
+                                }
+                                else
+                                {
+                                    // If the key doesn't exist, create a new HashSet and add the value to it
+                                    HashSet<string> variantValues = new HashSet<string> { variantValue };
+                                    dictionary.Add(variantKey, variantValues);
+                                }
+                            }
+                        }
                     }
+                    variants.Add(dictionary);
                 }
 
                 var productInDomain = await productCommentRepository.GetAllAsync(product.Id);
@@ -114,7 +137,7 @@ namespace ShopWeb.Controllers
                     Categories = product.Categories,
                     ProductLike = product.ProductLike,
                     Comments = productCommentForView,
-                    Variants = listForView,
+                    Variants = variants,
                     CommentsCount = product.CommentsCount,
                     AdditionalImageUrls = additionalImageUrls,
                     IsSale = product.IsSale,
